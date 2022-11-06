@@ -1,0 +1,10 @@
+.intro-text {
+  font-size: 103px;
+  line-height: 87px;
+  transition: 0.3s all;
+}
+
+.intro-text:hover {
+  color: #0ffdd8;
+  text-decoration: underline;
+}

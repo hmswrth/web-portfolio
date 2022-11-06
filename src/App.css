@@ -1,0 +1,95 @@
+body{
+  background-color: #1D1D1D;
+  user-select: none;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+a{
+  text-decoration: none;
+}
+
+.font-coolvetica{
+  font-family: 'coolvetica';
+}
+
+.font-sans{
+  font-family: sans-serif;
+}
+
+.font-open-sans{
+  font-family: Open-Sans;
+}
+
+.color-white{
+  color: #fff;
+}
+
+.color-gray{
+  color: #8d8d8d;
+}
+
+.color-secondary{
+  color: #0FFDD8;
+}
+
+.font-size-md{
+  font-size: 36px;
+}
+
+.font-size-lg{
+  font-size: 40px;
+}
+
+.font-size-sm{
+  font-size: 16px;
+}
+
+.margin-none{
+  margin: 0 !important;
+}
+
+.flex-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-col-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.line-height-md{
+  line-height: 40.5px;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.border-gray{
+  height: 1px;
+  width: 100%;
+  background-color: #8d8d8d;
+  opacity: .3;
+}
+
+.text-link{
+  color: #8d8d8d;
+  transition: .3s all;
+}
+
+.text-link:hover{
+  color: #0FFDD8;
+  text-decoration: underline;
+}
+
+.tag{
+  font-family: 'La Belle Aurore', cursive;
+  color: rgb(81, 81, 82);
+}

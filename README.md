@@ -1,2 +1,2 @@
-# web-portfolio
-portfolio site built using react
+# Web Portfolio
+
