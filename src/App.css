@@ -93,3 +93,7 @@ a{
   font-family: 'La Belle Aurore', cursive;
   color: rgb(81, 81, 82);
 }
+
+.txt-dec-none{
+  text-decoration: none !important;
+}

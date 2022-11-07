@@ -2,9 +2,15 @@
   font-size: 103px;
   line-height: 87px;
   transition: 0.3s all;
+  display: inline-block;
 }
 
 .intro-text:hover {
   color: #0ffdd8;
-  text-decoration: underline;
 }
+
+.hlogo{
+    height: auto;
+    width: 3rem;
+}
+
