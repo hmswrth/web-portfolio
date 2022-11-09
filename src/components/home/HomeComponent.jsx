@@ -9,6 +9,7 @@ import {
   AiOutlineGitlab,
 } from "react-icons/ai";
 import IntroComponent from "../intro/IntroComponent";
+import TrailComponent from "../trail/TrailComponent";
 
 function HomeComponent() {
   return (

@@ -42,7 +42,21 @@ function IntroComponent() {
             {[...Array(intro.length)].map((_, index) => {
               return intro.charAt(index) !== "," ? (
                 index > 2 && intro.charAt(index) === "H" ? (
-                  <img className="hlogo" src={hLogo} alt="" />
+
+                  <span
+                    onMouseOver={() => handleMouseOver(index)}
+                    onMouseOut={() => handleMouseOut(index)}
+                    className={`color-primary font-coolvetica intro-text ${
+                      intro.charAt(index) === " " && "txt-dec-none"
+                    } ${
+                      isHovering &&
+                      hoveringIndex === index &&
+                      "animate__animated animate__rubberBand animate__repeat-1"
+                    }`}
+                    key={index}
+                  >
+                    {intro.charAt(index)}
+                  </span>
                 ) : intro.charAt(index) === " " ? (
                   <span className="txt-dec-none font-size-sm">
                     &nbsp;&nbsp;&nbsp;&nbsp;
@@ -104,7 +118,7 @@ function IntroComponent() {
             {"</p>"}
           </p>
         </div>
-      <div className="width-100 marginT-2" style={{marginLeft:'7rem'}} >
+      <div className="width-100 marginT-2" style={{marginLeft:'6.5rem'}} >
       <Button name='send a message' />
       </div>
       </div>

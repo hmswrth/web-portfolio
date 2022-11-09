@@ -3,14 +3,15 @@
   line-height: 87px;
   transition: 0.3s all;
   display: inline-block !important;
+  z-index: 100;
 }
 
 .intro-text:hover {
   color: #0ffdd8;
 }
 
-.hlogo{
-    height: auto;
-    width: 3rem;
+.hlogo {
+  height: 5rem;
+  width: auto;
 }
 
