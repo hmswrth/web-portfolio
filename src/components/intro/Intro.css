@@ -2,7 +2,7 @@
   font-size: 103px;
   line-height: 87px;
   transition: 0.3s all;
-  display: inline-block;
+  display: inline-block !important;
 }
 
 .intro-text:hover {

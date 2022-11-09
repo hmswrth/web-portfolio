@@ -48,7 +48,7 @@ a{
 }
 
 .margin-none{
-  margin: 0 !important;
+  margin: 0 ;
 }
 
 .flex-center{
@@ -96,4 +96,36 @@ a{
 
 .txt-dec-none{
   text-decoration: none !important;
+}
+
+.width-100{
+  width: 100% !important;
+}
+
+.font-weight-md{
+  font-weight: 500;
+}
+
+.font-weight-bold{
+  font-weight: bold;
+}
+
+.marginL-1{
+  margin-left: 1rem;
+}
+
+.marginL-2{
+  margin-left: 2rem;
+}
+
+.marginL-3{
+  margin-left: 3rem;
+}
+
+.marginT-2{
+  margin-top: 2rem;
+}
+
+.marginL-4{
+  margin-left: 4rem;
 }
