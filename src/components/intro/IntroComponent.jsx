@@ -23,18 +23,18 @@ function IntroComponent() {
 
   return (
     <>
-      <p className="tag animate__animated animate__bounce animate__repeat-1 margin-none font-weight-bold">
+      <p className="tag margin-none font-weight-bold">
         {"<html>"}
       </p>
       <p
-        className="tag animate__animated animate__bounce animate__repeat-1 margin-none font-weight-bold marginL-1"
+        className="tag margin-none font-weight-bold marginL-1"
       >
         {"<body>"}
       </p>
       <div className="flex-col-center" style={{ height: "89vh" }}>
         <div className="width-100">
           <p
-            className="tag animate__animated animate__bounce animate__repeat-1 margin-none font-weight-bold marginL-2"
+            className="tag margin-none font-weight-bold marginL-2"
           >
             {"<h1>"}
           </p>
@@ -95,14 +95,14 @@ function IntroComponent() {
             })}
           </div>
           <span
-            className="tag animate__animated animate__bounce animate__repeat-1 margin-none font-weight-bold marginL-2"
+            className="tag margin-none font-weight-bold marginL-2"
           >
             {"</h1>"}
           </span>
         </div>
         <div className="width-100">
           <p
-            className="tag animate__animated animate__bounce animate__repeat-1 margin-none font-weight-bold marginL-2"
+            className="tag margin-none font-weight-bold marginL-2"
           >
             {"<p>"}
           </p>
@@ -113,7 +113,7 @@ function IntroComponent() {
             Full Stack Developer
           </span>
           <p
-            className="tag animate__animated animate__bounce animate__repeat-1 margin-none font-weight-bold marginL-2"
+            className="tag margin-none font-weight-bold marginL-2"
           >
             {"</p>"}
           </p>

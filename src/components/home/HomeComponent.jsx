@@ -10,6 +10,7 @@ import {
 } from "react-icons/ai";
 import IntroComponent from "../intro/IntroComponent";
 import TrailComponent from "../trail/TrailComponent";
+import SkillsComponent from "../skills/SkillsComponent";
 
 function HomeComponent() {
   return (
@@ -88,6 +89,7 @@ function HomeComponent() {
         {/* main home container */}
         <div className="main-container">
           <IntroComponent />
+          <SkillsComponent />
         </div>
       </div>
     </>
