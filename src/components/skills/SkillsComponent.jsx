@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import TagCloudComponent from "../tagcloud/TagCloudComponent";
 import "./Skills.css";
-import dsLogo from '../../assets/DoctorStrangeMcuLogoComp.svg'
 
 function SkillsComponent() {
   const [isHovering, setIsHovering] = useState(false);

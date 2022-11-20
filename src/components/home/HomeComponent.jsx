@@ -11,6 +11,7 @@ import {
 import IntroComponent from "../intro/IntroComponent";
 import TrailComponent from "../trail/TrailComponent";
 import SkillsComponent from "../skills/SkillsComponent";
+import ContactComponent from "../contact/ContactComponent";
 
 function HomeComponent() {
   return (
@@ -90,6 +91,7 @@ function HomeComponent() {
         <div className="main-container">
           <IntroComponent />
           <SkillsComponent />
+          <ContactComponent />
         </div>
       </div>
     </>
