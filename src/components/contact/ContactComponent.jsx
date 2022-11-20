@@ -26,7 +26,7 @@ function ContactComponent() {
         style={{ width: "100%" }}
       >
         <p className="tag margin-none font-weight-bold">{"<h2>"}</p>
-        <div style={{ width: "50%", padding:'1rem' }}>
+        <div style={{ width: "50%", paddingRight:'1rem' }}>
           {[...Array(header.length)].map((_, index) => {
             return header.charAt(index) === " " ? (
               <span
