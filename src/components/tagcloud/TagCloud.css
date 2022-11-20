@@ -1,0 +1,14 @@
+.tagcloud {
+  font-family: "coolvetica", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.tagcloud--item {
+  color: #0ffdd8;
+  transition: 0.3s all;
+}
+
+.tagcloud--item:hover {
+  color: #fd2055;
+}
