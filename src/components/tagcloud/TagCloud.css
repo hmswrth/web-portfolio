@@ -1,7 +1,8 @@
 .tagcloud {
   font-family: "coolvetica", sans-serif;
-  font-size: 16px;
+  font-size: 1.5rem;
   font-weight: 500;
+  border: 1px solid rebeccapurple;
 }
 
 .tagcloud--item {

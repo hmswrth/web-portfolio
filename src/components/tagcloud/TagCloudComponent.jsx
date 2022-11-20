@@ -16,6 +16,14 @@ function TagCloudComponent() {
     "Python",
     "Java",
     "C++",
+    "SASS",
+    'Bootstrap',
+    'Material UI',
+    'ES6',
+    'Typescript',
+    'REST',
+    'Git',
+    'Ant D'
   ];
   const container = ".tag-cloud-container";
   // default options for the tag cloud rendered
