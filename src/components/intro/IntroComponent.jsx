@@ -22,7 +22,7 @@ function IntroComponent() {
   };
 
   return (
-    <>
+    <div className="height-fs">
       <p className="tag margin-none font-weight-bold">
         {"<html>"}
       </p>
@@ -38,7 +38,7 @@ function IntroComponent() {
           >
             {"<h1>"}
           </p>
-          <div className="marginL-3">
+          <div className="marginL-4">
             {[...Array(intro.length)].map((_, index) => {
               return intro.charAt(index) !== "," ? (
                 index > 2 && intro.charAt(index) === "H" ? (
@@ -123,7 +123,7 @@ function IntroComponent() {
       </div>
       </div>
 
-    </>
+    </div>
   );
 }
 

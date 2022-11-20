@@ -1,0 +1,25 @@
+.header-text {
+  font-size: 87px;
+  line-height: 87px;
+  transition: 0.3s all;
+  display: inline-block !important;
+  z-index: 100;
+}
+
+.skills-main-container{
+    display: flex;
+    background:transparent url(../../assets/DoctorStrangeMcuLogoComp.svg) no-repeat right top;
+    background-size:70%;
+    width:100px;
+    height:auto;
+}
+
+.backdrop-container{
+    position: absolute;
+    z-index: 0;
+}
+
+.backdrop-logo{
+    height: 300px;
+    width: 300px;
+}
