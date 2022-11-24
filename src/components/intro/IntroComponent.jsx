@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./Intro.css";
 import "animate.css";
-import hLogo from "../../assets/hLogo.svg";
 import Button from "../shared/Button";
 
 function IntroComponent() {

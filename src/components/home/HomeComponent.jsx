@@ -9,7 +9,6 @@ import {
   AiOutlineGitlab,
 } from "react-icons/ai";
 import IntroComponent from "../intro/IntroComponent";
-import TrailComponent from "../trail/TrailComponent";
 import SkillsComponent from "../skills/SkillsComponent";
 import ContactComponent from "../contact/ContactComponent";
 
