@@ -84,12 +84,16 @@
     top;
   background-size: 100%;
   width: 50%;
-  height: 100vh;
+  height: 94vh;
   padding: 1rem;
 }
 
 .contact-main-container {
   display: flex;
+}
+
+.error{
+  border-left: 2px solid crimson !important;
 }
 
 .textInputWrapper {
@@ -167,6 +171,7 @@
   border-left: none;
   border-bottom: none;
   border-right: none;
+  border-top: none;
 }
 
 .textInputWrapper .textInput:focus,
@@ -182,4 +187,23 @@
 
 .textInputWrapper:focus-within .textInput::placeholder {
   opacity: 0;
+}
+
+.message-sent-info{
+  border: 2px solid #0FFDD8;
+  /* border-radius: 8px; */
+  padding: .5rem 2rem;
+  color: #0FFDD8;;
+  float: right;
+  margin-right: .23rem;
+  animation: scale-down 1s ;
+  animation-delay: 1s;
+  transition: .3s all;
+  overflow: hidden;
+}
+
+@keyframes scale-down {
+  to{
+    scale: .5;
+  }
 }

@@ -35,6 +35,7 @@ function SkillsComponent() {
                 <span
                   className="txt-dec-none header-text"
                   style={{ width: "1.2rem" }}
+                  key={index}
                 >
                   &nbsp;&nbsp;&nbsp;&nbsp;
                 </span>
@@ -42,6 +43,7 @@ function SkillsComponent() {
                 <span
                   onMouseOver={() => handleMouseOver(index)}
                   onMouseOut={() => handleMouseOut(index)}
+                  key={index}
                   className={`color-secondary font-coolvetica header-text ${
                     header.charAt(index) === " " && "txt-dec-none"
                   } ${
@@ -60,7 +62,7 @@ function SkillsComponent() {
 
       <p className="tag margin-none font-weight-bold">{"<p>"}</p>
           <div>
-            <p className="color-white font-size-p font-open-sans margin-none" style={{textAlign: 'justify'}}>
+            <span className="color-white font-size-p font-open-sans margin-none" style={{textAlign: 'justify'}}>
               Coming from the diverse field of bioinformatics, I discovered my
               passion in computer science. It reminds me more of Doctor Strange
               from the Marvel cinematic universe.
@@ -73,7 +75,7 @@ function SkillsComponent() {
               <br />I drink coffee and write code on a normal day.
               <br/>
       <p className="tag margin-none font-weight-bold">{"</p>"}</p>
-            </p>
+            </span>
           </div>
         </div>
         <div style={{ width: "50%" }}>

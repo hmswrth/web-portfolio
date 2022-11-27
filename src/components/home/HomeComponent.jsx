@@ -20,12 +20,12 @@ function HomeComponent() {
         <div className="side-bar">
           <div className="flex-col-center cursor-pointer" href="/home">
             <img src={mainLogo} alt="hm logo" className="sidebar-header-logo" />
-            <span className="line-height-md color-white font-size-md font-coolvetica margin-none ">
+            {/* <span className="line-height-md color-white font-size-md font-coolvetica margin-none ">
               hemanth
-            </span>
-            <p className="color-gray margin-none font-open-sans prof-title font-size-sm">
+            </span> */}
+            {/* <p className="color-gray margin-none font-open-sans prof-title font-size-sm">
               web developer
-            </p>
+            </p> */}
           </div>
           {/* contains navigation to parts of the page */}
           {/* TODO : add routing */}

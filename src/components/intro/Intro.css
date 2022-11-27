@@ -15,3 +15,16 @@
   width: auto;
 }
 
+.home-room-container{
+  margin-top: -10rem;
+  margin-right: 1rem;
+  height: 40rem;
+  width: 40rem;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .home-room-container{
+    display: none;
+  }
+}

@@ -1,3 +1,6 @@
+html{
+  scroll-behavior: smooth;
+}
 body{
   background-color: #1D1D1D;
   user-select: none;
@@ -78,6 +81,10 @@ a{
 
 .cursor-pointer{
   cursor: pointer;
+}
+
+.border-none {
+  border: none;
 }
 
 .border-gray{
