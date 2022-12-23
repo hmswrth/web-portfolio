@@ -1535,3 +1535,10 @@ $cuadro-2: #0F1110;
         background-image: radial-gradient(rgba(darken($neon-2, 5), .8), rgba(darken($neon-1, 5), .8));
     }
 }
+
+// mobile break point
+@media (maxWidth: '768px') {
+    .main-wrapper{
+        display: none ;
+    }
+}

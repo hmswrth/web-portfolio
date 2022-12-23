@@ -11,7 +11,7 @@
     background:transparent url(../../assets/DoctorStrangeMcuLogoComp.svg) no-repeat right top;
     background-size:70%;
     width:100px;
-    height:auto;
+    height:100vh;
 }
 
 .backdrop-container{

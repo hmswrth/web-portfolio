@@ -46,3 +46,22 @@
     padding: 1rem;
     overflow-x: hidden;
 }
+
+.three{
+    display: none;
+}
+
+
+/* mobile break point */
+@media screen and (max-width: 768px) {
+    .three{
+        display: block;
+    }
+    .side-bar{
+        display: none;
+    }
+
+    .main-container{
+        width: 100%;
+    }
+}

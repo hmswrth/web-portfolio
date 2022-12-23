@@ -149,3 +149,23 @@ a{
 .height-fs{
   height: 100vh;
 }
+
+.overflow-hidden{
+  overflow: hidden !important;
+}
+
+.padding-none{
+  padding: 0 !important;
+}
+
+.mt-1{
+  margin-top: 1rem;
+}
+
+.bg-primary{
+  background-color: #1D1D1D;
+}
+
+.bg-secondary{
+  background-color: #000;
+}

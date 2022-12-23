@@ -11,14 +11,21 @@ import {
 import IntroComponent from "../intro/IntroComponent";
 import SkillsComponent from "../skills/SkillsComponent";
 import ContactComponent from "../contact/ContactComponent";
+import HamBurgerComponent from "../shared/HamBurgerComponent";
 
 function HomeComponent() {
+  const handlePageScroll = (type) => {
+    let ele;
+    if (type === "contact")
+      ele = document.querySelector(".contact-main-container");
+    else if (type === "skills")
+      ele = document.querySelector(".skills-main-container");
+    else if (type === "about")
+      ele = document.querySelector(".intro-main-container");
 
-  const handleContactScroll = () => {
-    let ele = document.querySelector('.main-container')
-    window.scrollTo(0, ele.scrollHeight);
-  }
-
+    ele.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+    // window.scrollTo(0, ele.scrollHeight);
+  };
 
   return (
     <>
@@ -38,32 +45,32 @@ function HomeComponent() {
           {/* TODO : add routing */}
           <div className="home-section-container flex-col-center">
             <span className="border-gray"></span>
-            <a href="/about">
+            <span onClick={() => handlePageScroll("about")}>
               <div className="flex-center">
                 <span className="color-gray text-link cursor-pointer">
                   about
                 </span>
               </div>
-            </a>
+            </span>
             <span className="border-gray"></span>
 
-            <a href="/skills">
+            <span onClick={() => handlePageScroll("skills")}>
               <div className="flex-center">
                 <span className="color-gray text-link cursor-pointer">
                   skills
                 </span>
               </div>
-            </a>
+            </span>
             <span className="border-gray"></span>
-            <a href="/work">
+            <span onClick={() => handlePageScroll("work")}>
               <div className="flex-center">
                 <span className="color-gray text-link cursor-pointer">
                   work
                 </span>
               </div>
-            </a>
+            </span>
             <span className="border-gray"></span>
-            <span onClick={handleContactScroll}>
+            <span onClick={() => handlePageScroll("contact")}>
               <div className="flex-center">
                 <span className="color-gray text-link cursor-pointer">
                   contact
@@ -74,27 +81,37 @@ function HomeComponent() {
           </div>
           <div className="social-container flex-center">
             {/* TODO : Add navigation to social links */}
-            <AiOutlineInstagram
-              className="color-gray social-icon cursor-pointer"
-              size="1.5rem"
-            />
+            <a href="https://www.instagram.com/hems009/" target="_blank">
+              <AiOutlineInstagram
+                className="color-gray social-icon cursor-pointer"
+                size="1.5rem"
+              />
+            </a>
+            <a href="https://www.linkedin.com/in/hemanth-mudra/" target="_blank">
             <AiOutlineLinkedin
               className="color-gray social-icon cursor-pointer"
               size="1.5rem"
             />
+            </a>
+
+            <a href="https://github.com/hmswrth" target="_blank">
             <AiOutlineGithub
               className="color-gray social-icon cursor-pointer"
               size="1.5rem"
             />
+            </a>
+            <a href="https://gitlab.com/hemanth.m" target="_blank">
             <AiOutlineGitlab
               className="color-gray social-icon cursor-pointer"
               size="1.5rem"
             />
+            </a>
           </div>
         </div>
 
         {/* main home container */}
         <div className="main-container">
+          <HamBurgerComponent />
           <IntroComponent />
           <SkillsComponent />
           <ContactComponent />

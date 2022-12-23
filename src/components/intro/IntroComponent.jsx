@@ -3,6 +3,7 @@ import "./Intro.css";
 import "animate.css";
 import Button from "../shared/Button";
 import HomeRoomComponent from "../homeRoom/HomeRoomComponent";
+import HamBurgerComponent from "../shared/HamBurgerComponent";
 
 function IntroComponent() {
   let intro = "Hi,I'm Hemanth,Web Developer";
@@ -20,9 +21,15 @@ function IntroComponent() {
     setIsHovering(false);
     setHoveringIndex(null);
   };
+  const [hamOpen, setHamOpen] = useState(false);
+
+  const toggleMenu = () => {
+    console.log("toggle menu");
+    setHamOpen((val) => !val);
+  };
 
   return (
-    <div className="height-fs">
+    <div className="height-fs intro-main-container">
       <p className="tag margin-none font-weight-bold">{"<html>"}</p>
       <p className="tag margin-none font-weight-bold marginL-1">{"<body>"}</p>
       <div className="flex-center" style={{ height: "89vh" }}>
