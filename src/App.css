@@ -169,3 +169,13 @@ a{
 .bg-secondary{
   background-color: #000;
 }
+
+@media screen and (max-width : 768px) {
+  .tag{
+    font-size: 16px;
+  }
+
+  .font-size-p{
+    font-size: 16px;
+  }
+}

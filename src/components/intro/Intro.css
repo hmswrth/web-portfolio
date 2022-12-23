@@ -27,4 +27,34 @@
   .home-room-container{
     display: none;
   }
+
+  .intro-text-container{
+    margin: 0px;
+    margin-left: 1.5rem;
+  }
+
+  .intro-text{
+    font-size: 3rem;
+    line-height: 2.7rem;
+    transition: 0.3s all;
+    display: inline-block !important;
+    letter-spacing: .5px;
+    font-weight: 500;
+  }
+
+  .intro-text-wrapper{
+    width: 100% !important;
+  }
+  p.marginL-2{
+    margin-left: 1rem !important;
+  }
+  span.marginL-2{
+    margin-left: 1rem;
+  }
+  span.marginL-3{
+    margin-left: 1.5rem;
+  }
+  .send-msg-btn{
+    margin-left: 1.5rem !important;
+  }
 }

@@ -21,24 +21,23 @@ function IntroComponent() {
     setIsHovering(false);
     setHoveringIndex(null);
   };
-  const [hamOpen, setHamOpen] = useState(false);
 
-  const toggleMenu = () => {
-    console.log("toggle menu");
-    setHamOpen((val) => !val);
-  };
+  const handleSendMsgClick = () => {
+    let ele = document.querySelector('.contact-main-container')
+    ele.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+  }
 
   return (
     <div className="height-fs intro-main-container">
       <p className="tag margin-none font-weight-bold">{"<html>"}</p>
       <p className="tag margin-none font-weight-bold marginL-1">{"<body>"}</p>
       <div className="flex-center" style={{ height: "89vh" }}>
-        <div style={{ width: "80%" }}>
+        <div className="intro-text-wrapper" style={{ width: "80%" }}>
           <div className="width-100">
             <p className="tag margin-none font-weight-bold marginL-2">
               {"<h1>"}
             </p>
-            <div className="marginL-4">
+            <div className="marginL-4 intro-text-container">
               {[...Array(intro.length)].map((_, index) => {
                 return intro.charAt(index) !== "," ? (
                   index > 2 && intro.charAt(index) === "H" ? (
@@ -111,8 +110,8 @@ function IntroComponent() {
               {"</p>"}
             </p>
           </div>
-          <div className="width-100 marginT-2" style={{ marginLeft: "3rem" }}>
-            <Button name="send a message" />
+          <div className="width-100 marginT-2 send-msg-btn" style={{ marginLeft: "3rem" }}>
+            <Button name="send a message" click={handleSendMsgClick}/>
           </div>
         </div>
         <div style={{ width: "50%" }} className='home-room-container'>

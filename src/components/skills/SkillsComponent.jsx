@@ -27,9 +27,10 @@ function SkillsComponent() {
         style={{ width: "100%" }}
       >
 
+        <div className="skills-text-container flex-col-center">
         <p className="tag margin-none font-weight-bold">{"<h2>"}</p>
-        <div style={{ width: "50%" }}>
-          <div>
+
+          <div className="marginL-1">
             {[...Array(header.length)].map((_, index) => {
               return header.charAt(index) === " " ? (
                 <span
@@ -57,11 +58,11 @@ function SkillsComponent() {
               );
             })}
           </div>
-      <p className="tag margin-none font-weight-bold marginL-1">{"</h2>"}</p>
+      <p className="tag margin-none font-weight-bold">{"</h2>"}</p>
           <br />
 
       <p className="tag margin-none font-weight-bold">{"<p>"}</p>
-          <div>
+          <div className="marginL-1">
             <span className="color-white font-size-p font-open-sans margin-none" style={{textAlign: 'justify'}}>
               Coming from the diverse field of bioinformatics, I discovered my
               passion in computer science. It reminds me more of Doctor Strange
@@ -74,11 +75,11 @@ function SkillsComponent() {
               <br />
               <br />I drink coffee and write code on a normal day.
               <br/>
-      <p className="tag margin-none font-weight-bold">{"</p>"}</p>
             </span>
           </div>
+      <p className="tag margin-none font-weight-bold">{"</p>"}</p>
         </div>
-        <div style={{ width: "50%" }}>
+        <div className="skills-tag-container" style={{ width: "50%" }}>
           <TagCloudComponent />
         </div>
       </div>

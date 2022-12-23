@@ -6,20 +6,55 @@
   z-index: 100;
 }
 
-.skills-main-container{
+.skills-main-container {
+  display: flex;
+  background: transparent url(../../assets/DoctorStrangeMcuLogoComp.svg)
+    no-repeat right top;
+  background-size: 70%;
+  width: 100px;
+  height: 100vh;
+}
+
+.backdrop-container {
+  position: absolute;
+  z-index: 0;
+}
+
+.backdrop-logo {
+  height: 300px;
+  width: 300px;
+}
+
+.skills-text-container {
+  width: 50%;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.skills-tag-container {
+  width: 50%;
+}
+
+/* mobile breakpoint */
+@media screen and (max-width: 768px) {
+  .skills-main-container {
+    margin: 0px;
     display: flex;
-    background:transparent url(../../assets/DoctorStrangeMcuLogoComp.svg) no-repeat right top;
-    background-size:70%;
-    width:100px;
-    height:100vh;
-}
+    flex-wrap: wrap;
+  }
 
-.backdrop-container{
-    position: absolute;
-    z-index: 0;
-}
+  .skills-text-container {
+    width: 100% !important;
+  }
 
-.backdrop-logo{
-    height: 300px;
-    width: 300px;
+  .skills-tag-container {
+    width: 100% !important;
+  }
+
+  .header-text {
+    font-size: 3rem;
+    line-height: 1rem;
+    transition: 0.3s all;
+    display: inline-block !important;
+  }
 }

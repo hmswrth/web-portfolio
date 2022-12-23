@@ -12,3 +12,10 @@
 .tagcloud--item:hover {
   color: #fd2055;
 }
+
+/* mobile break-point */
+@media screen and (max-width:768px){
+  .tagcloud--item{
+    font-size: .9rem;
+  }
+}
