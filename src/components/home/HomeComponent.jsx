@@ -13,6 +13,13 @@ import SkillsComponent from "../skills/SkillsComponent";
 import ContactComponent from "../contact/ContactComponent";
 
 function HomeComponent() {
+
+  const handleContactScroll = () => {
+    let ele = document.querySelector('.main-container')
+    window.scrollTo(0, ele.scrollHeight);
+  }
+
+
   return (
     <>
       <div className="main-wrapper flex-center">
@@ -56,13 +63,13 @@ function HomeComponent() {
               </div>
             </a>
             <span className="border-gray"></span>
-            <a href="/contact">
+            <span onClick={handleContactScroll}>
               <div className="flex-center">
                 <span className="color-gray text-link cursor-pointer">
                   contact
                 </span>
               </div>
-            </a>
+            </span>
             <span className="border-gray"></span>
           </div>
           <div className="social-container flex-center">

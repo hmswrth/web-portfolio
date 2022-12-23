@@ -694,7 +694,7 @@ $cuadro-2: #0F1110;
                 -.125vw -.125vw 1vw rgba($neon-1, .5)
             ;
 
-            background-image: url('https://rawcdn.githack.com/ricardoolivaalonso/Codepen/43200238c3177b02a97423fa6cc23f8bfcc5c105/Room/gif.gif');
+            background-image: url('../../assets/assassinsCreedLogo.gif');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: bottom;
@@ -1026,7 +1026,7 @@ $cuadro-2: #0F1110;
 }
     .cuadro-l{
         &__front{
-            background-image: url('https://rawcdn.githack.com/ricardoolivaalonso/Codepen/43200238c3177b02a97423fa6cc23f8bfcc5c105/Room/cuadro-1.jpg');
+            background-image: url('../../assets/hLogo.svg');
             background-color: $cuadro-1;
             border: 1vw solid $cuadro-1;
 
@@ -1045,7 +1045,7 @@ $cuadro-2: #0F1110;
     .cuadro-r{
         left: 20vw;
         &__front{
-            background-image: url('https://rawcdn.githack.com/ricardoolivaalonso/Codepen/43200238c3177b02a97423fa6cc23f8bfcc5c105/Room/cuadro-2.jpg');
+            background-image: url('../../assets/DoctorStrangeMcuLogoComp.svg');
             background-color: $cuadro-2;
             border: .5vw solid $cuadro-2;
             &::before{
