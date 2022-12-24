@@ -29,7 +29,7 @@ function TagCloudComponent() {
   // default options for the tag cloud rendered
   const options = {
     // radius in px
-    radius: window.innerWidth <= 768 ? 190 : 300,
+    radius: 300,
     // animation speed
     // slow, normal, fast
     maxSpeed: "fast",

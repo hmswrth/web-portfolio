@@ -15,7 +15,7 @@
 
 /* mobile break-point */
 @media screen and (max-width:768px){
-  .tagcloud--item{
-    font-size: .9rem;
+  .tagcloud{
+    display: none;
   }
 }

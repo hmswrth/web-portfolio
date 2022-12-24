@@ -24,7 +24,7 @@ function ContactComponent() {
     message: false,
   });
   const [submittingForm, setSubmittingForm] = useState(false);
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false)
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
   // handler to check mouse hover
   const handleMouseOver = (hoveringIndex) => {
@@ -88,11 +88,10 @@ function ContactComponent() {
         // reset the inp fields
         setFormData(JSON.parse(JSON.stringify(FORM_OBJ)));
         setSubmittingForm(false);
-        setIsFormSubmitted(true)
+        setIsFormSubmitted(true);
         setTimeout(() => {
-        setIsFormSubmitted(false)
-
-        },[1600])
+          setIsFormSubmitted(false);
+        }, [1600]);
       } catch (error) {
         setSubmittingForm(false);
         console.log(error);
@@ -129,12 +128,16 @@ function ContactComponent() {
   return (
     <>
       <p className="tag margin-none font-weight-bold">{"<section>"}</p>
+      <p className="tag margin-none font-weight-bold">{"<h2>"}</p>
       <div
         className="contact-main-container marginL-1"
         style={{ width: "100%" }}
       >
-        <p className="tag margin-none font-weight-bold">{"<h2>"}</p>
-        <div style={{ width: "50%", paddingRight: "1rem" }}>
+        <div
+          className="contact-text-container"
+          style={{ width: "50%", paddingRight: "1rem" }}
+        >
+        <div className="contact-text marginL-1">
           {[...Array(header.length)].map((_, index) => {
             return header.charAt(index) === " " ? (
               <span
@@ -161,6 +164,7 @@ function ContactComponent() {
               </span>
             );
           })}
+        </div>
           <p className="tag margin-none font-weight-bold">{"</h2>"}</p>
           <br />
           <p className="tag margin-none font-weight-bold">{"<p>"}</p>
@@ -232,7 +236,7 @@ function ContactComponent() {
             </div>
           </div>
           {submittingForm && !isFormSubmitted ? (
-            <div style={{ float: "right"}}>
+            <div style={{ float: "right" }}>
               <Loader />
             </div>
           ) : !submittingForm && !isFormSubmitted ? (
@@ -240,18 +244,15 @@ function ContactComponent() {
               <Button name="send message" click={sendMessage} />
             </span>
           ) : (
-            <span className="message-sent-info">
-              message sent !
-            </span>
-          )
-          }
+            <span className="message-sent-info">message sent !</span>
+          )}
 
           <br />
           <br />
           <p className="tag margin-none font-weight-bold">{"</form>"}</p>
           <p
             className="tag margin-none font-weight-bold"
-            style={{ marginLeft: "-3rem" }}
+            style={{ marginLeft: "-1rem" }}
           >
             {"</section>"}
           </p>
