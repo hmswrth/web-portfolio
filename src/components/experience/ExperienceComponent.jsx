@@ -97,7 +97,7 @@ function ExperienceComponent() {
               className="color-white font-size-p font-open-sans margin-none"
               style={{ textAlign: "justify" }}
             >
-              I've been programming for about 3 years now working in reputed
+              I've been programming for about 3 years now working in esteemed
               organizations. I have extensively worked on various web
               technologies in a fast-paced start-up company. I take pride in
               ownership and responsibility. I always try to push myself outside
