@@ -12,6 +12,7 @@ import IntroComponent from "../intro/IntroComponent";
 import SkillsComponent from "../skills/SkillsComponent";
 import ContactComponent from "../contact/ContactComponent";
 import HamBurgerComponent from "../shared/HamBurgerComponent";
+import ExperienceComponent from "../experience/ExperienceComponent";
 
 function HomeComponent() {
   const handlePageScroll = (type) => {
@@ -113,6 +114,7 @@ function HomeComponent() {
         <div className="main-container">
           <HamBurgerComponent />
           <IntroComponent />
+          <ExperienceComponent />
           <SkillsComponent />
           <ContactComponent />
         </div>

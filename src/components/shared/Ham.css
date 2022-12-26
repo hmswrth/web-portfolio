@@ -1,9 +1,11 @@
+
 .three {
   position: absolute;
   top: 0;
   right: 0;
   z-index: 100;
-  padding: 1rem;
+  padding: .5rem 1rem;
+  background-color: #000;
 }
 .col {
   float: right;

@@ -1,0 +1,81 @@
+.experience-cards-container {
+  justify-content: space-between;
+  padding-right: 2rem;
+  gap: 2rem;
+}
+
+.experience-card-outer {
+  background-color: #0ffdd8;
+  height: 20rem;
+  width: 35rem;
+  border-radius: 0.35rem;
+}
+
+.experience-card-inner {
+  height: inherit;
+  width: inherit;
+  border-radius: 0.35rem;
+  background-color: #2a2a2a;
+  transition: all 0.3s;
+  padding: 1rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+  /* transform: scale(0.99); */
+
+}
+
+.experience-card-inner:is(:hover, :active) {
+  transform: scale(0.99);
+  box-shadow: 0px 0px 30px 1px rgba(0, 255, 117, 0.1);
+}
+
+.experience-card-inner > p {
+  font-size: 28px;
+}
+
+.res-container>p{
+    text-align: left;
+    padding: .3rem 0rem;
+
+}
+
+.tech-icon{
+    font-size: 10rem;
+    color: #453C67;
+}
+
+.tech-stack-icon-container{
+    height: 26rem;
+    width: 50%;
+}
+
+.tech-stack-icon-container>.tech-icon:nth-child(even){
+    color: #46C2CB;
+}
+
+/* mobile break points */
+@media screen and (max-width : 768px) {
+  .tech-stack-icon-container{
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: .5rem;
+  }
+
+  .tech-icon{
+    font-size: 3rem;
+  }
+
+  .experience-cards-container{
+    margin: 0rem;
+    flex-wrap: wrap;
+    padding: 1rem;
+  }
+
+  .experience-card-outer{
+    width: 100%;
+    height: fit-content;
+  }
+}
