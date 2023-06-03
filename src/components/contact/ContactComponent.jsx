@@ -191,6 +191,7 @@ function ContactComponent() {
                 onChange={handleInputChange}
                 onKeyUp={checkForm}
                 required
+                autoComplete='off'
               />
             </div>
             <div className={`textInputWrapper ${errorData.email && "error"}`}>
@@ -203,6 +204,7 @@ function ContactComponent() {
                 onChange={handleInputChange}
                 onKeyUp={checkForm}
                 required
+                autoComplete='off'
               />
             </div>
           </div>
@@ -217,6 +219,7 @@ function ContactComponent() {
                 onChange={handleInputChange}
                 onKeyUp={checkForm}
                 required
+                autoComplete='off'
               />
             </div>
           </div>
@@ -232,6 +235,7 @@ function ContactComponent() {
                 onChange={handleInputChange}
                 onKeyUp={checkForm}
                 required
+                autoComplete='off'
               ></textarea>
             </div>
           </div>

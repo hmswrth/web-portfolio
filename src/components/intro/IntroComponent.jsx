@@ -2,24 +2,22 @@ import React, { useState } from "react";
 import "./Intro.css";
 import "animate.css";
 import Button from "../shared/Button";
-import HomeRoomComponent from "../homeRoom/HomeRoomComponent";
-import HamBurgerComponent from "../shared/HamBurgerComponent";
 
 function IntroComponent() {
   let intro = "Hi,I'm Hemanth,Web Developer";
-  const [isHovering, setIsHovering] = useState(false);
-  const [hoveringIndex, setHoveringIndex] = useState(null);
+  const [hoveringIndices, setHoveringIndices] = useState([])
 
-  // handler to check mouse hover
+  // sideeffect on mouse hover
   const handleMouseOver = (hoveringIndex) => {
-    setIsHovering(true);
-    setHoveringIndex(hoveringIndex);
+    setHoveringIndices(prevArr => [...prevArr, hoveringIndex])
   };
 
-  // handler to check mouse hover
-  const handleMouseOut = () => {
-    setIsHovering(false);
-    setHoveringIndex(null);
+  // sideEffect on mouseHoverOut
+  const handleMouseOut = (hoveringIndex) => {
+    setTimeout(() => {
+      // remove the hovering index from state
+      setHoveringIndices(prevVal => prevVal.filter(item => item !== hoveringIndex))
+    },[500])
   };
 
   const handleSendMsgClick = () => {
@@ -31,7 +29,7 @@ function IntroComponent() {
     <div className="height-fs intro-main-container">
       <p className="tag margin-none font-weight-bold">{"<html>"}</p>
       <p className="tag margin-none font-weight-bold marginL-1">{"<body>"}</p>
-      <div className="flex-center" style={{ height: "89vh" }}>
+      <div className="flex-center" style={{ height: "89vh", justifyContent: 'flex-start'  }}>
         <div className="intro-text-wrapper" style={{ width: "80%" }}>
           <div className="width-100">
             <p className="tag margin-none font-weight-bold marginL-2">
@@ -48,9 +46,9 @@ function IntroComponent() {
                       className={`color-primary font-coolvetica intro-text ${
                         intro.charAt(index) === " " && "txt-dec-none"
                       } ${
-                        isHovering &&
-                        hoveringIndex === index &&
-                        "animate__animated animate__rubberBand animate__repeat-1"
+                        hoveringIndices.length > 0 &&
+                        hoveringIndices.includes(index) &&
+                        "animate__animated animate__rubberBand animate__repeat-1 isInFocus"
                       }`}
                     >
                       {intro.charAt(index)}
@@ -67,9 +65,9 @@ function IntroComponent() {
                       className={`color-white font-coolvetica intro-text ${
                         intro.charAt(index) === " " && "txt-dec-none"
                       } ${
-                        isHovering &&
-                        hoveringIndex === index &&
-                        "animate__animated animate__rubberBand animate__repeat-1"
+                        hoveringIndices.length > 0 &&
+                        hoveringIndices.includes(index) &&
+                        "animate__animated animate__rubberBand animate__repeat-1 isInFocus"
                       }`}
                     >
                       {intro.charAt(index)}
@@ -79,9 +77,9 @@ function IntroComponent() {
                   <>
                     <span
                       className={`color-white font-coolvetica intro-text ${
-                        isHovering &&
-                        hoveringIndex === index &&
-                        "animate__animated animate__bounce animate__repeat-1"
+                        hoveringIndices.length > 0 &&
+                        hoveringIndices.includes(index) &&
+                        "animate__animated animate__bounce animate__repeat-1 isInFocus"
                       }`}
                       key={index}
                     >
@@ -113,9 +111,6 @@ function IntroComponent() {
           <div className="width-100 marginT-2 send-msg-btn" style={{ marginLeft: "3rem" }}>
             <Button name="send a message" click={handleSendMsgClick}/>
           </div>
-        </div>
-        <div style={{ width: "50%" }} className='home-room-container'>
-        <HomeRoomComponent />
         </div>
       </div>
     </div>

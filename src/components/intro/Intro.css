@@ -4,9 +4,10 @@
   transition: 0.3s all;
   display: inline-block !important;
   z-index: 100;
+  text-align: center;
 }
 
-.intro-text:hover {
+.intro-text:hover, .isInFocus {
   color: #0ffdd8;
 }
 

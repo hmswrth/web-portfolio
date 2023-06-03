@@ -170,6 +170,10 @@ a{
   background-color: #000;
 }
 
+p{
+  margin: 0;
+}
+
 @media screen and (max-width : 768px) {
   .tag{
     font-size: 16px;
