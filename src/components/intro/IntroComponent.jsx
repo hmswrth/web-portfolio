@@ -17,7 +17,7 @@ function IntroComponent() {
     setTimeout(() => {
       // remove the hovering index from state
       setHoveringIndices(prevVal => prevVal.filter(item => item !== hoveringIndex))
-    },[500])
+    }, [500])
   };
 
   const handleSendMsgClick = () => {
@@ -29,7 +29,7 @@ function IntroComponent() {
     <div className="height-fs intro-main-container">
       <p className="tag margin-none font-weight-bold">{"<html>"}</p>
       <p className="tag margin-none font-weight-bold marginL-1">{"<body>"}</p>
-      <div className="flex-center" style={{ height: "89vh", justifyContent: 'flex-start'  }}>
+      <div className="flex-center" style={{ height: "89vh", justifyContent: 'flex-start' }}>
         <div className="intro-text-wrapper" style={{ width: "80%" }}>
           <div className="width-100">
             <p className="tag margin-none font-weight-bold marginL-2">
@@ -43,18 +43,17 @@ function IntroComponent() {
                       onMouseOver={() => handleMouseOver(index)}
                       onMouseOut={() => handleMouseOut(index)}
                       key={index}
-                      className={`color-primary font-coolvetica intro-text ${
-                        intro.charAt(index) === " " && "txt-dec-none"
-                      } ${
-                        hoveringIndices.length > 0 &&
+                      className={`color-primary font-coolvetica intro-text ${intro.charAt(index) === " " && "txt-dec-none"
+                        } ${hoveringIndices.length > 0 &&
                         hoveringIndices.includes(index) &&
                         "animate__animated animate__rubberBand animate__repeat-1 isInFocus"
-                      }`}
+                        }`}
                     >
                       {intro.charAt(index)}
                     </span>
                   ) : intro.charAt(index) === " " ? (
-                    <span className="txt-dec-none font-size-sm" key={index}>
+                    <span className="txt-dec-none font-size-sm" key={index}
+                    >
                       &nbsp;&nbsp;&nbsp;&nbsp;
                     </span>
                   ) : (
@@ -62,13 +61,11 @@ function IntroComponent() {
                       onMouseOver={() => handleMouseOver(index)}
                       onMouseOut={() => handleMouseOut(index)}
                       key={index}
-                      className={`color-white font-coolvetica intro-text ${
-                        intro.charAt(index) === " " && "txt-dec-none"
-                      } ${
-                        hoveringIndices.length > 0 &&
+                      className={`color-white font-coolvetica intro-text ${intro.charAt(index) === " " && "txt-dec-none"
+                        } ${hoveringIndices.length > 0 &&
                         hoveringIndices.includes(index) &&
                         "animate__animated animate__rubberBand animate__repeat-1 isInFocus"
-                      }`}
+                        }`}
                     >
                       {intro.charAt(index)}
                     </span>
@@ -76,11 +73,12 @@ function IntroComponent() {
                 ) : (
                   <>
                     <span
-                      className={`color-white font-coolvetica intro-text ${
-                        hoveringIndices.length > 0 &&
+                      onMouseOver={() => handleMouseOver(index)}
+                      onMouseOut={() => handleMouseOut(index)}
+                      className={`color-white font-coolvetica intro-text ${hoveringIndices.length > 0 &&
                         hoveringIndices.includes(index) &&
                         "animate__animated animate__bounce animate__repeat-1 isInFocus"
-                      }`}
+                        }`}
                       key={index}
                     >
                       {intro.charAt(index)}
@@ -109,7 +107,7 @@ function IntroComponent() {
             </p>
           </div>
           <div className="width-100 marginT-2 send-msg-btn" style={{ marginLeft: "3rem" }}>
-            <Button name="send a message" click={handleSendMsgClick}/>
+            <Button name="send a message" click={handleSendMsgClick} />
           </div>
         </div>
       </div>

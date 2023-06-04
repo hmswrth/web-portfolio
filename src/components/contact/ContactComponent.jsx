@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { postMessage } from "../../api/ContactForm";
 import Button from "../shared/Button";
 import Loader from "../shared/Loader";
@@ -12,8 +12,8 @@ function ContactComponent() {
     message: "",
   };
 
-  const [isHovering, setIsHovering] = useState(false);
-  const [hoveringIndex, setHoveringIndex] = useState(null);
+  const [hoveringIndices, setHoveringIndices] = useState([])
+
   const [formData, setFormData] = useState(
     JSON.parse(JSON.stringify(FORM_OBJ))
   );
@@ -25,17 +25,19 @@ function ContactComponent() {
   });
   const [submittingForm, setSubmittingForm] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [backgroundImage, setBackgroundImage] = useState('')
 
   // handler to check mouse hover
   const handleMouseOver = (hoveringIndex) => {
-    setIsHovering(true);
-    setHoveringIndex(hoveringIndex);
+    setHoveringIndices(prevArr => [...prevArr, hoveringIndex])
   };
 
   // handler to check mouse hover
-  const handleMouseOut = () => {
-    setIsHovering(false);
-    setHoveringIndex(null);
+  const handleMouseOut = (hoveringIndex) => {
+    setTimeout(() => {
+      // remove the hovering index from state
+      setHoveringIndices(prevVal => prevVal.filter(item => item !== hoveringIndex))
+    }, [500])
   };
   const header = "Contact Me";
 
@@ -125,6 +127,24 @@ function ContactComponent() {
     }
   };
 
+  // onMount -> setup intersection observer to dynamically load the image
+  useEffect(() => {
+    const observer = new IntersectionObserver(async (entries) => {
+      if (entries[0].isIntersecting) {
+        console.log('#########container in sight##########33')
+        let res = await import('../../assets/blrCustomMapComp.png')
+        let image = new Image()
+        image.src = res.default
+        image.onload = () => setBackgroundImage(image.src)
+        console.log(res)
+      }
+    })
+    let containerNode = document.querySelector('.contact-map-container');
+    containerNode && observer.observe(containerNode)
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <>
       <p className="tag margin-none font-weight-bold">{"<section>"}</p>
@@ -132,39 +152,38 @@ function ContactComponent() {
       <div
         className="contact-main-container marginL-1"
         style={{ width: "100%" }}
+        id='contactMainContainer'
       >
         <div
           className="contact-text-container"
           style={{ width: "50%", paddingRight: "1rem" }}
         >
-        <div className="contact-text marginL-1">
-          {[...Array(header.length)].map((_, index) => {
-            return header.charAt(index) === " " ? (
-              <span
-                className="txt-dec-none header-text"
-                style={{ width: "1.2rem" }}
-                key={index}
-              >
-                &nbsp;&nbsp;&nbsp;&nbsp;
-              </span>
-            ) : (
-              <span
-                onMouseOver={() => handleMouseOver(index)}
-                onMouseOut={() => handleMouseOut(index)}
-                key={index}
-                className={`color-secondary font-coolvetica header-text ${
-                  header.charAt(index) === " " && "txt-dec-none"
-                } ${
-                  isHovering &&
-                  hoveringIndex === index &&
-                  "animate__animated animate__rubberBand animate__repeat-1"
-                }`}
-              >
-                {header.charAt(index)}
-              </span>
-            );
-          })}
-        </div>
+          <div className="contact-text marginL-1">
+            {[...Array(header.length)].map((_, index) => {
+              return header.charAt(index) === " " ? (
+                <span
+                  className="txt-dec-none header-text"
+                  style={{ width: "1.2rem" }}
+                  key={index}
+                >
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                </span>
+              ) : (
+                <span
+                  onMouseOver={() => handleMouseOver(index)}
+                  onMouseOut={() => handleMouseOut(index)}
+                  key={index}
+                  className={`color-secondary font-coolvetica header-text ${header.charAt(index) === " " && "txt-dec-none"
+                    } ${hoveringIndices.length > 0 &&
+                    hoveringIndices.includes(index) &&
+                    "animate__animated animate__rubberBand animate__repeat-1"
+                    }`}
+                >
+                  {header.charAt(index)}
+                </span>
+              );
+            })}
+          </div>
           <p className="tag margin-none font-weight-bold">{"</h2>"}</p>
           <br />
           <p className="tag margin-none font-weight-bold">{"<p>"}</p>
@@ -263,13 +282,15 @@ function ContactComponent() {
         </div>
 
         <div className="contact-map-container" style={{ width: "50%" }}>
+          <img src={backgroundImage} alt='' className="contact-map" style={{ opacity: backgroundImage ? '1' : '0', transition: '2s all' }} />
+          <div className="map-backdrop-shimmer contact-map" style={{ opacity: backgroundImage ? '0' : '1', transition: '.3s all' }}></div>
           <div className="container">
             <div className="box">
               <span className="title ">Hemanth Mudra</span>
               <div>
                 <strong>Bangalore</strong>
                 <p>Karnataka, India</p>
-                <span>VALID</span> <span>2022</span>
+                <span>2023</span>
               </div>
             </div>
           </div>

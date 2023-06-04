@@ -1,21 +1,21 @@
 import React, { useState } from "react";
-import TagCloudComponent from "../tagcloud/TagCloudComponent";
 import "./Skills.css";
 
 function SkillsComponent() {
-  const [isHovering, setIsHovering] = useState(false);
-  const [hoveringIndex, setHoveringIndex] = useState(null);
+  const [hoveringIndices, setHoveringIndices] = useState([])
+
 
   // handler to check mouse hover
   const handleMouseOver = (hoveringIndex) => {
-    setIsHovering(true);
-    setHoveringIndex(hoveringIndex);
+    setHoveringIndices(prevArr => [...prevArr, hoveringIndex])
   };
 
   // handler to check mouse hover
-  const handleMouseOut = () => {
-    setIsHovering(false);
-    setHoveringIndex(null);
+  const handleMouseOut = (hoveringIndex) => {
+    setTimeout(() => {
+      // remove the hovering index from state
+      setHoveringIndices(prevVal => prevVal.filter(item => item !== hoveringIndex))
+    }, [500])
   };
 
   const header = "Me, Myself and I";
@@ -28,7 +28,7 @@ function SkillsComponent() {
       >
 
         <div className="skills-text-container flex-col-center">
-        <p className="tag margin-none font-weight-bold">{"<h2>"}</p>
+          <p className="tag margin-none font-weight-bold">{"<h2>"}</p>
 
           <div className="marginL-1">
             {[...Array(header.length)].map((_, index) => {
@@ -45,25 +45,23 @@ function SkillsComponent() {
                   onMouseOver={() => handleMouseOver(index)}
                   onMouseOut={() => handleMouseOut(index)}
                   key={index}
-                  className={`color-secondary font-coolvetica header-text ${
-                    header.charAt(index) === " " && "txt-dec-none"
-                  } ${
-                    isHovering &&
-                    hoveringIndex === index &&
+                  className={`color-secondary font-coolvetica header-text ${header.charAt(index) === " " && "txt-dec-none"
+                    } ${hoveringIndices.length > 0 &&
+                    hoveringIndices.includes(index) &&
                     "animate__animated animate__rubberBand animate__repeat-1"
-                  }`}
+                    }`}
                 >
                   {header.charAt(index)}
                 </span>
               );
             })}
           </div>
-      <p className="tag margin-none font-weight-bold">{"</h2>"}</p>
+          <p className="tag margin-none font-weight-bold">{"</h2>"}</p>
           <br />
 
-      <p className="tag margin-none font-weight-bold">{"<p>"}</p>
+          <p className="tag margin-none font-weight-bold">{"<p>"}</p>
           <div className="marginL-1">
-            <span className="color-white font-size-p font-open-sans margin-none" style={{textAlign: 'justify'}}>
+            <span className="color-white font-size-p font-open-sans margin-none" style={{ textAlign: 'justify' }}>
               Coming from the diverse field of bioinformatics, I discovered my
               passion in computer science. It reminds me more of Doctor Strange
               from the Marvel cinematic universe.
@@ -74,13 +72,10 @@ function SkillsComponent() {
               everytime keeps me motivated.
               <br />
               <br />I drink coffee and write code on a normal day.
-              <br/>
+              <br />
             </span>
           </div>
-      <p className="tag margin-none font-weight-bold">{"</p>"}</p>
-        </div>
-        <div className="skills-tag-container" style={{ width: "50%" }}>
-          <TagCloudComponent />
+          <p className="tag margin-none font-weight-bold">{"</p>"}</p>
         </div>
       </div>
     </>

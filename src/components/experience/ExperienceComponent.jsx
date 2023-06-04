@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import "./Experience.css";
 import {
-    FaAngular,
-    FaAws,
-    FaNodeJs,
-    FaReact,
-  } from "react-icons/fa";
+  FaAngular,
+  FaAws,
+  FaNodeJs,
+  FaReact,
+} from "react-icons/fa";
 
-  import {SiMongodb} from 'react-icons/si';  
-  import {DiGoogleCloudPlatform} from 'react-icons/di'
+import { SiMongodb } from 'react-icons/si';
+import { DiGoogleCloudPlatform } from 'react-icons/di'
 
 function ExperienceComponent() {
-  const [isHovering, setIsHovering] = useState(false);
-  const [hoveringIndex, setHoveringIndex] = useState(null);
+  const [hoveringIndices, setHoveringIndices] = useState([])
 
   const header = "My Experience";
 
@@ -44,19 +43,20 @@ function ExperienceComponent() {
 
   // handler to check mouse hover
   const handleMouseOver = (hoveringIndex) => {
-    setIsHovering(true);
-    setHoveringIndex(hoveringIndex);
+    setHoveringIndices(prevArr => [...prevArr, hoveringIndex])
   };
 
   // handler to check mouse hover
-  const handleMouseOut = () => {
-    setIsHovering(false);
-    setHoveringIndex(null);
+  const handleMouseOut = (hoveringIndex) => {
+    setTimeout(() => {
+      // remove the hovering index from state
+      setHoveringIndices(prevVal => prevVal.filter(item => item !== hoveringIndex))
+    }, [500])
   };
   return (
     <>
       <p className="tag margin-none font-weight-bold">{"<section>"}</p>
-      <div className=" marginL-1 flex-center" style={{ width: "100%", flexWrap:'wrap' }}>
+      <div className=" marginL-1 flex-center" style={{ width: "100%", flexWrap: 'wrap' }}>
         <div className="skills-text-container flex-col-center">
           <p className="tag margin-none font-weight-bold">{"<h2>"}</p>
 
@@ -75,13 +75,11 @@ function ExperienceComponent() {
                   onMouseOver={() => handleMouseOver(index)}
                   onMouseOut={() => handleMouseOut(index)}
                   key={index}
-                  className={`color-secondary font-coolvetica header-text ${
-                    header.charAt(index) === " " && "txt-dec-none"
-                  } ${
-                    isHovering &&
-                    hoveringIndex === index &&
+                  className={`color-secondary font-coolvetica header-text ${header.charAt(index) === " " && "txt-dec-none"
+                    } ${hoveringIndices.length > 0 &&
+                    hoveringIndices.includes(index) &&
                     "animate__animated animate__rubberBand animate__repeat-1"
-                  }`}
+                    }`}
                 >
                   {header.charAt(index)}
                 </span>
@@ -109,43 +107,43 @@ function ExperienceComponent() {
           <p className="tag margin-none font-weight-bold">{"</p>"}</p>
         </div>
         <div className="tech-stack-icon-container">
-        <FaReact className="tech-icon" />
-        <FaAngular className="tech-icon" />
-        <FaNodeJs className="tech-icon" />
-        <SiMongodb className="tech-icon" />
-        <DiGoogleCloudPlatform className='tech-icon' />
-        <FaAws className="tech-icon" />
+          <FaReact className="tech-icon" />
+          <FaAngular className="tech-icon" />
+          <FaNodeJs className="tech-icon" />
+          <SiMongodb className="tech-icon" />
+          <DiGoogleCloudPlatform className='tech-icon' />
+          <FaAws className="tech-icon" />
         </div>
       </div>
       <div className="experience-cards-container flex-center marginL-2">
-            {experienceData.map((item, index) => (
-              <div className="experience-card-outer color-white" key={index}>
-                <div className="experience-card-inner flex-col-center">
-                  <p className="font-coolvetica ">{item.designation}</p>
-                  <span className="font-size-sm mt-1">{item.companyName}</span>
-                  <span style={{ fontSize: "12px" }}>{item.duration}</span>
-                  <div className="res-container mt-1">
-                    {item.responsibilities.map((res, idx) => {
-                      return (
-                        <p
-                          style={{ fontSize: "14px" }}
-                          className="font-sans"
-                          key={idx}
-                        >
-                          {res}
-                        </p>
-                      );
-                    })}
-                  </div>
-                </div>
+        {experienceData.map((item, index) => (
+          <div className="experience-card-outer color-white" key={index}>
+            <div className="experience-card-inner flex-col-center">
+              <p className="font-coolvetica ">{item.designation}</p>
+              <span className="font-size-sm mt-1">{item.companyName}</span>
+              <span style={{ fontSize: "12px" }}>{item.duration}</span>
+              <div className="res-container mt-1">
+                {item.responsibilities.map((res, idx) => {
+                  return (
+                    <p
+                      style={{ fontSize: "14px" }}
+                      className="font-sans"
+                      key={idx}
+                    >
+                      {res}
+                    </p>
+                  );
+                })}
               </div>
-            ))}
+            </div>
           </div>
-          <p
-            className="tag margin-none font-weight-bold"
-          >
-            {"</section>"}
-          </p>
+        ))}
+      </div>
+      <p
+        className="tag margin-none font-weight-bold"
+      >
+        {"</section>"}
+      </p>
     </>
   );
 }

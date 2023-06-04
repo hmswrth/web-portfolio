@@ -31,11 +31,11 @@ function HamBurgerComponent() {
 
   return (
     <>
-      <div class="three col" onClick={toggleMenu}>
-        <div class={`hamburger ${hamOpen ? "is-active" : ""}`} id="hamburger-6">
-          <span class="line"></span>
-          <span class="line"></span>
-          <span class="line"></span>
+      <div className="three col" onClick={toggleMenu}>
+        <div className={`hamburger ${hamOpen ? "is-active" : ""}`} id="hamburger-6">
+          <span className="line"></span>
+          <span className="line"></span>
+          <span className="line"></span>
         </div>
       </div>
       {hamOpen && (
