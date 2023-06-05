@@ -45,11 +45,22 @@
 }
 
 .tech-stack-icon-container{
-    height: 26rem;
+    height: 100%;
     width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
 }
 
-.tech-stack-icon-container>.tech-icon:nth-child(even){
+.tsi-wrapper{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  max-width: 33rem;
+}
+
+.tech-stack-icon-container .tech-icon:nth-child(even){
     color: #46C2CB;
 }
 
@@ -64,8 +75,13 @@
     gap: .5rem;
   }
 
+  .tsi-wrapper{
+    flex-wrap: nowrap;
+    max-width: 100%;
+  }
+
   .tech-icon{
-    font-size: 3rem;
+    font-size: 5.5rem;
   }
 
   .experience-cards-container{
@@ -77,5 +93,12 @@
   .experience-card-outer{
     width: 100%;
     height: fit-content;
+  }
+}
+
+/* ipad size */
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+  .tech-icon{
+    font-size: 8rem;
   }
 }

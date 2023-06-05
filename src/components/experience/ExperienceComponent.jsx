@@ -20,7 +20,7 @@ function ExperienceComponent() {
       companyName: "Saveo HealthTech Pvt. Ltd.",
       companyUrl: "https://web.saveo.in",
       designation: "SDE II, Full Stack Web",
-      duration: "2022 Jan - Present",
+      duration: "2022 Jan - 2023 Jan",
       responsibilities: [
         "Worked with a team of passionate developers and designers in building the complete retail web experience for businesses",
         "Solo contributor for the complete wholesale web experience on the Saveo platform",
@@ -91,7 +91,7 @@ function ExperienceComponent() {
 
           <p className="tag margin-none font-weight-bold">{"<p>"}</p>
           <div className="marginL-1">
-            <span
+            <p
               className="color-white font-size-p font-open-sans margin-none"
               style={{ textAlign: "justify" }}
             >
@@ -102,17 +102,19 @@ function ExperienceComponent() {
               my comfort zone to test and improve my abilities. I believe in
               constant learning by experimenting. Building products at scale
               that impact millions of users keeps me excited.
-            </span>
+            </p>
           </div>
           <p className="tag margin-none font-weight-bold">{"</p>"}</p>
         </div>
         <div className="tech-stack-icon-container">
+        <div className="tsi-wrapper">
           <FaReact className="tech-icon" />
           <FaAngular className="tech-icon" />
           <FaNodeJs className="tech-icon" />
           <SiMongodb className="tech-icon" />
           <DiGoogleCloudPlatform className='tech-icon' />
           <FaAws className="tech-icon" />
+        </div>
         </div>
       </div>
       <div className="experience-cards-container flex-center marginL-2">
