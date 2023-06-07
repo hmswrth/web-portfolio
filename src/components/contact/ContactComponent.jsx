@@ -135,7 +135,7 @@ function ContactComponent() {
         let res = await import('../../assets/blrCustomMapComp.png')
         let image = new Image()
         image.src = res.default
-        image.onload = () => setBackgroundImage(image.src)
+        // image.onload = () => setBackgroundImage(image.src)
         console.log(res)
       }
     })
@@ -282,8 +282,8 @@ function ContactComponent() {
         </div>
 
         <div className="contact-map-container" style={{ width: "50%" }}>
-          <img src={backgroundImage} alt='' className="contact-map" style={{ opacity: backgroundImage ? '1' : '0', transition: '2s all' }} />
-          <div className="map-backdrop-shimmer contact-map" style={{ opacity: backgroundImage ? '0' : '1', transition: '.3s all' }}></div>
+        <div className="contact-map-wrapper">
+          <img src={backgroundImage} alt='' className="contact-map" style={{ opacity: backgroundImage ? '1' : '0', transition: '2s all' }} loading="lazy"/>
           <div className="container">
             <div className="box">
               <span className="title ">Hemanth Mudra</span>
@@ -294,6 +294,7 @@ function ContactComponent() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </>
