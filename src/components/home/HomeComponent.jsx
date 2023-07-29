@@ -24,7 +24,7 @@ function HomeComponent() {
     else if (type === "about")
       ele = document.querySelector(".intro-main-container");
 
-    ele.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+    ele.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
     // window.scrollTo(0, ele.scrollHeight);
   };
 

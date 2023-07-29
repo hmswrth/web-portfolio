@@ -172,7 +172,14 @@ a{
 
 p{
   margin: 0;
+  letter-spacing: .6px;
 }
+
+span{
+  letter-spacing: .6px;
+}
+
+
 
 @media screen and (max-width : 768px) {
   .tag{

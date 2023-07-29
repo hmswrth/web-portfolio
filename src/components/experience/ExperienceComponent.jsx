@@ -57,7 +57,7 @@ function ExperienceComponent() {
     <>
       <p className="tag margin-none font-weight-bold">{"<section>"}</p>
       <div className=" marginL-1 flex-center" style={{ width: "100%", flexWrap: 'wrap' }}>
-        <div className="skills-text-container flex-col-center">
+        <div className="skills-text-container flex-col-center exp-text">
           <p className="tag margin-none font-weight-bold">{"<h2>"}</p>
 
           <div className="marginL-1">

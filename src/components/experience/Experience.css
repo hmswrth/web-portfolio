@@ -98,7 +98,37 @@
 
 /* ipad size */
 @media only screen and (min-width : 768px) and (max-width : 1024px) {
+  .tech-stack-icon-container{
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: .5rem;
+  }
+
+  .tsi-wrapper{
+    flex-wrap: nowrap;
+    max-width: 100%;
+  }
+
   .tech-icon{
-    font-size: 8rem;
+    font-size: 5.5rem;
+  }
+
+  .experience-cards-container{
+    margin: 0rem;
+    flex-wrap: wrap;
+    padding: 1rem;
+  }
+
+  .experience-card-outer{
+    width: 100%;
+    height: fit-content;
+  }
+
+  .exp-text{
+    width: 100%;
+    padding-right: 2rem;
   }
 }

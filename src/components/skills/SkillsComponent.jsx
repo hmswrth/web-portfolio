@@ -27,7 +27,7 @@ function SkillsComponent() {
         style={{ width: "100%" }}
       >
 
-        <div className="skills-text-container flex-col-center">
+        <div className="skills-text-container flex-col-center sc-text">
           <p className="tag margin-none font-weight-bold">{"<h2>"}</p>
 
           <div className="marginL-1">
@@ -67,11 +67,16 @@ function SkillsComponent() {
               from the Marvel cinematic universe.
               <br />
               <br />
-              I've been programming for about 3 years now and learning new
-              things everyday keeps me alive. Doing the same things better
-              everytime keeps me motivated.
+              I've been programming for about 3 years now. Learning new things everyday keeps me excited. I'm currently exploring web3.
               <br />
               <br />I drink coffee and write code on a normal day.
+              <br />
+              <br />
+              I also love playing video games. More than competetive, I enjoy story, art and graphics in a video game. The best ones I played so far would be RDR2 followed by the Assassins Creed franchise.
+              <br />
+              <br />
+              Besides vieo games, I also spend time taking landscape pictures and astrophotograpahy. 
+              PS : The logo in this section is not from dribble. It's the <strong>Seal of the Vishanti</strong> from the doctor strange series.
               <br />
             </span>
           </div>

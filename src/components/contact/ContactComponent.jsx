@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { postMessage } from "../../api/ContactForm";
 import Button from "../shared/Button";
 import Loader from "../shared/Loader";
@@ -25,7 +25,7 @@ function ContactComponent() {
   });
   const [submittingForm, setSubmittingForm] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [backgroundImage, setBackgroundImage] = useState('')
+  const [imageLoaded, setImageLoaded] = useState(false)
 
   // handler to check mouse hover
   const handleMouseOver = (hoveringIndex) => {
@@ -127,22 +127,16 @@ function ContactComponent() {
     }
   };
 
+
+  const handleImageLoad = useCallback(() => {
+    setImageLoaded(val => !val)
+  }, [])
   // onMount -> setup intersection observer to dynamically load the image
   useEffect(() => {
-    const observer = new IntersectionObserver(async (entries) => {
-      if (entries[0].isIntersecting) {
-        console.log('#########container in sight##########33')
-        let res = await import('../../assets/blrCustomMapComp.png')
-        let image = new Image()
-        image.src = res.default
-        // image.onload = () => setBackgroundImage(image.src)
-        console.log(res)
-      }
-    })
-    let containerNode = document.querySelector('.contact-map-container');
-    containerNode && observer.observe(containerNode)
+    const image = document.querySelector('.contact-map')
+    image.addEventListener('load', handleImageLoad)
 
-    return () => observer.disconnect()
+    return () => image.removeEventListener('load', handleImageLoad)
   }, [])
 
   return (
@@ -282,23 +276,25 @@ function ContactComponent() {
         </div>
 
         <div className="contact-map-container" style={{ width: "50%" }}>
-        <div className="contact-map-wrapper">
-          <img src={backgroundImage} alt='' className="contact-map" style={{ opacity: backgroundImage ? '1' : '0', transition: '2s all' }} loading="lazy"/>
-          <div className="container">
-            <div className="box">
-              <span className="title ">Hemanth Mudra</span>
-              <div>
-                <strong>Bangalore</strong>
-                <p>Karnataka, India</p>
-                <span>2023</span>
+          <div className={`contact-map-wrapper ${imageLoaded ? 'loaded' : ''}`}>
+            <img
+              src={require("../../assets/blrCustomMapComp.png")}
+              alt='' className="contact-map" loading="lazy" />
+            <div className="container">
+              <div className="box">
+                <span className="title ">Hemanth Mudra</span>
+                <div>
+                  <strong>Bangalore</strong>
+                  <p>Karnataka, India</p>
+                  <span>2023</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
         </div>
       </div>
     </>
   );
 }
 
-export default ContactComponent;
+export default React.memo(ContactComponent);

@@ -58,3 +58,13 @@
     display: inline-block !important;
   }
 }
+
+/* ipad size */
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+  .sc-text{
+    width: 100%;
+    padding-right: 2rem;
+  }
+  
+}
+

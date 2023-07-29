@@ -24,11 +24,6 @@
 }
 
 @media only screen and (max-width: 768px) {
-  /* For mobile phones: */
-  .home-room-container{
-    display: none;
-  }
-
   .intro-text-container{
     margin: 0px;
     margin-left: 1.5rem;
@@ -57,5 +52,20 @@
   }
   .send-msg-btn{
     margin-left: 1.5rem !important;
+  }
+}
+
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+  .intro-text{
+    font-size: 5rem;
+    line-height: 4rem;
+    transition: 0.3s all;
+    display: inline-block !important;
+    letter-spacing: .6px;
+    font-weight: 500;
+  }
+
+  .intro-text-wrapper{
+    width: 100% !important;
   }
 }

@@ -77,6 +77,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
 .contact-main-container {
@@ -238,10 +239,16 @@
   height: 100%;
   width: 100%;
   opacity: 0;
-  background-color: #fff;
-  animation: pulse 2.5s infinite;
+  background-color: #FD2055;
+  animation: pulse 2s infinite;
   inset: 0;
-  filter: blur(20rem);
+  filter: blur(10px);
+}
+
+.contact-map-wrapper.loaded::before {
+  animation: none;
+  content: none;
+  filter: none;
 }
 
 @keyframes pulse {
@@ -250,12 +257,21 @@
   }
 
   50% {
-    opacity: 0.5;
+    opacity: 0.2;
   }
 
   100% {
     opacity: 0;
   }
+}
+
+.contact-map-wrapper img {
+  opacity: 0;
+  transition: opacity 250ms ease-in-out;
+}
+
+.contact-map-wrapper.loaded img {
+  opacity: 1;
 }
 
 @media screen and (max-width: 768px) {
@@ -266,7 +282,7 @@
 
   .contact-map-container {
     width: 100% !important;
-    height: 29rem;
+    height: 50rem;
   }
 
   .contact-main-container {
@@ -277,5 +293,24 @@
 
   div.marginL-1.flex-center {
     margin: 0 !important;
+  }
+}
+
+/* ipad size */
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+  .contact-main-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+  }
+
+  .contact-text-container {
+    width: 100% !important;
+    padding-right: 0 !important;
+  }
+
+  .contact-map-container {
+    width: 100% !important;
+    height: 50rem;
   }
 }
