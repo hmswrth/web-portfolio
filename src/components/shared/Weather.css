@@ -23,7 +23,7 @@
    backdrop-filter: blur(30px);
    background-color: rgba(65, 65, 65, 0.308);
    border: 1px solid rgba(255, 255, 255, 0.089);
-   cursor: pointer;
+   cursor: default;
  }
  
  .city {
@@ -90,8 +90,28 @@
    left: 100px;
    top: 50px;
    transition: all 1s;
- }
- 
- .cardContainer:hover::before {
-   transform: translate(-50px ,50px);
+   animation: movement 30s infinite; 
+}
+
+@keyframes movement {
+   0%{
+      top: 0%;
+      left: 0%;
+   }
+   25% {
+      top : 33%;
+      left: 50%;
+   }
+   50% {
+      top: 50%;
+      left: 50%;
+   }
+   75%{
+      top: 60%;
+      left: 10%;
+   }
+   100% {
+      top : 0%;
+      left: 0%; /* for moving back or left */
+   }
  }
