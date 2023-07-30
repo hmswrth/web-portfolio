@@ -17,10 +17,19 @@ function ExperienceComponent() {
 
   const experienceData = [
     {
+      companyName: "Nasdaq",
+      companyUrl: "https://www.nasdaq.com/",
+      designation: "Senior Software Developer",
+      duration: "2023 Jun - Present",
+      responsibilities: [
+        "Revamped NFN (Nasdaq Fund Network)"
+      ],
+    },
+    {
       companyName: "Saveo HealthTech Pvt. Ltd.",
       companyUrl: "https://web.saveo.in",
       designation: "SDE II, Full Stack Web",
-      duration: "2022 Jan - 2023 Jan",
+      duration: "2022 Jan - 2023 Feb",
       responsibilities: [
         "Worked with a team of passionate developers and designers in building the complete retail web experience for businesses",
         "Solo contributor for the complete wholesale web experience on the Saveo platform",
