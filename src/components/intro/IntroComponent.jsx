@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Intro.css";
 import "animate.css";
 import Button from "../shared/Button";
+import WeatherComponent from "../shared/WeatherComponent";
 
 function IntroComponent() {
   let intro = "Hi,I'm Hemanth,Web Developer";
@@ -27,6 +28,7 @@ function IntroComponent() {
 
   return (
     <div className="height-fs intro-main-container">
+    <WeatherComponent />
       <p className="tag margin-none font-weight-bold">{"<html>"}</p>
       <p className="tag margin-none font-weight-bold marginL-1">{"<body>"}</p>
       <div className="flex-center" style={{ height: "89vh", justifyContent: 'flex-start' }}>
