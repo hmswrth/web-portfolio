@@ -75,7 +75,7 @@ function SkillsComponent() {
               I also love playing video games. More than competetive, I enjoy story, art and graphics in a video game. The best ones I played so far would be RDR2 followed by the Assassins Creed franchise.
               <br />
               <br />
-              Besides vieo games, I also spend time taking landscape pictures and astrophotograpahy. 
+              Besides video games, I also spend time taking landscape pictures and astrophotograpahy. 
               PS : The logo in this section is not from dribble. It's the <strong>Seal of the Vishanti</strong> from the doctor strange series.
               <br />
             </span>
