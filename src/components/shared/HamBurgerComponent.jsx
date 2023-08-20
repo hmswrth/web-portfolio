@@ -7,7 +7,6 @@ function HamBurgerComponent() {
   const [hamOpen, setHamOpen] = useState(false);
 
   const toggleMenu = () => {
-    console.log("toggle menu");
     setHamOpen((val) => !val);
   };
 
@@ -38,7 +37,7 @@ function HamBurgerComponent() {
           <span className="line"></span>
         </div>
       </div>
-      {hamOpen && (
+      {hamOpen ? (
         <div className="ham-main-container height-fs width-100 bg-primary">
           <div className="flex-col-center bg-secondary" style={{paddingTop:'4rem', paddingBottom: '1rem'}}>
             <img
@@ -111,7 +110,7 @@ function HamBurgerComponent() {
           </div>
           </div>
         </div>
-      )}
+      ) : null}
     </>
   );
 }
