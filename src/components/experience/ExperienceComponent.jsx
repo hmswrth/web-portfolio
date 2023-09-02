@@ -22,7 +22,7 @@ function ExperienceComponent() {
       designation: "Senior Software Developer",
       duration: "2023 Jun - Present",
       responsibilities: [
-        "Revamped NFN (Nasdaq Fund Network)"
+        "Instrumentally contributed to the extensive redevelopment of the Nasdaq Fund Network (NFN)."
       ],
     },
     {
@@ -31,10 +31,10 @@ function ExperienceComponent() {
       designation: "SDE II, Full Stack Web",
       duration: "2022 Jan - 2023 Feb",
       responsibilities: [
-        "Worked with a team of passionate developers and designers in building the complete retail web experience for businesses",
-        "Solo contributor for the complete wholesale web experience on the Saveo platform",
-        "Extensively worked on the Saveo internal dashboards aiding business across various domains such as supply, demand, finance, logistics, admin processes",
-        "Worked in a team of 2 in migrating the entire cloud setup from AWS to GCP. Worked on setting up elastic search with ELK stack for numerous metrics",
+        "Extensively contributed to the retail web experience on Saveo platform.",
+        "Solely spearheaded the development of the entire wholesale web platform within the Saveo ecosystem, showcasing self-reliance and expertise in crafting a seamless digital experience.",
+        "Enhanced Saveo with key internal dashboards for supply, demand, finance, logistics, and administration.",
+        "Actively contributed in AWS-to-GCP cloud migration and implemented Elastic Search with ELK for efficient metric management.",
       ],
     },
     {
@@ -43,9 +43,10 @@ function ExperienceComponent() {
       designation: "Programmer Analyst",
       duration: "2020 May - 2021 Dec",
       responsibilities: [
-        "Built a query management tool to minimize the delay of addressing major blockers",
-        "Implemented an automation test suite and E2E pipeline to simulate telesales",
-        "Maintenance of code bases across multiple products",
+        "Designed and implemented a query management tool to optimize the resolution time for addressing critical blockers.",
+        "Orchestrated the development of an automated testing suite and an end-to-end pipeline specifically tailored for simulating telesales processes.",
+        "Undertook the responsibility of codebase maintenance across a diverse range of products.",
+        "Developed a series of Python scripts dedicated to data processing and the generation of comprehensive analytics reports."
       ],
     },
   ];
