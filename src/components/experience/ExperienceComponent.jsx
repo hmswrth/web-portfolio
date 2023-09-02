@@ -104,26 +104,20 @@ function ExperienceComponent() {
               className="color-white font-size-p font-open-sans margin-none"
               style={{ textAlign: "justify" }}
             >
-              I've been programming for about 3 years now working in esteemed
-              organizations. I have extensively worked on various web
-              technologies in a fast-paced start-up company. I take pride in
-              ownership and responsibility. I always try to push myself outside
-              my comfort zone to test and improve my abilities. I believe in
-              constant learning by experimenting. Building products at scale
-              that impact millions of users keeps me excited.
+              Over the past three years, I have honed my programming skills while contributing to esteemed organizations. My experience has been predominantly focused on a wide array of web technologies within the dynamic landscape of a fast-paced startup environment. I take great pride in my commitment and accountability, consistently pushing beyond my comfort zone to refine and expand my skill set. My philosophy centers around perpetual learning through hands-on experimentation. My passion lies in crafting impactful products at scale, ones that resonate with millions of users, a challenge that continuously fuels my enthusiasm.
             </p>
           </div>
           <p className="tag margin-none font-weight-bold">{"</p>"}</p>
         </div>
         <div className="tech-stack-icon-container">
-        <div className="tsi-wrapper">
-          <FaReact className="tech-icon" />
-          <FaAngular className="tech-icon" />
-          <FaNodeJs className="tech-icon" />
-          <SiMongodb className="tech-icon" />
-          <DiGoogleCloudPlatform className='tech-icon' />
-          <FaAws className="tech-icon" />
-        </div>
+          <div className="tsi-wrapper">
+            <FaReact className="tech-icon" />
+            <FaAngular className="tech-icon" />
+            <FaNodeJs className="tech-icon" />
+            <SiMongodb className="tech-icon" />
+            <DiGoogleCloudPlatform className='tech-icon' />
+            <FaAws className="tech-icon" />
+          </div>
         </div>
       </div>
       <div className="experience-cards-container flex-center marginL-2">

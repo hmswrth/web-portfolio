@@ -62,21 +62,17 @@ function SkillsComponent() {
           <p className="tag margin-none font-weight-bold">{"<p>"}</p>
           <div className="marginL-1">
             <span className="color-white font-size-p font-open-sans margin-none" style={{ textAlign: 'justify' }}>
-              Coming from the diverse field of bioinformatics, I discovered my
-              passion in computer science. It reminds me more of Doctor Strange
-              from the Marvel cinematic universe.
+            Transitioning from the diverse field of bioinformatics, I uncovered my true passion for computer science. This newfound journey resonates with me, evoking parallels to the fascination of Doctor Strange in the Marvel cinematic universe.
               <br />
               <br />
-              I've been programming for about 3 years now. Learning new things everyday keeps me excited. I'm currently exploring web3.
+              I've been actively engaged in programming for the past three years, and my enthusiasm for continuous learning keeps me invigorated. At present, I'm delving into the fascinating world of web3 technology.
               <br />
-              <br />I drink coffee and write code on a normal day.
-              <br />
-              <br />
-              I also love playing video games. More than competetive, I enjoy story, art and graphics in a video game. The best ones I played so far would be RDR2 followed by the Assassins Creed franchise.
+              <br />A typical day for me involves sipping coffee while immersed in code. 
               <br />
               <br />
-              Besides video games, I also spend time taking landscape pictures and astrophotograpahy. 
-              PS : The logo in this section is not from dribble. It's the <strong>Seal of the Vishanti</strong> from the doctor strange series.
+              Beyond my coding pursuits, I have a genuine passion for video games, with a particular fondness for those that captivate through storytelling, artistry, and stunning graphics. Among my top gaming experiences are Red Dead Redemption 2 and the Assassin's Creed franchise.              <br />
+              <br />
+              Beyond my gaming and coding adventures, you'll frequently catch me chasing the breathtaking beauty of landscapes and venturing into the mesmerizing realm of astrophotography. As a fun tidbit, the logo showcased in this section isn't a Dribbble creation; it's the enigmatic <strong>Seal of the Vishanti</strong> from the mystical world of Doctor Strange.
               <br />
             </span>
           </div>

@@ -12,14 +12,14 @@
   background-color: #0ffdd8;
   height: 20rem;
   width: 35rem;
-  border-radius: 0.35rem;
+  border-radius: .45rem;
 }
 
 .experience-card-inner {
   height: inherit;
   width: inherit;
   border-radius: 0.35rem;
-  background-color: #2a2a2a;
+  background-color: #1c1c1c;
   transition: all 0.3s;
   padding: 1rem;
   align-items: flex-start;

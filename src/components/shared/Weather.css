@@ -21,8 +21,8 @@
    padding: 20px 10px;
    border-radius: 10px;
    backdrop-filter: blur(30px);
-   background-color: rgba(65, 65, 65, 0.308);
-   border: 1px solid rgba(255, 255, 255, 0.089);
+   background-color: rgba(65, 65, 65, 0.1);
+   border: 1px solid rgba(255, 255, 255, 0.04);
    cursor: default;
  }
  

@@ -186,9 +186,7 @@ function ContactComponent() {
               className="color-white font-size-sm font-open-sans margin-none marginL-1"
               style={{ textAlign: "justify" }}
             >
-              I'm interested in full stack developer opportunities.
-              <br />
-              Feel free to send a message using the form below.
+             I am keenly interested in pursuing opportunities as a full-stack developer. Please do not hesitate to reach out by using the form below to initiate a conversation. Your contact is highly appreciated.
             </p>
           </div>
           <p className="tag margin-none font-weight-bold">{"</p>"}</p>
