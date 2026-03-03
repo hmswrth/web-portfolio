@@ -5,7 +5,7 @@ import "./IntroLines.css";
 const IntroComponentLines = () => {
   return (
     <>
-      <div className="height-fs intro-main-container">
+      <div id="Home" className="height-fs intro-main-container">
         <div
           style={{
             width: "100%",
