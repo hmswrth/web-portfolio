@@ -3,12 +3,13 @@
   line-height: 87px;
   transition: 0.3s all;
   display: inline-block !important;
-  z-index: 100;
+  z-index: 2;
   text-align: center;
 }
 
-.intro-text:hover, .isInFocus {
-  color: #0ffdd8;
+.intro-text:hover,
+.isInFocus {
+  /* color: #0ffdd8; */
 }
 
 .hlogo {
@@ -16,53 +17,53 @@
   width: auto;
 }
 
-.intro-main-container{
+.intro-main-container {
   position: relative;
 }
 
 @media only screen and (max-width: 768px) {
-  .intro-text-container{
+  .intro-text-container {
     margin: 0px;
     margin-left: 1.5rem;
   }
 
-  .intro-text{
+  .intro-text {
     font-size: 3rem;
     line-height: 2.7rem;
     transition: 0.3s all;
     display: inline-block !important;
-    letter-spacing: .5px;
+    letter-spacing: 0.5px;
     font-weight: 500;
   }
 
-  .intro-text-wrapper{
+  .intro-text-wrapper {
     width: 100% !important;
   }
-  p.marginL-2{
+  p.marginL-2 {
     margin-left: 1rem !important;
   }
-  span.marginL-2{
+  span.marginL-2 {
     margin-left: 1rem;
   }
-  span.marginL-3{
+  span.marginL-3 {
     margin-left: 1.5rem;
   }
-  .send-msg-btn{
+  .send-msg-btn {
     margin-left: 1.5rem !important;
   }
 }
 
-@media only screen and (min-width : 768px) and (max-width : 1024px) {
-  .intro-text{
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .intro-text {
     font-size: 5rem;
     line-height: 4rem;
     transition: 0.3s all;
     display: inline-block !important;
-    letter-spacing: .6px;
+    letter-spacing: 0.6px;
     font-weight: 500;
   }
 
-  .intro-text-wrapper{
+  .intro-text-wrapper {
     width: 100% !important;
   }
 }

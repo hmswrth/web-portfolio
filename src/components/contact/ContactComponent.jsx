@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useMemo } from "react";
 import { postMessage } from "../../api/ContactForm";
 import Button from "../shared/Button";
 import Loader from "../shared/Loader";
@@ -12,10 +12,10 @@ function ContactComponent() {
     message: "",
   };
 
-  const [hoveringIndices, setHoveringIndices] = useState([])
+  const [hoveringIndices, setHoveringIndices] = useState([]);
 
   const [formData, setFormData] = useState(
-    JSON.parse(JSON.stringify(FORM_OBJ))
+    JSON.parse(JSON.stringify(FORM_OBJ)),
   );
   const [errorData, setErrorData] = useState({
     name: false,
@@ -25,19 +25,23 @@ function ContactComponent() {
   });
   const [submittingForm, setSubmittingForm] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false)
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const CURRENT_YEAR = useMemo(() => new Date().getFullYear(), []);
 
   // handler to check mouse hover
   const handleMouseOver = (hoveringIndex) => {
-    setHoveringIndices(prevArr => [...prevArr, hoveringIndex])
+    setHoveringIndices((prevArr) => [...prevArr, hoveringIndex]);
   };
 
   // handler to check mouse hover
   const handleMouseOut = (hoveringIndex) => {
     setTimeout(() => {
       // remove the hovering index from state
-      setHoveringIndices(prevVal => prevVal.filter(item => item !== hoveringIndex))
-    }, [500])
+      setHoveringIndices((prevVal) =>
+        prevVal.filter((item) => item !== hoveringIndex),
+      );
+    }, [500]);
   };
   const header = "Contact Me";
 
@@ -127,17 +131,16 @@ function ContactComponent() {
     }
   };
 
-
   const handleImageLoad = useCallback(() => {
-    setImageLoaded(val => !val)
-  }, [])
+    setImageLoaded((val) => !val);
+  }, []);
   // onMount -> setup intersection observer to dynamically load the image
   useEffect(() => {
-    const image = document.querySelector('.contact-map')
-    image.addEventListener('load', handleImageLoad)
+    const image = document.querySelector(".contact-map");
+    image.addEventListener("load", handleImageLoad);
 
-    return () => image.removeEventListener('load', handleImageLoad)
-  }, [])
+    return () => image.removeEventListener("load", handleImageLoad);
+  }, []);
 
   return (
     <>
@@ -146,7 +149,7 @@ function ContactComponent() {
       <div
         className="contact-main-container marginL-1"
         style={{ width: "100%" }}
-        id='contactMainContainer'
+        id="contactMainContainer"
       >
         <div
           className="contact-text-container"
@@ -167,11 +170,13 @@ function ContactComponent() {
                   onMouseOver={() => handleMouseOver(index)}
                   onMouseOut={() => handleMouseOut(index)}
                   key={index}
-                  className={`color-secondary font-coolvetica header-text ${header.charAt(index) === " " && "txt-dec-none"
-                    } ${hoveringIndices.length > 0 &&
+                  className={`color-secondary font-coolvetica header-text ${
+                    header.charAt(index) === " " && "txt-dec-none"
+                  } ${
+                    hoveringIndices.length > 0 &&
                     hoveringIndices.includes(index) &&
                     "animate__animated animate__rubberBand animate__repeat-1"
-                    }`}
+                  }`}
                 >
                   {header.charAt(index)}
                 </span>
@@ -186,7 +191,10 @@ function ContactComponent() {
               className="color-white font-size-sm font-open-sans margin-none marginL-1"
               style={{ textAlign: "justify" }}
             >
-             I am keenly interested in pursuing opportunities as a full-stack developer. Please do not hesitate to reach out by using the form below to initiate a conversation. Your contact is highly appreciated.
+              I am keenly interested in pursuing opportunities as a full-stack
+              developer. Please do not hesitate to reach out by using the form
+              below to initiate a conversation. Your contact is highly
+              appreciated.
             </p>
           </div>
           <p className="tag margin-none font-weight-bold">{"</p>"}</p>
@@ -202,7 +210,7 @@ function ContactComponent() {
                 onChange={handleInputChange}
                 onKeyUp={checkForm}
                 required
-                autoComplete='off'
+                autoComplete="off"
               />
             </div>
             <div className={`textInputWrapper ${errorData.email && "error"}`}>
@@ -215,7 +223,7 @@ function ContactComponent() {
                 onChange={handleInputChange}
                 onKeyUp={checkForm}
                 required
-                autoComplete='off'
+                autoComplete="off"
               />
             </div>
           </div>
@@ -230,7 +238,7 @@ function ContactComponent() {
                 onChange={handleInputChange}
                 onKeyUp={checkForm}
                 required
-                autoComplete='off'
+                autoComplete="off"
               />
             </div>
           </div>
@@ -246,7 +254,7 @@ function ContactComponent() {
                 onChange={handleInputChange}
                 onKeyUp={checkForm}
                 required
-                autoComplete='off'
+                autoComplete="off"
               ></textarea>
             </div>
           </div>
@@ -274,17 +282,20 @@ function ContactComponent() {
         </div>
 
         <div className="contact-map-container" style={{ width: "50%" }}>
-          <div className={`contact-map-wrapper ${imageLoaded ? 'loaded' : ''}`}>
+          <div className={`contact-map-wrapper ${imageLoaded ? "loaded" : ""}`}>
             <img
               src={require("../../assets/blrCustomMapComp.png")}
-              alt='' className="contact-map" loading="lazy" />
+              alt=""
+              className="contact-map"
+              loading="lazy"
+            />
             <div className="container">
               <div className="box">
                 <span className="title ">Hemanth Mudra</span>
                 <div>
                   <strong>Bangalore</strong>
                   <p>Karnataka, India</p>
-                  <span>2023</span>
+                  <span>{CURRENT_YEAR}</span>
                 </div>
               </div>
             </div>
