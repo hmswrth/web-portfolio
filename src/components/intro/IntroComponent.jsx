@@ -1,120 +1,180 @@
-import React, { useState } from "react";
-import "./Intro.css";
-import "animate.css";
-import Button from "../shared/Button";
-import WeatherComponent from "../shared/WeatherComponent";
+import React from 'react';
+import { motion } from 'framer-motion';
+import Button from '../ui/button';
+import { Badge } from '../ui/input';
+import { ArrowRight, Zap, ShieldCheck } from 'lucide-react';
 
-function IntroComponent() {
-  let intro = "Hi,I'm Hemanth,Web Developer";
-  const [hoveringIndices, setHoveringIndices] = useState([])
+const METRICS = [
+  {
+    value: '3,000+',
+    label: 'Instruments Batch Capacity',
+    sub: 'Nasdaq Fund Network (NFN)',
+    colorClass: 'blue',
+  },
+  {
+    value: '300%',
+    label: 'Throughput Optimization',
+    sub: 'Batch upload processing speedup',
+    colorClass: 'emerald',
+  },
+  {
+    value: 'FastMCP',
+    label: 'AI & LLM Tool Server',
+    sub: 'RAG discovery & parameterization',
+    colorClass: 'violet',
+  },
+  {
+    value: '5+ Yrs',
+    label: 'Distributed Systems',
+    sub: 'Enterprise financial engineering',
+    colorClass: 'indigo',
+  },
+];
 
-  // sideeffect on mouse hover
-  const handleMouseOver = (hoveringIndex) => {
-    setHoveringIndices(prevArr => [...prevArr, hoveringIndex])
-  };
-
-  // sideEffect on mouseHoverOut
-  const handleMouseOut = (hoveringIndex) => {
-    setTimeout(() => {
-      // remove the hovering index from state
-      setHoveringIndices(prevVal => prevVal.filter(item => item !== hoveringIndex))
-    }, [500])
-  };
-
-  const handleSendMsgClick = () => {
-    let ele = document.querySelector('.contact-main-container')
-    ele.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
-  }
-
+const IntroComponent = ({ onNavigate }) => {
   return (
-    <div className="height-fs intro-main-container">
-    <WeatherComponent />
-      <p className="tag margin-none font-weight-bold">{"<html>"}</p>
-      <p className="tag margin-none font-weight-bold marginL-1">{"<body>"}</p>
-      <div className="flex-center" style={{ height: "89vh", justifyContent: 'flex-start' }}>
-        <div className="intro-text-wrapper" style={{ width: "80%" }}>
-          <div className="width-100">
-            <p className="tag margin-none font-weight-bold marginL-2">
-              {"<h1>"}
-            </p>
-            <div className="marginL-4 intro-text-container">
-              {[...Array(intro.length)].map((_, index) => {
-                return intro.charAt(index) !== "," ? (
-                  index > 2 && intro.charAt(index) === "H" ? (
-                    <span
-                      onMouseOver={() => handleMouseOver(index)}
-                      onMouseOut={() => handleMouseOut(index)}
-                      key={index}
-                      className={`color-primary font-coolvetica intro-text ${intro.charAt(index) === " " && "txt-dec-none"
-                        } ${hoveringIndices.length > 0 &&
-                        hoveringIndices.includes(index) &&
-                        "animate__animated animate__rubberBand animate__repeat-1 isInFocus"
-                        }`}
-                    >
-                      {intro.charAt(index)}
-                    </span>
-                  ) : intro.charAt(index) === " " ? (
-                    <span className="txt-dec-none font-size-sm" key={index}
-                    >
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                    </span>
-                  ) : (
-                    <span
-                      onMouseOver={() => handleMouseOver(index)}
-                      onMouseOut={() => handleMouseOut(index)}
-                      key={index}
-                      className={`color-white font-coolvetica intro-text ${intro.charAt(index) === " " && "txt-dec-none"
-                        } ${hoveringIndices.length > 0 &&
-                        hoveringIndices.includes(index) &&
-                        "animate__animated animate__rubberBand animate__repeat-1 isInFocus"
-                        }`}
-                    >
-                      {intro.charAt(index)}
-                    </span>
-                  )
-                ) : (
-                  <>
-                    <span
-                      onMouseOver={() => handleMouseOver(index)}
-                      onMouseOut={() => handleMouseOut(index)}
-                      className={`color-white font-coolvetica intro-text ${hoveringIndices.length > 0 &&
-                        hoveringIndices.includes(index) &&
-                        "animate__animated animate__bounce animate__repeat-1 isInFocus"
-                        }`}
-                      key={index}
-                    >
-                      {intro.charAt(index)}
-                    </span>
-                    <br />
-                  </>
-                );
-              })}
-            </div>
-            <span className="tag margin-none font-weight-bold marginL-2">
-              {"</h1>"}
-            </span>
-          </div>
-          <div className="width-100">
-            <p className="tag margin-none font-weight-bold marginL-2">
-              {"<p>"}
-            </p>
-            <span
-              className="font-sans color-gray font-size-sm marginL-3"
-              style={{ letterSpacing: "4px" }}
-            >
-              Full Stack Developer
-            </span>
-            <p className="tag margin-none font-weight-bold marginL-2">
-              {"</p>"}
-            </p>
-          </div>
-          <div className="width-100 marginT-2 send-msg-btn" style={{ marginLeft: "3rem" }}>
-            <Button name="send a message" click={handleSendMsgClick} />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+    <section id="intro" style={{ paddingTop: '1rem' }}>
+      {/* Telemetry Status Line - Updated to Specialist SWE */}
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          marginBottom: '1.75rem',
+          flexWrap: 'wrap',
+        }}
+      >
+        <Badge
+          color="blue"
+          style={{
+            gap: '8px',
+            padding: '5px 12px',
+            fontSize: '0.78rem',
+            background: 'rgba(56, 189, 248, 0.08)',
+            borderColor: 'rgba(56, 189, 248, 0.25)',
+          }}
+        >
+          <span
+            style={{
+              width: '7px',
+              height: '7px',
+              borderRadius: '50%',
+              backgroundColor: '#38bdf8',
+              boxShadow: '0 0 10px #38bdf8',
+              display: 'inline-block',
+            }}
+          />
+          <span style={{ color: '#ffffff', fontWeight: 600 }}>Specialist Software Engineer · Nasdaq</span>
+        </Badge>
 
-export default IntroComponent;
+        <Badge
+          color="emerald"
+          style={{
+            gap: '6px',
+            padding: '5px 12px',
+            fontSize: '0.78rem',
+            background: 'rgba(16, 185, 129, 0.08)',
+            borderColor: 'rgba(16, 185, 129, 0.25)',
+          }}
+        >
+          <span
+            style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              backgroundColor: '#10b981',
+              display: 'inline-block',
+            }}
+          />
+          <span>Active Systems: Nasdaq Fund Network (NFN)</span>
+        </Badge>
+      </motion.div>
+
+      {/* Main Title with Frosted Specular Gradient */}
+      <motion.div
+        initial={{ opacity: 0, y: 22 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.28 }}
+      >
+        <h1
+          style={{
+            fontSize: 'clamp(1.9rem, 5.2vw, 3.8rem)',
+            fontWeight: 800,
+            letterSpacing: '-0.04em',
+            lineHeight: 1.1,
+            marginBottom: '1.5rem',
+            background: 'linear-gradient(135deg, #ffffff 40%, #93c5fd 85%, #818cf8 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          Architecting High-Throughput Financial Systems &amp; AI Infrastructure.
+        </h1>
+      </motion.div>
+
+      {/* Bio Description - NEF completely removed as requested */}
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.44 }}
+        style={{
+          fontSize: 'clamp(1rem, 2vw, 1.15rem)',
+          lineHeight: 1.7,
+          color: '#cbd5e1',
+          maxWidth: '820px',
+          marginBottom: '2.5rem',
+        }}
+      >
+        Specialized in high-performance distributed systems at <strong style={{ color: '#ffffff', fontWeight: 600 }}>Nasdaq, Inc.</strong>,
+        re-engineering the Nasdaq Fund Network (NFN) to support 3x capacity growth, architecting centralized batch pricing engines,
+        building worker services that power Nasdaq Data Link, and pioneering Model Context Protocol (FastMCP) AI retrieval servers.
+      </motion.p>
+
+      {/* CTAs with Pixel-Perfect Frosted Glass Buttons */}
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.58 }}
+        className="hero-actions-group"
+      >
+        <Button variant="default" size="lg" onClick={() => onNavigate('architecture')}>
+          <span>View Architecture</span>
+          <ArrowRight size={17} style={{ marginLeft: 8 }} />
+        </Button>
+
+        <Button variant="outline" size="lg" onClick={() => onNavigate('experience')}>
+          <ShieldCheck size={17} style={{ marginRight: 8, color: '#38bdf8' }} />
+          <span>Career Experience</span>
+        </Button>
+
+        <Button variant="secondary" size="lg" onClick={() => onNavigate('contact')}>
+          <Zap size={17} style={{ marginRight: 8, color: '#818cf8' }} />
+          <span>Get in Touch</span>
+        </Button>
+      </motion.div>
+
+      {/* Vibrant Frosted Stat Strip */}
+      <motion.div
+        className="stat-strip-frosted"
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.72 }}
+      >
+        {METRICS.map((item, idx) => (
+          <div key={idx} className={`stat-cell-frosted ${item.colorClass}`}>
+            <div className={`stat-value ${item.colorClass}`}>{item.value}</div>
+            <div style={{ color: '#f8fafc', fontSize: '0.92rem', fontWeight: 600, marginTop: 4 }}>
+              {item.label}
+            </div>
+            <div className="stat-desc">{item.sub}</div>
+          </div>
+        ))}
+      </motion.div>
+    </section>
+  );
+};
+
+export default React.memo(IntroComponent);

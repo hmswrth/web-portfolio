@@ -1,126 +1,122 @@
-import React from "react";
-import "./Home.css";
-import mainLogo from "../../assets/hemanthMudraLogo.svg";
+import React, { useState, useEffect } from 'react';
+import { motion, useScroll, useSpring } from 'framer-motion';
+import LinearHeader from '../shared/LinearHeader';
+import InteractiveGlowBackground from '../shared/InteractiveGlowBackground';
+import IntroComponent from '../intro/IntroComponent';
+import ExperienceComponent from '../experience/ExperienceComponent';
+import WorkComponent from '../work/WorkComponent';
+import SkillsComponent from '../skills/SkillsComponent';
+import ContactComponent from '../contact/ContactComponent';
 
-import {
-  AiOutlineGithub,
-  AiOutlineInstagram,
-  AiOutlineLinkedin,
-  AiOutlineGitlab,
-} from "react-icons/ai";
-import IntroComponent from "../intro/IntroComponent";
-import SkillsComponent from "../skills/SkillsComponent";
-import ContactComponent from "../contact/ContactComponent";
-import HamBurgerComponent from "../shared/HamBurgerComponent";
-import ExperienceComponent from "../experience/ExperienceComponent";
+const HomeComponent = () => {
+  const [activeSection, setActiveSection] = useState('intro');
 
-function HomeComponent() {
-  const handlePageScroll = (type) => {
-    let ele;
-    if (type === "contact")
-      ele = document.querySelector(".contact-main-container");
-    else if (type === "skills")
-      ele = document.querySelector(".skills-main-container");
-    else if (type === "about")
-      ele = document.querySelector(".intro-main-container");
+  // Smooth scroll progress
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    restDelta: 0.001,
+  });
 
-    ele.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
-    // window.scrollTo(0, ele.scrollHeight);
+  // Track active section via IntersectionObserver
+  useEffect(() => {
+    const sectionIds = ['intro', 'experience', 'architecture', 'stack', 'contact'];
+    const observers = [];
+
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -40% 0px',
+      threshold: 0,
+    };
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        const obs = new IntersectionObserver(observerCallback, observerOptions);
+        obs.observe(el);
+        observers.push(obs);
+      }
+    });
+
+    return () => {
+      observers.forEach((obs) => obs.disconnect());
+    };
+  }, []);
+
+  const handleNavigate = (sectionId) => {
+    const el = document.getElementById(sectionId);
+    if (el) {
+      const headerOffset = 76;
+      const elementPosition = el.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: Math.max(0, offsetPosition),
+        behavior: 'smooth',
+      });
+    }
   };
 
   return (
-    <>
-      <div className="main-wrapper flex-center">
-        {/* sidee nav bar goes here */}
-        <div className="side-bar">
-          <div className="flex-col-center cursor-pointer" href="/home">
-            <img src={mainLogo} alt="hm logo" className="sidebar-header-logo" />
-            {/* <span className="line-height-md color-white font-size-md font-coolvetica margin-none ">
-              hemanth
-            </span> */}
-            {/* <p className="color-gray margin-none font-open-sans prof-title font-size-sm">
-              web developer
-            </p> */}
-          </div>
-          {/* contains navigation to parts of the page */}
-          {/* TODO : add routing */}
-          <div className="home-section-container flex-col-center">
-            <span className="border-gray"></span>
-            <span onClick={() => handlePageScroll("about")}>
-              <div className="flex-center">
-                <span className="color-gray text-link cursor-pointer">
-                  about
-                </span>
-              </div>
-            </span>
-            <span className="border-gray"></span>
+    <div className="app-root">
+      {/* 2 Moving Interactive Glow Items with Framer Motion Physics */}
+      <InteractiveGlowBackground />
 
-            <span onClick={() => handlePageScroll("skills")}>
-              <div className="flex-center">
-                <span className="color-gray text-link cursor-pointer">
-                  skills
-                </span>
-              </div>
-            </span>
-            <span className="border-gray"></span>
-            <span onClick={() => handlePageScroll("work")}>
-              <div className="flex-center">
-                <span className="color-gray text-link cursor-pointer">
-                  work
-                </span>
-              </div>
-            </span>
-            <span className="border-gray"></span>
-            <span onClick={() => handlePageScroll("contact")}>
-              <div className="flex-center">
-                <span className="color-gray text-link cursor-pointer">
-                  contact
-                </span>
-              </div>
-            </span>
-            <span className="border-gray"></span>
-          </div>
-          <div className="social-container flex-center">
-            {/* TODO : Add navigation to social links */}
-            <a href="https://www.instagram.com/hems009/" target="_blank">
-              <AiOutlineInstagram
-                className="color-gray social-icon cursor-pointer"
-                size="1.5rem"
-              />
-            </a>
-            <a href="https://www.linkedin.com/in/hemanth-mudra/" target="_blank">
-            <AiOutlineLinkedin
-              className="color-gray social-icon cursor-pointer"
-              size="1.5rem"
-            />
-            </a>
+      {/* Top Progress Line */}
+      <motion.div className="top-scroll-line" style={{ scaleX }} />
 
-            <a href="https://github.com/hmswrth" target="_blank">
-            <AiOutlineGithub
-              className="color-gray social-icon cursor-pointer"
-              size="1.5rem"
-            />
+      {/* Sticky Frosted Glass Header */}
+      <LinearHeader activeSection={activeSection} onNavigate={handleNavigate} />
+
+      {/* Main Single-Column Frosted Glass Container */}
+      <main className="main-container-frosted">
+        <IntroComponent onNavigate={handleNavigate} />
+        <ExperienceComponent />
+        <WorkComponent />
+        <SkillsComponent />
+        <ContactComponent />
+
+        {/* Frosted Glass Footer */}
+        <footer className="frosted-footer">
+          <div>
+            © {new Date().getFullYear()} Hemanth Mudra. Specialist Software Engineer at Nasdaq.
+          </div>
+          <div className="frosted-footer-links">
+            <a
+              href="https://github.com/hmswrth"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="frosted-footer-link"
+            >
+              GitHub
             </a>
-            <a href="https://gitlab.com/hemanth.m" target="_blank">
-            <AiOutlineGitlab
-              className="color-gray social-icon cursor-pointer"
-              size="1.5rem"
-            />
+            <a
+              href="https://www.linkedin.com/in/hemanth-mudra/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="frosted-footer-link"
+            >
+              LinkedIn
+            </a>
+            <a
+              href="mailto:mudra.hemanth@gmail.com"
+              className="frosted-footer-link"
+            >
+              Email
             </a>
           </div>
-        </div>
-
-        {/* main home container */}
-        <div className="main-container">
-          <HamBurgerComponent />
-          <IntroComponent />
-          <ExperienceComponent />
-          <SkillsComponent />
-          <ContactComponent />
-        </div>
-      </div>
-    </>
+        </footer>
+      </main>
+    </div>
   );
-}
+};
 
 export default HomeComponent;
