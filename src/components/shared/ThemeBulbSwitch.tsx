@@ -99,9 +99,9 @@ const ThemeBulbSwitch: React.FC = () => {
       try {
         animControlsXRef.current = animate(startX, REST_X, {
           type: 'spring',
-          stiffness: 280,
-          damping: 8.5,
-          mass: 0.6,
+          stiffness: 80,
+          damping: 2.2,
+          mass: 0.85,
           velocity: initialVx,
           onUpdate: (latest) => {
             posRef.current.x = latest;
@@ -109,12 +109,12 @@ const ThemeBulbSwitch: React.FC = () => {
           },
         });
 
-        // Framer Motion spring for vertical snap-back (elastic recoil)
+        // Framer Motion spring for vertical snap-back (elastic recoil with energetic bounce)
         animControlsYRef.current = animate(startY, REST_Y, {
           type: 'spring',
-          stiffness: 440,
-          damping: 14,
-          mass: 0.5,
+          stiffness: 175,
+          damping: 3.5,
+          mass: 0.78,
           velocity: initialVy,
           onUpdate: (latest) => {
             posRef.current.y = latest;
@@ -143,15 +143,15 @@ const ThemeBulbSwitch: React.FC = () => {
     stopSprings();
 
     // Pull cord downwards
-    posRef.current = { x: REST_X + 1.2, y: REST_Y + 16 };
-    setRopeEnd({ x: REST_X + 1.2, y: REST_Y + 16 });
+    const pullY = REST_Y + 22;
+    const pullX = REST_X + 3.5;
+    posRef.current = { x: pullX, y: pullY };
+    setRopeEnd({ x: pullX, y: pullY });
 
     // Switch theme and release rope with Framer Motion spring physics
     setTimeout(() => {
-      posRef.current = { x: REST_X, y: REST_Y };
-      setRopeEnd({ x: REST_X, y: REST_Y });
       triggerToggle();
-      startSpringAnimation(REST_X + 1.2, REST_Y, -26, -210);
+      startSpringAnimation(pullX, pullY, -50, -460);
     }, 110);
   }, [startSpringAnimation, stopSprings, triggerToggle]);
 
@@ -220,17 +220,16 @@ const ThemeBulbSwitch: React.FC = () => {
     }, 250);
 
     const { x: curX, y: curY } = posRef.current;
-    const lateralImpulse = (REST_X - curX) * 20;
+    const lateralImpulse = (REST_X - curX) * 28;
+    const verticalImpulse = -Math.max(380, (curY - REST_Y) * 24);
 
     if (hasArmedRef.current) {
       // SWITCH THEME ONLY ON RELEASE!
-      posRef.current = { x: REST_X, y: REST_Y };
-      setRopeEnd({ x: REST_X, y: REST_Y });
       triggerToggle();
-      startSpringAnimation(REST_X, REST_Y, lateralImpulse, -230);
+      startSpringAnimation(curX, curY, lateralImpulse, verticalImpulse);
     } else if (hasMovedSignificantlyRef.current) {
       // Pulled below threshold: snap back with spring without switching theme
-      startSpringAnimation(curX, curY, lateralImpulse, -120);
+      startSpringAnimation(curX, curY, lateralImpulse, -200);
     } else {
       // Tap or quick click
       triggerPullAnimation();
@@ -256,9 +255,11 @@ const ThemeBulbSwitch: React.FC = () => {
     }
   };
 
-  // Flexible rope curve coordinates
+  // Flexible rope curve coordinates with natural elastic flex during bounce recoil
   const { x: ropeX, y: ropeY } = ropeEnd;
-  const ctrlX = ANCHOR_X + (ropeX - ANCHOR_X) * 0.35;
+  const upwardRecoilSlack = Math.max(0, REST_Y - ropeY);
+  const bow = upwardRecoilSlack * 0.28;
+  const ctrlX = ANCHOR_X + (ropeX - ANCHOR_X) * 0.35 + (ropeX >= ANCHOR_X ? bow : -bow);
   const ctrlY = ANCHOR_Y + (ropeY - ANCHOR_Y) * 0.58;
 
   return (

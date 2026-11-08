@@ -131,39 +131,31 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         });
 
         transition.ready.then(() => {
-          if (isSwitchingToLight) {
-            // Daylight circle smoothly expands from bulb, revealing light theme text and background
-            document.documentElement.animate(
-              {
-                clipPath: [
-                  `circle(0px at ${x}px ${y}px)`,
-                  `circle(${maxRadius}px at ${x}px ${y}px)`,
-                ],
-              },
-              {
-                duration: 650,
-                easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
-                fill: 'forwards',
-                pseudoElement: '::view-transition-new(root)',
-              }
-            );
-          } else {
-            // Daylight circle collapses down into bulb, smoothly revealing dark theme text and background
-            document.documentElement.animate(
-              {
-                clipPath: [
-                  `circle(${maxRadius}px at ${x}px ${y}px)`,
-                  `circle(0px at ${x}px ${y}px)`,
-                ],
-              },
-              {
-                duration: 650,
-                easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
-                fill: 'forwards',
-                pseudoElement: '::view-transition-old(root)',
-              }
-            );
+          const prefersReduced =
+            typeof window !== 'undefined' &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+          if (prefersReduced) {
+            return;
           }
+
+          // In both directions (light-to-dark and dark-to-light), the target theme expands
+          // outward smoothly from the switch origin (x, y), revealing the text and background
+          // in real time while allowing the bulb string bounce to remain fully visible.
+          document.documentElement.animate(
+            {
+              clipPath: [
+                `circle(0px at ${x}px ${y}px)`,
+                `circle(${maxRadius}px at ${x}px ${y}px)`,
+              ],
+            },
+            {
+              duration: 420,
+              easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+              fill: 'forwards',
+              pseudoElement: '::view-transition-new(root)',
+            }
+          );
         });
 
         transition.finished.finally(() => {
