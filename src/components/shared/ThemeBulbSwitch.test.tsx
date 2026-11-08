@@ -136,14 +136,46 @@ describe('ThemeBulbSwitch & ThemeContext', () => {
       jest.advanceTimersByTime(500);
     });
 
-    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+    // While dragging down, theme should NOT switch yet (realistic ratchet switch physics)
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
 
-    // Release drag
+    // Release drag: switch toggles theme upon release!
     act(() => {
       fireEvent.pointerUp(switchBtn, { clientX: 100, clientY: 135, pointerId: 1 });
       jest.advanceTimersByTime(500);
     });
 
+    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+    expect(localStorage.getItem('portfolio-theme')).toBe('light');
+  });
+
+  test('supports diagonal drag (left or right) and trips switch only on release', () => {
+    render(
+      <ThemeProvider>
+        <ThemeBulbSwitch />
+      </ThemeProvider>
+    );
+
+    const switchBtn = screen.getByRole('button');
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+
+    // Drag diagonally down-left (deltaX: -30, deltaY: +25)
+    act(() => {
+      fireEvent.pointerDown(switchBtn, { button: 0, clientX: 100, clientY: 100, pointerId: 1 });
+      fireEvent.pointerMove(switchBtn, { clientX: 70, clientY: 125, pointerId: 1 });
+      jest.advanceTimersByTime(200);
+    });
+
+    // Still dark while pulling diagonally
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+
+    // Release diagonal drag
+    act(() => {
+      fireEvent.pointerUp(switchBtn, { clientX: 70, clientY: 125, pointerId: 1 });
+      jest.advanceTimersByTime(500);
+    });
+
+    // Switches only on release
     expect(document.documentElement.getAttribute('data-theme')).toBe('light');
     expect(localStorage.getItem('portfolio-theme')).toBe('light');
   });

@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../ui/button';
-import { Input, Textarea, Label, Badge } from '../ui/input';
+import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
+import { Label } from '../ui/label';
+import { Badge } from '../ui/badge';
+import { Card } from '../ui/card';
 import { postMessage, ContactMessagePayload } from '../../api/ContactForm';
 import {
   Send,
@@ -132,13 +136,13 @@ const ContactComponent: React.FC = () => {
       <div className="contact-grid">
         {/* Frosted Glass Form Card */}
         <motion.div
-          className="glass-card contact-card"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.42 }}
         >
-          <form onSubmit={handleSubmit} noValidate>
+          <Card className="contact-card">
+            <form onSubmit={handleSubmit} noValidate>
             <AnimatePresence>
               {isSuccess && (
                 <motion.div
@@ -333,17 +337,18 @@ const ContactComponent: React.FC = () => {
                 <ExternalLink size={13} style={{ marginLeft: 6 }} />
               </Button>
             </a>
-          </div>
+            </div>
+          </Card>
         </motion.div>
 
         {/* Telemetry & Direct Presence Panel */}
         <motion.div
-          className="glass-card contact-card"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.54 }}
         >
+          <Card className="contact-card">
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
               <Badge color="blue">Professional Telemetry</Badge>
@@ -417,7 +422,8 @@ const ContactComponent: React.FC = () => {
                 </Button>
               </a>
             </div>
-          </div>
+            </div>
+          </Card>
         </motion.div>
       </div>
     </section>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Badge } from '../ui/input';
+import { Badge } from '../ui/badge';
+import { Card } from '../ui/card';
 import { Code2, Server, Cloud, BrainCircuit, GraduationCap, LucideIcon } from 'lucide-react';
 
 interface StackGroup {
@@ -134,57 +135,59 @@ const SkillsComponent: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: 0.38 + idx * 0.1 }}
-              className="glass-card"
+              style={{ display: 'flex' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '0.85rem' }}>
-                <div
-                  style={{
-                    width: '38px',
-                    height: '38px',
-                    borderRadius: '10px',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid var(--border-glass)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'var(--accent-blue)',
-                  }}
-                >
-                  <Icon size={19} />
-                </div>
-                <div>
-                  <h3
+              <Card style={{ width: '100%' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '0.85rem' }}>
+                  <div
                     style={{
-                      fontSize: '1.2rem',
-                      fontWeight: 700,
-                      color: 'var(--text-primary)',
-                      letterSpacing: '-0.02em',
-                      lineHeight: 1.2,
+                      width: '38px',
+                      height: '38px',
+                      borderRadius: '10px',
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid var(--border-glass)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'var(--accent-blue)',
                     }}
                   >
-                    {group.category}
-                  </h3>
+                    <Icon size={19} />
+                  </div>
+                  <div>
+                    <h3
+                      style={{
+                        fontSize: '1.2rem',
+                        fontWeight: 700,
+                        color: 'var(--text-primary)',
+                        letterSpacing: '-0.02em',
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {group.category}
+                    </h3>
+                  </div>
                 </div>
-              </div>
 
-              <p
-                style={{
-                  fontSize: '0.88rem',
-                  color: 'var(--text-secondary)',
-                  lineHeight: 1.55,
-                  marginBottom: '1.5rem',
-                }}
-              >
-                {group.description}
-              </p>
+                <p
+                  style={{
+                    fontSize: '0.88rem',
+                    color: 'var(--text-secondary)',
+                    lineHeight: 1.55,
+                    marginBottom: '1.5rem',
+                  }}
+                >
+                  {group.description}
+                </p>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                {group.skills.map((skill, sIdx) => (
-                  <Badge key={sIdx} color="default">
-                    {skill}
-                  </Badge>
-                ))}
-              </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {group.skills.map((skill, sIdx) => (
+                    <Badge key={sIdx} color="default">
+                      {skill}
+                    </Badge>
+                  ))}
+                </div>
+              </Card>
             </motion.div>
           );
         })}
@@ -192,54 +195,56 @@ const SkillsComponent: React.FC = () => {
 
       {/* Academic Foundation Note */}
       <motion.div
-        className="glass-card"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-40px' }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
-        style={{
-          marginTop: '2.5rem',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '1.75rem',
-        }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <div
-            style={{
-              width: '44px',
-              height: '44px',
-              borderRadius: '12px',
-              background: 'rgba(99, 102, 241, 0.1)',
-              border: '1px solid rgba(99, 102, 241, 0.25)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--accent-indigo)',
-              flexShrink: 0,
-            }}
-          >
-            <GraduationCap size={22} />
+        <Card
+          style={{
+            marginTop: '2.5rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '1.75rem',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <div
+              style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '12px',
+                background: 'rgba(99, 102, 241, 0.1)',
+                border: '1px solid rgba(99, 102, 241, 0.25)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--accent-indigo)',
+                flexShrink: 0,
+              }}
+            >
+              <GraduationCap size={22} />
+            </div>
+            <div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.74rem', color: 'var(--accent-blue)', textTransform: 'uppercase', marginBottom: '4px', fontWeight: 600 }}>
+                Academic Foundation
+              </div>
+              <div style={{ fontSize: '1.08rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                Bachelor of Technology in Bioinformatics
+              </div>
+              <div style={{ fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
+                SIST · Jun 2016 – May 2020
+              </div>
+            </div>
           </div>
-          <div>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.74rem', color: 'var(--accent-blue)', textTransform: 'uppercase', marginBottom: '4px', fontWeight: 600 }}>
-              Academic Foundation
-            </div>
-            <div style={{ fontSize: '1.08rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-              Bachelor of Technology in Bioinformatics
-            </div>
-            <div style={{ fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
-              SIST · Jun 2016 – May 2020
-            </div>
-          </div>
-        </div>
 
-        <div style={{ maxWidth: '440px', fontSize: '0.92rem', color: 'var(--text-secondary)', lineHeight: 1.65 }}>
-          Transitioned from computational biological data into low-latency financial systems,
-          distributed pricing engines, and enterprise AI tooling.
-        </div>
+          <div style={{ maxWidth: '440px', fontSize: '0.92rem', color: 'var(--text-secondary)', lineHeight: 1.65 }}>
+            Transitioned from computational biological data into low-latency financial systems,
+            distributed pricing engines, and enterprise AI tooling.
+          </div>
+        </Card>
       </motion.div>
     </section>
   );

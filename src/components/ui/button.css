@@ -161,3 +161,33 @@
   border-color: rgba(0, 0, 0, 0.08);
   color: var(--text-primary);
 }
+
+/* Variant: Destructive */
+.btn-destructive {
+  background: #ef4444;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+}
+
+.btn-destructive:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.5);
+}
+
+/* Variant: Link */
+.btn-link {
+  background: transparent;
+  border: none;
+  color: var(--accent-blue);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  padding: 0;
+  height: auto;
+}
+
+.btn-link:hover {
+  color: var(--accent-indigo);
+  text-decoration: underline;
+}

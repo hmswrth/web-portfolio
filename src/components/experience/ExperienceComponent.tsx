@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Badge } from '../ui/input';
-import { ExternalLink, Calendar, ShieldCheck } from 'lucide-react';
+import { Badge } from '../ui/badge';
+import { Card } from '../ui/card';
+import { Tabs, TabsList, TabsTrigger } from '../ui/tabs';
+import { ExternalLink, Calendar } from 'lucide-react';
 
 interface HighlightItem {
   title: string;
@@ -185,7 +187,7 @@ const ExperienceComponent: React.FC = () => {
         </motion.p>
       </div>
 
-      {/* Frosted Segmented Control Selector */}
+      {/* Frosted Segmented Control Selector using shadcn Tabs */}
       <motion.div
         style={{ marginBottom: '2rem' }}
         initial={{ opacity: 0, y: 16 }}
@@ -193,27 +195,19 @@ const ExperienceComponent: React.FC = () => {
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: 0.44 }}
       >
-        <div className="segmented-control-frosted">
-          {EXPERIENCES.map((exp) => {
-            const isActive = exp.id === activeTab;
-            return (
-              <button
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList aria-label="Select organization experience">
+            {EXPERIENCES.map((exp) => (
+              <TabsTrigger
                 key={exp.id}
-                onClick={() => setActiveTab(exp.id)}
-                className={`segmented-tab-btn-frosted ${isActive ? 'active' : ''}`}
+                value={exp.id}
+                layoutId="exp-active-pill-frosted"
               >
-                {isActive && (
-                  <motion.div
-                    layoutId="exp-active-pill-frosted"
-                    className="tab-active-pill-frosted"
-                    transition={{ type: 'spring', stiffness: 500, damping: 35 }}
-                  />
-                )}
-                <span className="tab-label-text">{exp.company}</span>
-              </button>
-            );
-          })}
-        </div>
+                {exp.company}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
       </motion.div>
 
       {/* Active Experience Detail Card */}
@@ -224,9 +218,9 @@ const ExperienceComponent: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -15 }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="glass-card"
         >
-          {/* Header row */}
+          <Card>
+            {/* Header row */}
           <div
             style={{
               display: 'flex',
@@ -266,10 +260,6 @@ const ExperienceComponent: React.FC = () => {
               <Badge color="blue" style={{ gap: '6px' }}>
                 <Calendar size={12} />
                 <span>{current.period}</span>
-              </Badge>
-              <Badge color={current.color} style={{ gap: '6px' }}>
-                <ShieldCheck size={12} />
-                <span>Verified Contributor</span>
               </Badge>
             </div>
           </div>
@@ -311,6 +301,7 @@ const ExperienceComponent: React.FC = () => {
               </Badge>
             ))}
           </div>
+          </Card>
         </motion.div>
       </AnimatePresence>
     </section>

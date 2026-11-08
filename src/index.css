@@ -157,20 +157,7 @@ html[data-theme-transition] *::after {
   transition: none !important;
 }
 
-.theme-bulb-container {
-  view-transition-name: theme-bulb-switch;
-}
-
-::view-transition-group(theme-bulb-switch) {
-  z-index: 100000;
-  animation-duration: 0s;
-}
-
-::view-transition-old(theme-bulb-switch),
-::view-transition-new(theme-bulb-switch) {
-  animation: none;
-  mix-blend-mode: normal;
-}
+/* Bulb container runs live Framer Motion spring physics without snapshot freezing */
 
 ::view-transition-group(root),
 ::view-transition-image-pair(root) {

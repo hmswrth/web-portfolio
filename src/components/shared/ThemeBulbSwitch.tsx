@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { animate } from 'framer-motion';
 import { useTheme } from '../../context/ThemeContext';
 
 // Realistic mechanical ratchet switch click sound via Web Audio API
@@ -29,10 +30,10 @@ const playSwitchClick = () => {
 };
 
 const REST_X = 16;
-const REST_Y = 58; // Lengthened pull cord with authentic physics (no lagging ball)
+const REST_Y = 58;
 const ANCHOR_X = 16;
 const ANCHOR_Y = 32.5;
-const PULL_THRESHOLD = 12; // px downward pull to trip switch
+const PULL_THRESHOLD = 11; // px downward or diagonal pull to arm the ratchet switch
 
 const ThemeBulbSwitch: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
@@ -40,21 +41,33 @@ const ThemeBulbSwitch: React.FC = () => {
 
   // Rope end physics position state
   const [ropeEnd, setRopeEnd] = useState<{ x: number; y: number }>({ x: REST_X, y: REST_Y });
+  const [isDragging, setIsDragging] = useState<boolean>(false);
 
-  // Physics simulation state refs
+  // Physics animation control refs
   const posRef = useRef<{ x: number; y: number }>({ x: REST_X, y: REST_Y });
-  const velRef = useRef<{ vx: number; vy: number }>({ vx: 0, vy: 0 });
-  const animFrameRef = useRef<number | null>(null);
-  const lastTimeRef = useRef<number | null>(null);
+  const animControlsXRef = useRef<{ stop: () => void } | null>(null);
+  const animControlsYRef = useRef<{ stop: () => void } | null>(null);
 
   // Interaction tracking refs
   const isDraggingRef = useRef<boolean>(false);
   const dragStartRef = useRef<{ clientX: number; clientY: number }>({ clientX: 0, clientY: 0 });
-  const hasTrippedRef = useRef<boolean>(false);
+  const hasArmedRef = useRef<boolean>(false);
   const hasMovedSignificantlyRef = useRef<boolean>(false);
   const gestureHandledRecentlyRef = useRef<boolean>(false);
 
   const isLight = theme === 'light';
+
+  // Stop any active spring animations
+  const stopSprings = useCallback(() => {
+    if (animControlsXRef.current) {
+      animControlsXRef.current.stop();
+      animControlsXRef.current = null;
+    }
+    if (animControlsYRef.current) {
+      animControlsYRef.current.stop();
+      animControlsYRef.current = null;
+    }
+  }, []);
 
   // Trigger theme toggle with coordinates calculated from bulb center
   const triggerToggle = useCallback(() => {
@@ -77,96 +90,73 @@ const ThemeBulbSwitch: React.FC = () => {
     toggleTheme(originCoords);
   }, [toggleTheme]);
 
-  // Physics animation loop: vertical Hooke's Law spring + lateral pendulum sway
-  const startPhysicsSimulation = useCallback((initialVx = 0, initialVy = 0) => {
-    if (animFrameRef.current) {
-      cancelAnimationFrame(animFrameRef.current);
-    }
+  // Authentic Framer Motion spring physics for snapping back & lateral pendulum swing
+  const startSpringAnimation = useCallback(
+    (startX: number, startY: number, initialVx = 0, initialVy = 0) => {
+      stopSprings();
 
-    velRef.current = { vx: initialVx, vy: initialVy };
-    lastTimeRef.current = null;
+      // Framer Motion spring for lateral oscillation (pendulum sway)
+      try {
+        animControlsXRef.current = animate(startX, REST_X, {
+          type: 'spring',
+          stiffness: 280,
+          damping: 8.5,
+          mass: 0.6,
+          velocity: initialVx,
+          onUpdate: (latest) => {
+            posRef.current.x = latest;
+            setRopeEnd((prev) => ({ ...prev, x: latest }));
+          },
+        });
 
-    const animatePhysics = (now: number) => {
-      if (lastTimeRef.current === null) {
-        lastTimeRef.current = now;
-        animFrameRef.current = requestAnimationFrame(animatePhysics);
-        return;
-      }
-
-      const dt = Math.min((now - lastTimeRef.current) / 1000, 0.032);
-      lastTimeRef.current = now;
-
-      const { x, y } = posRef.current;
-      const { vx, vy } = velRef.current;
-
-      // Vertical spring physics
-      const kY = 320;
-      const dY = 14;
-      const deltaY = y - REST_Y;
-      const forceY = -kY * deltaY - dY * vy;
-      const nextVy = vy + forceY * dt;
-      const nextY = y + nextVy * dt;
-
-      // Lateral pendulum oscillation
-      const kX = 140;
-      const dX = 3.2;
-      const deltaX = x - REST_X;
-      const forceX = -kX * deltaX - dX * vx;
-      const nextVx = vx + forceX * dt;
-      const nextX = x + nextVx * dt;
-
-      posRef.current = { x: nextX, y: nextY };
-      velRef.current = { vx: nextVx, vy: nextVy };
-      setRopeEnd({ x: nextX, y: nextY });
-
-      const totalEnergy = Math.abs(deltaY) + Math.abs(deltaX) + Math.abs(nextVy) * 0.05 + Math.abs(nextVx) * 0.05;
-      if (totalEnergy > 0.04) {
-        animFrameRef.current = requestAnimationFrame(animatePhysics);
-      } else {
+        // Framer Motion spring for vertical snap-back (elastic recoil)
+        animControlsYRef.current = animate(startY, REST_Y, {
+          type: 'spring',
+          stiffness: 440,
+          damping: 14,
+          mass: 0.5,
+          velocity: initialVy,
+          onUpdate: (latest) => {
+            posRef.current.y = latest;
+            setRopeEnd((prev) => ({ ...prev, y: latest }));
+          },
+        });
+      } catch {
+        // Fallback in environments without animation driver
         posRef.current = { x: REST_X, y: REST_Y };
-        velRef.current = { vx: 0, vy: 0 };
         setRopeEnd({ x: REST_X, y: REST_Y });
-        animFrameRef.current = null;
       }
-    };
-
-    animFrameRef.current = requestAnimationFrame(animatePhysics);
-  }, []);
+    },
+    [stopSprings]
+  );
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (animFrameRef.current) {
-        cancelAnimationFrame(animFrameRef.current);
-      }
+      stopSprings();
     };
-  }, []);
+  }, [stopSprings]);
 
-  // Programmatic pull animation on click or tap
+  // Programmatic pull animation on click or keyboard activation
+  // Pulls cord downwards, then switches theme strictly upon release
   const triggerPullAnimation = useCallback(() => {
-    if (animFrameRef.current) {
-      cancelAnimationFrame(animFrameRef.current);
-      animFrameRef.current = null;
-    }
+    stopSprings();
 
-    // Direct downward stretch of rope
-    posRef.current = { x: REST_X + 1.5, y: REST_Y + 14 };
-    setRopeEnd({ x: REST_X + 1.5, y: REST_Y + 14 });
+    // Pull cord downwards
+    posRef.current = { x: REST_X + 1.2, y: REST_Y + 16 };
+    setRopeEnd({ x: REST_X + 1.2, y: REST_Y + 16 });
 
+    // Switch theme and release rope with Framer Motion spring physics
     setTimeout(() => {
       triggerToggle();
-      startPhysicsSimulation(-35, -170);
-    }, 90);
-  }, [startPhysicsSimulation, triggerToggle]);
+      startSpringAnimation(REST_X + 1.2, REST_Y + 16, -26, -210);
+    }, 110);
+  }, [startSpringAnimation, stopSprings, triggerToggle]);
 
-  // Pointer drag event handlers for authentic pulling without lagging ball
+  // Pointer drag event handlers for generous hit target and omnidirectional pulling
   const handlePointerDown = (e: React.PointerEvent) => {
     if (e.button !== 0) return;
-
-    if (animFrameRef.current) {
-      cancelAnimationFrame(animFrameRef.current);
-      animFrameRef.current = null;
-    }
+    stopSprings();
 
     try {
       (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
@@ -174,9 +164,10 @@ const ThemeBulbSwitch: React.FC = () => {
       // ignore
     }
 
+    setIsDragging(true);
     isDraggingRef.current = true;
     dragStartRef.current = { clientX: e.clientX, clientY: e.clientY };
-    hasTrippedRef.current = false;
+    hasArmedRef.current = false;
     hasMovedSignificantlyRef.current = false;
   };
 
@@ -190,21 +181,29 @@ const ThemeBulbSwitch: React.FC = () => {
       hasMovedSignificantlyRef.current = true;
     }
 
-    const rawPull = Math.max(0, deltaY);
-    const elasticY = REST_Y + (rawPull * 22) / (22 + rawPull * 0.4);
-    const elasticX = REST_X + Math.max(-9, Math.min(9, deltaX * 0.35));
+    // Omnidirectional fluid elasticity: allows pulling left, right, diagonally down, or straight down
+    const effectiveDy = deltaY < 0 ? deltaY * 0.12 : deltaY;
+    const pullDistance = Math.hypot(deltaX * 0.9, Math.max(0, effectiveDy));
+    const maxRopeStretch = 28;
+    const stretch = (pullDistance * maxRopeStretch) / (maxRopeStretch + pullDistance * 0.45);
+    const angle = Math.atan2(Math.max(0, effectiveDy), deltaX * 0.9);
+
+    const elasticX = REST_X + Math.cos(angle) * stretch * 0.92;
+    const elasticY = REST_Y + Math.sin(angle) * stretch;
 
     posRef.current = { x: elasticX, y: elasticY };
     setRopeEnd({ x: elasticX, y: elasticY });
 
-    if (!hasTrippedRef.current && elasticY - REST_Y >= PULL_THRESHOLD) {
-      hasTrippedRef.current = true;
-      triggerToggle();
+    // Arm the ratchet switch when downward pull threshold or total diagonal stretch is crossed
+    // Note: Theme NEVER switches while pulling; strictly on release!
+    if (effectiveDy >= PULL_THRESHOLD || stretch >= 11) {
+      hasArmedRef.current = true;
     }
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
     if (!isDraggingRef.current) return;
+    setIsDragging(false);
     isDraggingRef.current = false;
 
     try {
@@ -218,19 +217,27 @@ const ThemeBulbSwitch: React.FC = () => {
       gestureHandledRecentlyRef.current = false;
     }, 250);
 
-    if (hasMovedSignificantlyRef.current) {
-      const currentX = posRef.current.x;
-      const lateralImpulse = (REST_X - currentX) * 16;
-      startPhysicsSimulation(lateralImpulse, -170);
+    const { x: curX, y: curY } = posRef.current;
+    const lateralImpulse = (REST_X - curX) * 20;
+
+    if (hasArmedRef.current) {
+      // SWITCH THEME ONLY ON RELEASE!
+      triggerToggle();
+      startSpringAnimation(curX, curY, lateralImpulse, -230);
+    } else if (hasMovedSignificantlyRef.current) {
+      // Pulled below threshold: snap back with spring without switching theme
+      startSpringAnimation(curX, curY, lateralImpulse, -120);
     } else {
+      // Tap or quick click
       triggerPullAnimation();
     }
   };
 
   const handlePointerCancel = () => {
     if (!isDraggingRef.current) return;
+    setIsDragging(false);
     isDraggingRef.current = false;
-    startPhysicsSimulation(0, -120);
+    startSpringAnimation(posRef.current.x, posRef.current.y, 0, -120);
   };
 
   const handleClick = () => {
@@ -247,8 +254,8 @@ const ThemeBulbSwitch: React.FC = () => {
 
   // Flexible rope curve coordinates
   const { x: ropeX, y: ropeY } = ropeEnd;
-  const ctrlX = ANCHOR_X + (ropeX - ANCHOR_X) * 0.42;
-  const ctrlY = ANCHOR_Y + (ropeY - ANCHOR_Y) * 0.52;
+  const ctrlX = ANCHOR_X + (ropeX - ANCHOR_X) * 0.35;
+  const ctrlY = ANCHOR_Y + (ropeY - ANCHOR_Y) * 0.58;
 
   return (
     <div
@@ -267,13 +274,36 @@ const ThemeBulbSwitch: React.FC = () => {
       aria-pressed={isLight}
       style={{ touchAction: 'none' }}
     >
+      {/* Generous pull hit target covering 76×76px around cord */}
+      <div
+        className="theme-bulb-cord-hit-area"
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: 24,
+          transform: 'translateX(-50%)',
+          width: 76,
+          height: 76,
+          cursor: isDragging ? 'grabbing' : 'grab',
+          touchAction: 'none',
+          pointerEvents: 'auto',
+          zIndex: 10,
+        }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
+      />
+
       <svg
-        width="34"
-        height="72"
-        viewBox="0 0 32 76"
+        width="64"
+        height="88"
+        viewBox="-30 0 92 110"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="theme-bulb-svg"
+        style={{ overflow: 'visible' }}
       >
         <defs>
           <radialGradient
@@ -401,7 +431,7 @@ const ThemeBulbSwitch: React.FC = () => {
           fill={isLight ? '#b45309' : '#475569'}
         />
 
-        {/* Elegant, lengthened pull rope with physics curve */}
+        {/* Elegant, lengthened pull rope with authentic physics curve */}
         <path
           d={`M ${ANCHOR_X} ${ANCHOR_Y} Q ${ctrlX} ${ctrlY} ${ropeX} ${ropeY}`}
           stroke={isLight ? '#b45309' : '#94a3b8'}
@@ -410,15 +440,20 @@ const ThemeBulbSwitch: React.FC = () => {
           fill="none"
         />
 
-        {/* Clean knotted cord finish (clean pull-tip, zero lag, no ball) */}
-        <line
-          x1={ropeX - 1.5}
-          y1={ropeY - 0.5}
-          x2={ropeX + 1.5}
-          y2={ropeY - 0.5}
-          stroke={isLight ? '#92400e' : '#64748b'}
-          strokeWidth="2.2"
-          strokeLinecap="round"
+        {/* Cord tip knot and brass pull-knob */}
+        <circle
+          cx={ropeX}
+          cy={ropeY + 1.2}
+          r={2.8}
+          fill={isLight ? '#b45309' : '#475569'}
+          stroke={isLight ? '#92400e' : '#334155'}
+          strokeWidth={0.8}
+        />
+        <circle
+          cx={ropeX - 0.7}
+          cy={ropeY + 0.5}
+          r={0.9}
+          fill={isLight ? '#fef3c7' : '#94a3b8'}
         />
       </svg>
     </div>

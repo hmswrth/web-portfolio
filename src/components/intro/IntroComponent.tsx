@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Button from '../ui/button';
-import { Badge } from '../ui/input';
-import { ArrowRight, Zap, ShieldCheck } from 'lucide-react';
+import { Badge } from '../ui/badge';
+import { ArrowRight, Zap, Briefcase } from 'lucide-react';
 
 interface MetricItem {
   value: string;
@@ -143,7 +143,7 @@ const IntroComponent: React.FC<IntroComponentProps> = ({ onNavigate }) => {
         </Button>
 
         <Button variant="outline" size="lg" onClick={() => onNavigate('experience')}>
-          <ShieldCheck size={17} style={{ marginRight: 8, color: 'var(--accent-blue)' }} />
+          <Briefcase size={17} style={{ marginRight: 8, color: 'var(--accent-blue)' }} />
           <span>Career Experience</span>
         </Button>
 

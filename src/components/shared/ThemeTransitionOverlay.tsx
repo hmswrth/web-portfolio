@@ -25,7 +25,7 @@ const ThemeTransitionOverlay: React.FC = () => {
         style={{
           position: 'fixed',
           inset: 0,
-          zIndex: 999990,
+          zIndex: 999,
           pointerEvents: 'none',
           overflow: 'hidden',
         }}
