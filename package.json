@@ -50,5 +50,13 @@
       "last 1 safari version",
       "last 1 ios version"
     ]
+  },
+  "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
+    "@types/node": "^18.19.130",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/smoothscroll-polyfill": "^0.3.4",
+    "typescript": "^4.9.5"
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const InteractiveGlowBackground = () => {
+const InteractiveGlowBackground: React.FC = () => {
   return (
     <div className="interactive-glow-canvas" aria-hidden="true">
       {/* Original dotted grid overlay without any background glow orbs */}

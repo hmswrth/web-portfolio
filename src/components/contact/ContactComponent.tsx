@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../ui/button';
 import { Input, Textarea, Label, Badge } from '../ui/input';
-import { postMessage } from '../../api/ContactForm';
+import { postMessage, ContactMessagePayload } from '../../api/ContactForm';
 import {
   Send,
   CheckCircle2,
@@ -13,22 +13,22 @@ import {
 } from 'lucide-react';
 import { AiOutlineGithub, AiOutlineLinkedin } from 'react-icons/ai';
 
-const ContactComponent = () => {
-  const [formData, setFormData] = useState({
+const ContactComponent: React.FC = () => {
+  const [formData, setFormData] = useState<ContactMessagePayload>({
     name: '',
     email: '',
     subject: '',
     message: '',
   });
 
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState('');
-  const [copiedKey, setCopiedKey] = useState(null);
+  const [errors, setErrors] = useState<Record<string, string | undefined>>({});
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string>('');
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
-  const validate = () => {
-    const errs = {};
+  const validate = (): boolean => {
+    const errs: Record<string, string> = {};
     if (!formData.name.trim() || formData.name.trim().length < 2) {
       errs.name = 'Please provide your name (minimum 2 characters)';
     }
@@ -50,7 +50,7 @@ const ContactComponent = () => {
     return Object.keys(errs).length === 0;
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
@@ -61,7 +61,7 @@ const ContactComponent = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
@@ -85,8 +85,8 @@ const ContactComponent = () => {
     }
   };
 
-  const copyToClipboard = (text, key) => {
-    if (navigator?.clipboard?.writeText) {
+  const copyToClipboard = (text: string, key: string) => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
       navigator.clipboard.writeText(text);
       setCopiedKey(key);
       setTimeout(() => setCopiedKey(null), 2500);
@@ -352,10 +352,10 @@ const ContactComponent = () => {
                 <span>Active Production</span>
               </Badge>
             </div>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.02em', marginBottom: '0.6rem' }}>
+            <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: '0.6rem' }}>
               Hemanth Mudra
             </h3>
-            <p style={{ fontSize: '0.95rem', color: '#cbd5e1', lineHeight: 1.65 }}>
+            <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.65 }}>
               Specialist Software Engineer at Nasdaq, Inc., specializing in distributed financial systems,
               batch processing engines, Argo CD GitOps pipelines, and enterprise AI Model Context Protocol integrations.
             </p>
@@ -364,7 +364,7 @@ const ContactComponent = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', fontSize: '0.9rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.85rem', borderBottom: '1px solid var(--border-glass)' }}>
               <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>ORGANIZATION</span>
-              <span style={{ color: '#ffffff', fontWeight: 500 }}>Nasdaq, Inc.</span>
+              <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>Nasdaq, Inc.</span>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.85rem', borderBottom: '1px solid var(--border-glass)' }}>
@@ -374,17 +374,17 @@ const ContactComponent = () => {
 
             <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.85rem', borderBottom: '1px solid var(--border-glass)' }}>
               <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>SYSTEM FOCUS</span>
-              <span style={{ color: '#ffffff', fontWeight: 500 }}>NFN &amp; Nasdaq Data Link</span>
+              <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>NFN &amp; Nasdaq Data Link</span>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.85rem', borderBottom: '1px solid var(--border-glass)' }}>
               <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>CORE CAPABILITIES</span>
-              <span style={{ color: '#ffffff', fontWeight: 500 }}>Batch Engines, Helm/Argo CD &amp; FastMCP</span>
+              <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>Batch Engines, Helm/Argo CD &amp; FastMCP</span>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.85rem', borderBottom: '1px solid var(--border-glass)' }}>
               <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>RESPONSE TIME</span>
-              <span style={{ color: '#34d399', fontFamily: 'var(--font-mono)' }}>&lt; 24 hours</span>
+              <span style={{ color: '#10b981', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>&lt; 24 hours</span>
             </div>
           </div>
 
@@ -400,7 +400,7 @@ const ContactComponent = () => {
                 aria-label="GitHub Profile"
               >
                 <Button variant="outline" size="sm">
-                  <AiOutlineGithub size={16} style={{ marginRight: 6, color: '#ffffff' }} />
+                  <AiOutlineGithub size={16} style={{ marginRight: 6 }} />
                   <span>GitHub</span>
                 </Button>
               </a>
@@ -412,7 +412,7 @@ const ContactComponent = () => {
                 aria-label="LinkedIn Profile"
               >
                 <Button variant="outline" size="sm">
-                  <AiOutlineLinkedin size={16} style={{ marginRight: 6, color: '#38bdf8' }} />
+                  <AiOutlineLinkedin size={16} style={{ marginRight: 6, color: 'var(--accent-blue)' }} />
                   <span>LinkedIn</span>
                 </Button>
               </a>

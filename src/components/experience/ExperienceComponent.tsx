@@ -3,7 +3,23 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Badge } from '../ui/input';
 import { ExternalLink, Calendar, ShieldCheck } from 'lucide-react';
 
-const EXPERIENCES = [
+interface HighlightItem {
+  title: string;
+  desc: string;
+}
+
+interface ExperienceItem {
+  id: string;
+  company: string;
+  role: string;
+  period: string;
+  url: string;
+  color: string;
+  highlights: HighlightItem[];
+  tech: string[];
+}
+
+const EXPERIENCES: ExperienceItem[] = [
   {
     id: 'nasdaq',
     company: 'Nasdaq, Inc.',
@@ -129,8 +145,8 @@ const EXPERIENCES = [
   },
 ];
 
-const ExperienceComponent = () => {
-  const [activeTab, setActiveTab] = useState(EXPERIENCES[0].id);
+const ExperienceComponent: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<string>(EXPERIENCES[0].id);
   const current = EXPERIENCES.find((e) => e.id === activeTab) || EXPERIENCES[0];
 
   return (
@@ -224,7 +240,7 @@ const ExperienceComponent = () => {
             }}
           >
             <div>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#ffffff', letterSpacing: '-0.025em' }}>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.025em' }}>
                 {current.role}
               </h3>
               <a
@@ -271,8 +287,8 @@ const ExperienceComponent = () => {
                 >
                   ▹
                 </span>
-                <div style={{ fontSize: '0.98rem', lineHeight: 1.65, color: '#cbd5e1' }}>
-                  <strong style={{ color: '#ffffff', fontWeight: 600 }}>{item.title}: </strong>
+                <div style={{ fontSize: '0.98rem', lineHeight: 1.65, color: 'var(--text-secondary)' }}>
+                  <strong style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{item.title}: </strong>
                   <span>{item.desc}</span>
                 </div>
               </div>

@@ -4,7 +4,14 @@ import Button from '../ui/button';
 import { Badge } from '../ui/input';
 import { ArrowRight, Zap, ShieldCheck } from 'lucide-react';
 
-const METRICS = [
+interface MetricItem {
+  value: string;
+  label: string;
+  sub: string;
+  colorClass: string;
+}
+
+const METRICS: MetricItem[] = [
   {
     value: '3,000+',
     label: 'Instruments Batch Capacity',
@@ -31,7 +38,11 @@ const METRICS = [
   },
 ];
 
-const IntroComponent = ({ onNavigate }) => {
+export interface IntroComponentProps {
+  onNavigate: (sectionId: string) => void;
+}
+
+const IntroComponent: React.FC<IntroComponentProps> = ({ onNavigate }) => {
   return (
     <section id="intro" style={{ paddingTop: '1rem' }}>
       {/* Telemetry Status Line - Updated to Specialist SWE */}
@@ -53,8 +64,6 @@ const IntroComponent = ({ onNavigate }) => {
             gap: '8px',
             padding: '5px 12px',
             fontSize: '0.78rem',
-            background: 'rgba(56, 189, 248, 0.08)',
-            borderColor: 'rgba(56, 189, 248, 0.25)',
           }}
         >
           <span
@@ -67,7 +76,7 @@ const IntroComponent = ({ onNavigate }) => {
               display: 'inline-block',
             }}
           />
-          <span style={{ color: '#ffffff', fontWeight: 600 }}>Specialist Software Engineer · Nasdaq</span>
+          <span style={{ fontWeight: 600 }}>Specialist Software Engineer · Nasdaq</span>
         </Badge>
 
         <Badge
@@ -76,8 +85,6 @@ const IntroComponent = ({ onNavigate }) => {
             gap: '6px',
             padding: '5px 12px',
             fontSize: '0.78rem',
-            background: 'rgba(16, 185, 129, 0.08)',
-            borderColor: 'rgba(16, 185, 129, 0.25)',
           }}
         >
           <span
@@ -99,23 +106,12 @@ const IntroComponent = ({ onNavigate }) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.28 }}
       >
-        <h1
-          style={{
-            fontSize: 'clamp(1.9rem, 5.2vw, 3.8rem)',
-            fontWeight: 800,
-            letterSpacing: '-0.04em',
-            lineHeight: 1.1,
-            marginBottom: '1.5rem',
-            background: 'linear-gradient(135deg, #ffffff 40%, #93c5fd 85%, #818cf8 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}
-        >
+        <h1 className="hero-gradient-title">
           Architecting High-Throughput Financial Systems &amp; AI Infrastructure.
         </h1>
       </motion.div>
 
-      {/* Bio Description - NEF completely removed as requested */}
+      {/* Bio Description */}
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -123,12 +119,13 @@ const IntroComponent = ({ onNavigate }) => {
         style={{
           fontSize: 'clamp(1rem, 2vw, 1.15rem)',
           lineHeight: 1.7,
-          color: '#cbd5e1',
+          color: 'var(--text-secondary)',
           maxWidth: '820px',
           marginBottom: '2.5rem',
         }}
       >
-        Specialized in high-performance distributed systems at <strong style={{ color: '#ffffff', fontWeight: 600 }}>Nasdaq, Inc.</strong>,
+        Specialized in high-performance distributed systems at{' '}
+        <strong style={{ color: 'var(--text-primary)', fontWeight: 600 }}>Nasdaq, Inc.</strong>,
         re-engineering the Nasdaq Fund Network (NFN) to support 3x capacity growth, architecting centralized batch pricing engines,
         building worker services that power Nasdaq Data Link, and pioneering Model Context Protocol (FastMCP) AI retrieval servers.
       </motion.p>
@@ -146,12 +143,12 @@ const IntroComponent = ({ onNavigate }) => {
         </Button>
 
         <Button variant="outline" size="lg" onClick={() => onNavigate('experience')}>
-          <ShieldCheck size={17} style={{ marginRight: 8, color: '#38bdf8' }} />
+          <ShieldCheck size={17} style={{ marginRight: 8, color: 'var(--accent-blue)' }} />
           <span>Career Experience</span>
         </Button>
 
         <Button variant="secondary" size="lg" onClick={() => onNavigate('contact')}>
-          <Zap size={17} style={{ marginRight: 8, color: '#818cf8' }} />
+          <Zap size={17} style={{ marginRight: 8, color: 'var(--accent-indigo)' }} />
           <span>Get in Touch</span>
         </Button>
       </motion.div>
@@ -166,7 +163,7 @@ const IntroComponent = ({ onNavigate }) => {
         {METRICS.map((item, idx) => (
           <div key={idx} className={`stat-cell-frosted ${item.colorClass}`}>
             <div className={`stat-value ${item.colorClass}`}>{item.value}</div>
-            <div style={{ color: '#f8fafc', fontSize: '0.92rem', fontWeight: 600, marginTop: 4 }}>
+            <div style={{ color: 'var(--text-primary)', fontSize: '0.92rem', fontWeight: 600, marginTop: 4 }}>
               {item.label}
             </div>
             <div className="stat-desc">{item.sub}</div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../ui/button';
 import { ArrowUpRight, Menu, X } from 'lucide-react';
+import ThemeBulbSwitch from './ThemeBulbSwitch';
 
 const NAV_LINKS = [
   { id: 'intro', label: 'Overview' },
@@ -11,12 +12,17 @@ const NAV_LINKS = [
   { id: 'contact', label: 'Contact' },
 ];
 
-const LinearHeader = ({ activeSection, onNavigate }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+export interface LinearHeaderProps {
+  activeSection: string;
+  onNavigate: (id: string) => void;
+}
+
+const LinearHeader: React.FC<LinearHeaderProps> = ({ activeSection, onNavigate }) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   // Close mobile drawer on escape key
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && mobileMenuOpen) {
         setMobileMenuOpen(false);
       }
@@ -36,7 +42,7 @@ const LinearHeader = ({ activeSection, onNavigate }) => {
     }
   }, [mobileMenuOpen]);
 
-  const handleMobileNav = (id) => {
+  const handleMobileNav = (id: string) => {
     setMobileMenuOpen(false);
     requestAnimationFrame(() => {
       onNavigate(id);
@@ -86,7 +92,7 @@ const LinearHeader = ({ activeSection, onNavigate }) => {
             })}
           </nav>
 
-          {/* Action Buttons & Mobile Toggle */}
+          {/* Action Buttons & Theme Light Bulb & Mobile Toggle */}
           <div className="header-actions">
             <Button
               variant="outline"
@@ -101,12 +107,16 @@ const LinearHeader = ({ activeSection, onNavigate }) => {
               href="mailto:mudra.hemanth@gmail.com?subject=Portfolio%20Inquiry%20-%20Resume%20Request"
               style={{ textDecoration: 'none' }}
               aria-label="Request Resume via Email"
+              className="header-btn-resume-link"
             >
               <Button variant="default" size="sm" className="header-btn-resume">
                 <span>Resume</span>
                 <ArrowUpRight size={13} style={{ marginLeft: 4 }} />
               </Button>
             </a>
+
+            {/* Live Light Bulb with String Physics Switch */}
+            <ThemeBulbSwitch />
 
             {/* Mobile Menu Hamburger Toggle */}
             <button

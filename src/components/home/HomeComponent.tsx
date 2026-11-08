@@ -10,8 +10,8 @@ import ContactComponent from '../contact/ContactComponent';
 
 const SECTION_IDS = ['intro', 'experience', 'architecture', 'stack', 'contact'];
 
-const HomeComponent = () => {
-  const [activeSection, setActiveSection] = useState('intro');
+const HomeComponent: React.FC = () => {
+  const [activeSection, setActiveSection] = useState<string>('intro');
 
   // Smooth scroll progress bar with optimized spring physics
   const { scrollYProgress } = useScroll();
@@ -25,7 +25,7 @@ const HomeComponent = () => {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const observerCallback = (entries) => {
+    const observerCallback: IntersectionObserverCallback = (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting && entry.target.id) {
           setActiveSection(entry.target.id);
@@ -33,7 +33,7 @@ const HomeComponent = () => {
       });
     };
 
-    const observerOptions = {
+    const observerOptions: IntersectionObserverInit = {
       root: null,
       rootMargin: '-20% 0px -40% 0px',
       threshold: 0,
@@ -51,7 +51,7 @@ const HomeComponent = () => {
     };
   }, []);
 
-  const handleNavigate = (sectionId) => {
+  const handleNavigate = (sectionId: string) => {
     const el = document.getElementById(sectionId);
     if (!el) return;
 
@@ -81,7 +81,7 @@ const HomeComponent = () => {
       {/* Top Reading Progress Bar */}
       <motion.div className="top-scroll-line" style={{ scaleX }} />
 
-      {/* Sticky Frosted Glass Header */}
+      {/* Sticky Frosted Glass Header with Live Light Bulb Switch */}
       <LinearHeader activeSection={activeSection} onNavigate={handleNavigate} />
 
       {/* Main Single-Column Container */}

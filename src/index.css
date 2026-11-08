@@ -28,6 +28,30 @@
   --glow-y: 35%;
 }
 
+[data-theme="light"] {
+  --bg-app: #f4f6fb;
+  --bg-glass: rgba(255, 255, 255, 0.75);
+  --bg-glass-hover: rgba(255, 255, 255, 0.92);
+  --bg-input: rgba(255, 255, 255, 0.92);
+
+  --border-glass: rgba(0, 0, 0, 0.08);
+  --border-glass-hover: rgba(99, 102, 241, 0.45);
+  --border-glass-highlight: rgba(0, 0, 0, 0.12);
+
+  --accent-indigo: #4f46e5;
+  --accent-blue: #0284c7;
+  --accent-violet: #9333ea;
+  --accent-emerald: #059669;
+  --accent-amber: #d97706;
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  --shadow-glass: 0 12px 32px -8px rgba(0, 0, 0, 0.08), inset 0 1px 0 0 rgba(255, 255, 255, 0.95);
+  --shadow-glass-hover: 0 20px 40px -10px rgba(0, 0, 0, 0.12), 0 0 25px rgba(99, 102, 241, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.95);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -41,6 +65,10 @@ html {
   background-color: var(--bg-app);
   overflow-x: hidden;
   width: 100%;
+}
+
+[data-theme="light"] html {
+  color-scheme: light;
 }
 
 body {
@@ -57,6 +85,7 @@ body {
   width: 100%;
   position: relative;
   text-rendering: optimizeLegibility;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 ::selection {
@@ -64,7 +93,12 @@ body {
   color: #ffffff;
 }
 
-/* Frosted glass scrollbar for desktop */
+[data-theme="light"] ::selection {
+  background: rgba(99, 102, 241, 0.2);
+  color: #0f172a;
+}
+
+/* Frosted glass scrollbar */
 ::-webkit-scrollbar {
   width: 7px;
   height: 7px;
@@ -81,6 +115,18 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(99, 102, 241, 0.45);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.5);
 }
 
 code, pre {
@@ -101,3 +147,43 @@ button {
     scroll-behavior: auto;
   }
 }
+
+/* ========================================================
+   Circular View Transition day/night animation rules
+   ======================================================== */
+.theme-bulb-container {
+  view-transition-name: theme-bulb-switch;
+}
+
+::view-transition-group(theme-bulb-switch) {
+  z-index: 100000;
+  animation-duration: 0s;
+}
+
+::view-transition-old(theme-bulb-switch),
+::view-transition-new(theme-bulb-switch) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  display: block;
+}
+
+[data-theme-transition="to-light"]::view-transition-old(root) {
+  z-index: 1;
+}
+[data-theme-transition="to-light"]::view-transition-new(root) {
+  z-index: 9999;
+}
+
+[data-theme-transition="to-dark"]::view-transition-old(root) {
+  z-index: 9999;
+}
+[data-theme-transition="to-dark"]::view-transition-new(root) {
+  z-index: 1;
+}
+

@@ -1,9 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Badge } from '../ui/input';
-import { Code2, Server, Cloud, BrainCircuit, GraduationCap } from 'lucide-react';
+import { Code2, Server, Cloud, BrainCircuit, GraduationCap, LucideIcon } from 'lucide-react';
 
-const STACK_GROUPS = [
+interface StackGroup {
+  category: string;
+  description: string;
+  icon: LucideIcon;
+  badgeColor: string;
+  skills: string[];
+}
+
+const STACK_GROUPS: StackGroup[] = [
   {
     category: 'Backend & High-Throughput Engines',
     description: 'Mission-critical pricing pipelines, batch processors, and inter-service streams.',
@@ -79,7 +87,7 @@ const STACK_GROUPS = [
   },
 ];
 
-const SkillsComponent = () => {
+const SkillsComponent: React.FC = () => {
   return (
     <section id="stack">
       <div className="section-header-block">
@@ -134,7 +142,7 @@ const SkillsComponent = () => {
                     width: '38px',
                     height: '38px',
                     borderRadius: '10px',
-                    background: 'rgba(255, 255, 255, 0.04)',
+                    background: 'rgba(255, 255, 255, 0.05)',
                     border: '1px solid var(--border-glass)',
                     display: 'flex',
                     alignItems: 'center',
@@ -149,7 +157,7 @@ const SkillsComponent = () => {
                     style={{
                       fontSize: '1.2rem',
                       fontWeight: 700,
-                      color: '#ffffff',
+                      color: 'var(--text-primary)',
                       letterSpacing: '-0.02em',
                       lineHeight: 1.2,
                     }}
@@ -209,17 +217,17 @@ const SkillsComponent = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#818cf8',
+              color: 'var(--accent-indigo)',
               flexShrink: 0,
             }}
           >
             <GraduationCap size={22} />
           </div>
           <div>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.74rem', color: '#38bdf8', textTransform: 'uppercase', marginBottom: '4px', fontWeight: 600 }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.74rem', color: 'var(--accent-blue)', textTransform: 'uppercase', marginBottom: '4px', fontWeight: 600 }}>
               Academic Foundation
             </div>
-            <div style={{ fontSize: '1.08rem', fontWeight: 700, color: '#ffffff' }}>
+            <div style={{ fontSize: '1.08rem', fontWeight: 700, color: 'var(--text-primary)' }}>
               Bachelor of Technology in Bioinformatics
             </div>
             <div style={{ fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
@@ -228,7 +236,7 @@ const SkillsComponent = () => {
           </div>
         </div>
 
-        <div style={{ maxWidth: '440px', fontSize: '0.92rem', color: '#cbd5e1', lineHeight: 1.65 }}>
+        <div style={{ maxWidth: '440px', fontSize: '0.92rem', color: 'var(--text-secondary)', lineHeight: 1.65 }}>
           Transitioned from computational biological data into low-latency financial systems,
           distributed pricing engines, and enterprise AI tooling.
         </div>

@@ -16,6 +16,24 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/hemanthMudraLogo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
+    <!-- Synchronous theme setup before CSS/DOM paint prevents flash -->
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('portfolio-theme');
+          var theme = saved;
+          if (!theme || (theme !== 'light' && theme !== 'dark')) {
+            theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          }
+          document.documentElement.setAttribute('data-theme', theme);
+          var metaTheme = document.querySelector('meta[name="theme-color"]');
+          if (metaTheme) {
+            metaTheme.setAttribute('content', theme === 'light' ? '#f4f6fb' : '#08090e');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
     <!-- Google Fonts preconnect with swap display -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

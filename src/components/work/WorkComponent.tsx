@@ -19,14 +19,33 @@ import rw3 from '../../assets/retailWeb/retailWeb3.png';
 import rw4 from '../../assets/retailWeb/retailWeb4.png';
 import rw5 from '../../assets/retailWeb/retailWeb5.png';
 
-const CATEGORIES = [
+interface Category {
+  id: string;
+  label: string;
+}
+
+const CATEGORIES: Category[] = [
   { id: 'all', label: 'All Systems' },
   { id: 'finance', label: 'Financial Engines & DevOps' },
   { id: 'ai', label: 'AI & FastMCP' },
   { id: 'web', label: 'Enterprise Platforms' },
 ];
 
-const PROJECTS = [
+export interface Project {
+  id: string;
+  title: string;
+  category: string;
+  scaleBadge: string;
+  badgeColor: string;
+  description: string;
+  tech: string[];
+  highlights?: string[];
+  images?: string[];
+  liveUrl?: string;
+  githubUrl?: string;
+}
+
+const PROJECTS: Project[] = [
   {
     id: 'nasdaq-mcp',
     title: 'Nasdaq NFN Model Context Protocol (FastMCP)',
@@ -122,10 +141,10 @@ const PROJECTS = [
   },
 ];
 
-const WorkComponent = () => {
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+const WorkComponent: React.FC = () => {
+  const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
   const filtered =
     activeCategory === 'all'
@@ -137,31 +156,31 @@ const WorkComponent = () => {
     document.body.style.overflow = '';
   }, []);
 
-  const openModal = (proj) => {
+  const openModal = (proj: Project) => {
     setSelectedProject(proj);
     setCurrentImageIndex(0);
     document.body.style.overflow = 'hidden';
   };
 
-  const nextImg = (e) => {
+  const nextImg = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (selectedProject?.images) {
-      setCurrentImageIndex((prev) => (prev + 1) % selectedProject.images.length);
+      setCurrentImageIndex((prev) => (prev + 1) % selectedProject.images!.length);
     }
   };
 
-  const prevImg = (e) => {
+  const prevImg = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (selectedProject?.images) {
       setCurrentImageIndex(
-        (prev) => (prev - 1 + selectedProject.images.length) % selectedProject.images.length
+        (prev) => (prev - 1 + selectedProject.images!.length) % selectedProject.images!.length
       );
     }
   };
 
   // Keyboard accessibility for modal
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && selectedProject) {
         closeModal();
       }
@@ -285,15 +304,15 @@ const WorkComponent = () => {
                   style={{
                     fontSize: '1.3rem',
                     fontWeight: 700,
-                    color: '#ffffff',
+                    color: 'var(--text-primary)',
                     letterSpacing: '-0.02em',
                     lineHeight: 1.3,
                     marginBottom: '0.85rem',
                     cursor: 'pointer',
                     transition: 'color 0.2s ease',
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#38bdf8')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#ffffff')}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--accent-blue)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
                 >
                   {proj.title}
                 </h3>
@@ -301,7 +320,7 @@ const WorkComponent = () => {
                 <p
                   style={{
                     fontSize: '0.92rem',
-                    color: '#cbd5e1',
+                    color: 'var(--text-secondary)',
                     lineHeight: 1.65,
                     marginBottom: '1.5rem',
                   }}
@@ -343,9 +362,9 @@ const WorkComponent = () => {
                   >
                     <span>Inspect Case Study</span>
                     {proj.images ? (
-                      <Maximize2 size={13} style={{ marginLeft: 6, color: '#38bdf8' }} />
+                      <Maximize2 size={13} style={{ marginLeft: 6, color: 'var(--accent-blue)' }} />
                     ) : (
-                      <Sparkles size={13} style={{ marginLeft: 6, color: '#c084fc' }} />
+                      <Sparkles size={13} style={{ marginLeft: 6, color: 'var(--accent-violet)' }} />
                     )}
                   </Button>
 
@@ -392,7 +411,7 @@ const WorkComponent = () => {
             style={{
               position: 'fixed',
               inset: 0,
-              backgroundColor: 'rgba(5, 7, 12, 0.85)',
+              backgroundColor: 'rgba(5, 7, 12, 0.82)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
               zIndex: 1000,
@@ -420,9 +439,9 @@ const WorkComponent = () => {
                   position: 'absolute',
                   top: '18px',
                   right: '18px',
-                  background: 'rgba(255, 255, 255, 0.06)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
-                  color: '#ffffff',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  border: '1px solid var(--border-glass)',
+                  color: 'var(--text-primary)',
                   width: '34px',
                   height: '34px',
                   borderRadius: '50%',
@@ -444,7 +463,7 @@ const WorkComponent = () => {
                 style={{
                   fontSize: '1.85rem',
                   fontWeight: 700,
-                  color: '#ffffff',
+                  color: 'var(--text-primary)',
                   letterSpacing: '-0.03em',
                   marginBottom: '1rem',
                   lineHeight: 1.25,
@@ -453,7 +472,7 @@ const WorkComponent = () => {
                 {selectedProject.title}
               </h2>
 
-              <p style={{ color: '#cbd5e1', fontSize: '1.02rem', lineHeight: 1.7, marginBottom: '1.75rem' }}>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '1.02rem', lineHeight: 1.7, marginBottom: '1.75rem' }}>
                 {selectedProject.description}
               </p>
 
@@ -555,7 +574,7 @@ const WorkComponent = () => {
                             width: i === currentImageIndex ? '22px' : '6px',
                             height: '6px',
                             borderRadius: '3px',
-                            backgroundColor: i === currentImageIndex ? '#38bdf8' : 'rgba(255, 255, 255, 0.2)',
+                            backgroundColor: i === currentImageIndex ? 'var(--accent-blue)' : 'rgba(255, 255, 255, 0.2)',
                             transition: 'all 0.2s ease',
                           }}
                         />
@@ -574,7 +593,7 @@ const WorkComponent = () => {
                       fontSize: '0.8rem',
                       textTransform: 'uppercase',
                       letterSpacing: '0.08em',
-                      color: '#38bdf8',
+                      color: 'var(--accent-blue)',
                       marginBottom: '0.75rem',
                       fontWeight: 600,
                     }}
@@ -583,8 +602,8 @@ const WorkComponent = () => {
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                     {selectedProject.highlights.map((h, hIdx) => (
-                      <div key={hIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.96rem', color: '#cbd5e1' }}>
-                        <span style={{ color: '#38bdf8', marginTop: '2px' }}>▹</span>
+                      <div key={hIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.96rem', color: 'var(--text-secondary)' }}>
+                        <span style={{ color: 'var(--accent-blue)', marginTop: '2px' }}>▹</span>
                         <span>{h}</span>
                       </div>
                     ))}
