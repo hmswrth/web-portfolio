@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../ui/button';
 import { ArrowUpRight, Menu, X } from 'lucide-react';
@@ -14,9 +14,30 @@ const NAV_LINKS = [
 const LinearHeader = ({ activeSection, onNavigate }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Close mobile drawer on escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mobileMenuOpen]);
+
+  // Lock body scroll when mobile menu is open (especially iOS Safari)
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [mobileMenuOpen]);
+
   const handleMobileNav = (id) => {
     setMobileMenuOpen(false);
-    // Request animation frame so drawer close doesn't fight scrolling
     requestAnimationFrame(() => {
       onNavigate(id);
     });
@@ -24,19 +45,22 @@ const LinearHeader = ({ activeSection, onNavigate }) => {
 
   return (
     <>
-      <header className="frosted-header">
+      <header className="frosted-header" role="banner">
         <div className="frosted-header-inner">
-          {/* Brand: Uses 'Hemanth Mudra' */}
-          <div
+          {/* Brand */}
+          <button
+            type="button"
             className="header-brand"
             onClick={() => handleMobileNav('intro')}
+            aria-label="Hemanth Mudra - Scroll to top"
+            style={{ background: 'none', border: 'none', padding: 0, textAlign: 'left', font: 'inherit' }}
           >
             <div className="header-monogram">HM</div>
             <div className="header-brand-text">
               <div className="header-name">Hemanth Mudra</div>
               <div className="header-role">Specialist SWE · Nasdaq</div>
             </div>
-          </div>
+          </button>
 
           {/* Navigation Items (Desktop) */}
           <nav className="header-nav" aria-label="Main Navigation">
@@ -47,6 +71,7 @@ const LinearHeader = ({ activeSection, onNavigate }) => {
                   key={link.id}
                   onClick={() => onNavigate(link.id)}
                   className={`header-nav-btn ${isActive ? 'active' : ''}`}
+                  aria-current={isActive ? 'page' : undefined}
                 >
                   <span style={{ position: 'relative', zIndex: 1 }}>{link.label}</span>
                   {isActive && (
@@ -75,6 +100,7 @@ const LinearHeader = ({ activeSection, onNavigate }) => {
             <a
               href="mailto:mudra.hemanth@gmail.com?subject=Portfolio%20Inquiry%20-%20Resume%20Request"
               style={{ textDecoration: 'none' }}
+              aria-label="Request Resume via Email"
             >
               <Button variant="default" size="sm" className="header-btn-resume">
                 <span>Resume</span>
@@ -96,7 +122,7 @@ const LinearHeader = ({ activeSection, onNavigate }) => {
         </div>
       </header>
 
-      {/* Mobile Navigation Drawer & Backdrop outside the header for perfect stacking */}
+      {/* Mobile Navigation Drawer & Backdrop */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
@@ -108,6 +134,7 @@ const LinearHeader = ({ activeSection, onNavigate }) => {
               transition={{ duration: 0.2 }}
               className="mobile-nav-backdrop"
               onClick={() => setMobileMenuOpen(false)}
+              aria-hidden="true"
             />
 
             <motion.div
@@ -117,6 +144,9 @@ const LinearHeader = ({ activeSection, onNavigate }) => {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
               className="mobile-nav-drawer"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Mobile Navigation Menu"
             >
               <div className="mobile-nav-inner">
                 <div className="mobile-nav-links">
@@ -131,6 +161,7 @@ const LinearHeader = ({ activeSection, onNavigate }) => {
                           handleMobileNav(link.id);
                         }}
                         className={`mobile-nav-link ${isActive ? 'active' : ''}`}
+                        aria-current={isActive ? 'page' : undefined}
                       >
                         <span>{link.label}</span>
                         {isActive && <div className="mobile-nav-active-indicator" />}

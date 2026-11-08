@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../ui/button';
 import { Badge } from '../ui/input';
@@ -132,15 +132,15 @@ const WorkComponent = () => {
       ? PROJECTS
       : PROJECTS.filter((p) => p.category === activeCategory);
 
+  const closeModal = useCallback(() => {
+    setSelectedProject(null);
+    document.body.style.overflow = '';
+  }, []);
+
   const openModal = (proj) => {
     setSelectedProject(proj);
     setCurrentImageIndex(0);
     document.body.style.overflow = 'hidden';
-  };
-
-  const closeModal = () => {
-    setSelectedProject(null);
-    document.body.style.overflow = '';
   };
 
   const nextImg = (e) => {
@@ -158,6 +158,17 @@ const WorkComponent = () => {
       );
     }
   };
+
+  // Keyboard accessibility for modal
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && selectedProject) {
+        closeModal();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedProject, closeModal]);
 
   return (
     <section id="architecture">
@@ -203,12 +214,14 @@ const WorkComponent = () => {
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: 0.44 }}
       >
-        <div className="segmented-control-frosted">
+        <div className="segmented-control-frosted" role="tablist" aria-label="Filter systems by category">
           {CATEGORIES.map((cat) => {
             const isActive = cat.id === activeCategory;
             return (
               <button
                 key={cat.id}
+                role="tab"
+                aria-selected={isActive}
                 onClick={() => setActiveCategory(cat.id)}
                 className={`segmented-tab-btn-frosted ${isActive ? 'active' : ''}`}
               >
@@ -227,20 +240,16 @@ const WorkComponent = () => {
       </motion.div>
 
       {/* Grid of Frosted Glass Architecture Cards */}
-      <motion.div
-        layout
-        className="architecture-grid"
-      >
-        <AnimatePresence>
+      <div className="architecture-grid">
+        <AnimatePresence mode="popLayout">
           {filtered.map((proj, idx) => (
             <motion.div
-              layout
               key={proj.id}
-              initial={{ opacity: 0, y: 24, scale: 0.96 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-40px' }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1], delay: 0.15 + (idx % 3) * 0.1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: 0.1 + (idx % 3) * 0.08 }}
               className="glass-card"
               style={{
                 display: 'flex',
@@ -312,8 +321,8 @@ const WorkComponent = () => {
                     borderTop: '1px solid var(--border-glass)',
                   }}
                 >
-                  {proj.tech.map((t, idx) => (
-                    <Badge key={idx} color="default">
+                  {proj.tech.map((t, sIdx) => (
+                    <Badge key={sIdx} color="default">
                       {t}
                     </Badge>
                   ))}
@@ -330,6 +339,7 @@ const WorkComponent = () => {
                     variant="outline"
                     size="sm"
                     onClick={() => openModal(proj)}
+                    aria-label={`Inspect case study for ${proj.title}`}
                   >
                     <span>Inspect Case Study</span>
                     {proj.images ? (
@@ -372,7 +382,7 @@ const WorkComponent = () => {
             </motion.div>
           ))}
         </AnimatePresence>
-      </motion.div>
+      </div>
 
       {/* Case Study Frosted Glass Modal */}
       <AnimatePresence>
@@ -391,18 +401,21 @@ const WorkComponent = () => {
               justifyContent: 'center',
               padding: '1.5rem',
             }}
+            role="dialog"
+            aria-modal="true"
+            aria-label={selectedProject.title}
           >
             <motion.div
               onClick={(e) => e.stopPropagation()}
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              transition={{ duration: 0.25 }}
+              transition={{ duration: 0.22 }}
               className="case-study-modal-content"
             >
               <button
                 onClick={closeModal}
-                aria-label="Close"
+                aria-label="Close modal dialog"
                 style={{
                   position: 'absolute',
                   top: '18px',
@@ -459,7 +472,9 @@ const WorkComponent = () => {
                   >
                     <img
                       src={selectedProject.images[currentImageIndex]}
-                      alt={`${selectedProject.title} ${currentImageIndex + 1}`}
+                      alt={`${selectedProject.title} screenshot ${currentImageIndex + 1}`}
+                      loading="lazy"
+                      decoding="async"
                       style={{
                         width: '100%',
                         maxHeight: '420px',
@@ -480,6 +495,7 @@ const WorkComponent = () => {
                             transform: 'translateY(-50%)',
                             background: 'rgba(10, 14, 24, 0.8)',
                             backdropFilter: 'blur(10px)',
+                            WebkitBackdropFilter: 'blur(10px)',
                             border: '1px solid rgba(255, 255, 255, 0.2)',
                             color: '#ffffff',
                             width: '38px',
@@ -504,6 +520,7 @@ const WorkComponent = () => {
                             transform: 'translateY(-50%)',
                             background: 'rgba(10, 14, 24, 0.8)',
                             backdropFilter: 'blur(10px)',
+                            WebkitBackdropFilter: 'blur(10px)',
                             border: '1px solid rgba(255, 255, 255, 0.2)',
                             color: '#ffffff',
                             width: '38px',
@@ -565,8 +582,8 @@ const WorkComponent = () => {
                     Architectural Contributions
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                    {selectedProject.highlights.map((h, idx) => (
-                      <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.96rem', color: '#cbd5e1' }}>
+                    {selectedProject.highlights.map((h, hIdx) => (
+                      <div key={hIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.96rem', color: '#cbd5e1' }}>
                         <span style={{ color: '#38bdf8', marginTop: '2px' }}>▹</span>
                         <span>{h}</span>
                       </div>
@@ -591,8 +608,8 @@ const WorkComponent = () => {
                   Technologies
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                  {selectedProject.tech.map((t, idx) => (
-                    <Badge key={idx} color="default">
+                  {selectedProject.tech.map((t, tIdx) => (
+                    <Badge key={tIdx} color="default">
                       {t}
                     </Badge>
                   ))}

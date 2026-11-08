@@ -8,25 +8,26 @@ import WorkComponent from '../work/WorkComponent';
 import SkillsComponent from '../skills/SkillsComponent';
 import ContactComponent from '../contact/ContactComponent';
 
+const SECTION_IDS = ['intro', 'experience', 'architecture', 'stack', 'contact'];
+
 const HomeComponent = () => {
   const [activeSection, setActiveSection] = useState('intro');
 
-  // Smooth scroll progress
+  // Smooth scroll progress bar with optimized spring physics
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 120,
     damping: 30,
-    restDelta: 0.001,
+    restDelta: 0.005,
   });
 
-  // Track active section via IntersectionObserver
+  // Track active section via a single shared IntersectionObserver
   useEffect(() => {
-    const sectionIds = ['intro', 'experience', 'architecture', 'stack', 'contact'];
-    const observers = [];
+    if (typeof window === 'undefined') return;
 
     const observerCallback = (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && entry.target.id) {
           setActiveSection(entry.target.id);
         }
       });
@@ -38,46 +39,53 @@ const HomeComponent = () => {
       threshold: 0,
     };
 
-    sectionIds.forEach((id) => {
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    SECTION_IDS.forEach((id) => {
       const el = document.getElementById(id);
-      if (el) {
-        const obs = new IntersectionObserver(observerCallback, observerOptions);
-        obs.observe(el);
-        observers.push(obs);
-      }
+      if (el) observer.observe(el);
     });
 
     return () => {
-      observers.forEach((obs) => obs.disconnect());
+      observer.disconnect();
     };
   }, []);
 
   const handleNavigate = (sectionId) => {
     const el = document.getElementById(sectionId);
-    if (el) {
-      const headerOffset = 76;
-      const elementPosition = el.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    if (!el) return;
+
+    const headerOffset = 72;
+    const elementPosition = el.getBoundingClientRect().top;
+    const currentScroll =
+      window.scrollY !== undefined
+        ? window.scrollY
+        : (window.pageYOffset || document.documentElement.scrollTop || 0);
+    const targetPosition = Math.max(0, elementPosition + currentScroll - headerOffset);
+
+    try {
       window.scrollTo({
-        top: Math.max(0, offsetPosition),
+        top: targetPosition,
         behavior: 'smooth',
       });
+    } catch {
+      window.scrollTo(0, targetPosition);
     }
   };
 
   return (
     <div className="app-root">
-      {/* 2 Moving Interactive Glow Items with Framer Motion Physics */}
+      {/* Dynamic interactive glow backdrop (Adaptive Desktop/Mobile) */}
       <InteractiveGlowBackground />
 
-      {/* Top Progress Line */}
+      {/* Top Reading Progress Bar */}
       <motion.div className="top-scroll-line" style={{ scaleX }} />
 
       {/* Sticky Frosted Glass Header */}
       <LinearHeader activeSection={activeSection} onNavigate={handleNavigate} />
 
-      {/* Main Single-Column Frosted Glass Container */}
-      <main className="main-container-frosted">
+      {/* Main Single-Column Container */}
+      <main className="main-container-frosted" id="main-content">
         <IntroComponent onNavigate={handleNavigate} />
         <ExperienceComponent />
         <WorkComponent />
@@ -85,9 +93,9 @@ const HomeComponent = () => {
         <ContactComponent />
 
         {/* Frosted Glass Footer */}
-        <footer className="frosted-footer">
+        <footer className="frosted-footer" role="contentinfo">
           <div>
-            © {new Date().getFullYear()} Hemanth Mudra. Specialist Software Engineer at Nasdaq.
+            © {new Date().getFullYear()} Hemanth Mudra · Specialist Software Engineer at Nasdaq.
           </div>
           <div className="frosted-footer-links">
             <a
@@ -95,6 +103,7 @@ const HomeComponent = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="frosted-footer-link"
+              aria-label="GitHub Profile"
             >
               GitHub
             </a>
@@ -103,12 +112,14 @@ const HomeComponent = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="frosted-footer-link"
+              aria-label="LinkedIn Profile"
             >
               LinkedIn
             </a>
             <a
               href="mailto:mudra.hemanth@gmail.com"
               className="frosted-footer-link"
+              aria-label="Send direct email"
             >
               Email
             </a>

@@ -1,6 +1,6 @@
 {
   "short_name": "Hemanth Mudra",
-  "name": "portfolio website of hemanth mudra",
+  "name": "Hemanth Mudra | Portfolio",
   "icons": [
     {
       "src": "hemanthMudraLogoFav.svg",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#08090e",
+  "background_color": "#08090e"
 }

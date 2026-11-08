@@ -6,6 +6,7 @@ import { postMessage } from '../../api/ContactForm';
 import {
   Send,
   CheckCircle2,
+  AlertCircle,
   Copy,
   Check,
   ExternalLink,
@@ -23,12 +24,13 @@ const ContactComponent = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [copiedKey, setCopiedKey] = useState(null);
 
   const validate = () => {
     const errs = {};
     if (!formData.name.trim() || formData.name.trim().length < 2) {
-      errs.name = 'Please provide your name';
+      errs.name = 'Please provide your name (minimum 2 characters)';
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -54,6 +56,9 @@ const ContactComponent = () => {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
+    if (submitError) {
+      setSubmitError('');
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -61,26 +66,31 @@ const ContactComponent = () => {
     if (!validate()) return;
 
     setIsSubmitting(true);
+    setSubmitError('');
 
     try {
       await postMessage(formData);
-    } catch (err) {
-      console.log('API transmission fallback: ', err);
+      setIsSuccess(true);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 6000);
+    } catch {
+      // Fallback message encouraging mail client
+      setSubmitError(
+        'Direct message delivery encountered a network interruption. Please email mudra.hemanth@gmail.com directly.'
+      );
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    setFormData({ name: '', email: '', subject: '', message: '' });
-
-    setTimeout(() => {
-      setIsSuccess(false);
-    }, 6000);
   };
 
   const copyToClipboard = (text, key) => {
-    navigator.clipboard.writeText(text);
-    setCopiedKey(key);
-    setTimeout(() => setCopiedKey(null), 2500);
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(text);
+      setCopiedKey(key);
+      setTimeout(() => setCopiedKey(null), 2500);
+    }
   };
 
   return (
@@ -122,7 +132,7 @@ const ContactComponent = () => {
       <div className="contact-grid">
         {/* Frosted Glass Form Card */}
         <motion.div
-          className="glass-card"
+          className="glass-card contact-card"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
@@ -147,46 +157,81 @@ const ContactComponent = () => {
                     fontSize: '0.92rem',
                     color: '#34d399',
                   }}
+                  role="status"
                 >
                   <CheckCircle2 size={18} style={{ flexShrink: 0 }} />
                   <span>Your message has been dispatched successfully. I will get back to you promptly.</span>
+                </motion.div>
+              )}
+
+              {submitError && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  style={{
+                    backgroundColor: 'rgba(239, 68, 68, 0.12)',
+                    border: '1px solid rgba(239, 68, 68, 0.35)',
+                    borderRadius: '10px',
+                    padding: '14px 18px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    marginBottom: '1.75rem',
+                    fontSize: '0.92rem',
+                    color: '#f87171',
+                  }}
+                  role="alert"
+                >
+                  <AlertCircle size={18} style={{ flexShrink: 0 }} />
+                  <span>{submitError}</span>
                 </motion.div>
               )}
             </AnimatePresence>
 
             <div className="contact-inputs-grid" style={{ marginBottom: '1.25rem' }}>
               <div>
-                <Label htmlFor="name">Full Name</Label>
+                <Label htmlFor="contact-name">Full Name</Label>
                 <Input
-                  id="name"
+                  id="contact-name"
                   name="name"
                   placeholder="e.g. Alex Morgan"
                   value={formData.name}
                   onChange={handleChange}
                   error={Boolean(errors.name)}
+                  aria-invalid={Boolean(errors.name)}
+                  aria-describedby={errors.name ? 'contact-name-error' : undefined}
                   autoComplete="name"
                 />
                 {errors.name && (
-                  <span style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '4px', display: 'block', fontFamily: 'var(--font-mono)' }}>
+                  <span
+                    id="contact-name-error"
+                    style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '4px', display: 'block', fontFamily: 'var(--font-mono)' }}
+                  >
                     {errors.name}
                   </span>
                 )}
               </div>
 
               <div>
-                <Label htmlFor="email">Email Address</Label>
+                <Label htmlFor="contact-email">Email Address</Label>
                 <Input
-                  id="email"
+                  id="contact-email"
                   type="email"
                   name="email"
                   placeholder="e.g. alex@enterprise.com"
                   value={formData.email}
                   onChange={handleChange}
                   error={Boolean(errors.email)}
+                  aria-invalid={Boolean(errors.email)}
+                  aria-describedby={errors.email ? 'contact-email-error' : undefined}
                   autoComplete="email"
                 />
                 {errors.email && (
-                  <span style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '4px', display: 'block', fontFamily: 'var(--font-mono)' }}>
+                  <span
+                    id="contact-email-error"
+                    style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '4px', display: 'block', fontFamily: 'var(--font-mono)' }}
+                  >
                     {errors.email}
                   </span>
                 )}
@@ -194,41 +239,51 @@ const ContactComponent = () => {
             </div>
 
             <div style={{ marginBottom: '1.25rem' }}>
-              <Label htmlFor="subject">Subject Line</Label>
+              <Label htmlFor="contact-subject">Subject Line</Label>
               <Input
-                id="subject"
+                id="contact-subject"
                 name="subject"
                 placeholder="e.g. High-Throughput Pricing Engine Architecture"
                 value={formData.subject}
                 onChange={handleChange}
                 error={Boolean(errors.subject)}
+                aria-invalid={Boolean(errors.subject)}
+                aria-describedby={errors.subject ? 'contact-subject-error' : undefined}
               />
               {errors.subject && (
-                <span style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '4px', display: 'block', fontFamily: 'var(--font-mono)' }}>
+                <span
+                  id="contact-subject-error"
+                  style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '4px', display: 'block', fontFamily: 'var(--font-mono)' }}
+                >
                   {errors.subject}
                 </span>
               )}
             </div>
 
             <div style={{ marginBottom: '1.75rem' }}>
-              <Label htmlFor="message">Message</Label>
+              <Label htmlFor="contact-message">Message</Label>
               <Textarea
-                id="message"
+                id="contact-message"
                 name="message"
                 rows={5}
                 placeholder="Share your objectives, role specifications, or architecture scope..."
                 value={formData.message}
                 onChange={handleChange}
                 error={Boolean(errors.message)}
+                aria-invalid={Boolean(errors.message)}
+                aria-describedby={errors.message ? 'contact-message-error' : undefined}
               />
               {errors.message && (
-                <span style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '4px', display: 'block', fontFamily: 'var(--font-mono)' }}>
+                <span
+                  id="contact-message-error"
+                  style={{ fontSize: '0.75rem', color: '#ef4444', marginTop: '4px', display: 'block', fontFamily: 'var(--font-mono)' }}
+                >
                   {errors.message}
                 </span>
               )}
             </div>
 
-            {/* Pixel-Perfect Frosted Submit Button */}
+            {/* Frosted Glass Submit Button */}
             <Button
               type="submit"
               variant="default"
@@ -247,13 +302,13 @@ const ContactComponent = () => {
             </Button>
           </form>
 
-          {/* Quick Copy Email & Open Mail (Mobile number completely removed) */}
+          {/* Quick Copy Email & Open Mail */}
           <div
             style={{
               display: 'flex',
               flexWrap: 'wrap',
               gap: '10px',
-              marginTop: '1.75rem',
+              marginTop: 'auto',
               paddingTop: '1.4rem',
               borderTop: '1px solid var(--border-glass)',
             }}
@@ -262,6 +317,7 @@ const ContactComponent = () => {
               variant="outline"
               size="sm"
               onClick={() => copyToClipboard('mudra.hemanth@gmail.com', 'email')}
+              aria-label="Copy email address"
             >
               {copiedKey === 'email' ? <Check size={14} style={{ color: '#34d399', marginRight: 6 }} /> : <Copy size={14} style={{ marginRight: 6 }} />}
               <span>{copiedKey === 'email' ? 'Email Copied!' : 'mudra.hemanth@gmail.com'}</span>
@@ -270,6 +326,7 @@ const ContactComponent = () => {
             <a
               href="mailto:mudra.hemanth@gmail.com?subject=Direct%20Portfolio%20Inquiry"
               style={{ textDecoration: 'none' }}
+              aria-label="Open default mail client"
             >
               <Button variant="outline" size="sm">
                 <span>Open Mail App</span>
@@ -281,12 +338,11 @@ const ContactComponent = () => {
 
         {/* Telemetry & Direct Presence Panel */}
         <motion.div
-          className="glass-card"
+          className="glass-card contact-card"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.54 }}
-          style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
         >
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
@@ -332,7 +388,7 @@ const ContactComponent = () => {
             </div>
           </div>
 
-          <div>
+          <div style={{ marginTop: 'auto', paddingTop: '1.4rem', borderTop: '1px solid var(--border-glass)' }}>
             <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.74rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '12px', fontWeight: 600 }}>
               Verified Profiles &amp; Codebases
             </div>
@@ -341,7 +397,7 @@ const ContactComponent = () => {
                 href="https://github.com/hmswrth"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="GitHub"
+                aria-label="GitHub Profile"
               >
                 <Button variant="outline" size="sm">
                   <AiOutlineGithub size={16} style={{ marginRight: 6, color: '#ffffff' }} />
@@ -353,7 +409,7 @@ const ContactComponent = () => {
                 href="https://www.linkedin.com/in/hemanth-mudra/"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="LinkedIn"
+                aria-label="LinkedIn Profile"
               >
                 <Button variant="outline" size="sm">
                   <AiOutlineLinkedin size={16} style={{ marginRight: 6, color: '#38bdf8' }} />

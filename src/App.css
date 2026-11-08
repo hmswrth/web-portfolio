@@ -2,10 +2,12 @@
    Frosted Glass Architecture & Vibrant Design System
    Tailored for Hemanth Mudra · Specialist SWE, Nasdaq
    Fully Responsive for Mobile, Tablet, & Desktop
+   Optimized for Safari, WebKit, Brave & Low-Latency Renders
    ======================================================== */
 
 .app-root {
   min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   max-width: 100vw;
   background-color: var(--bg-app);
@@ -13,70 +15,25 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow-x: clip;
+  overflow-x: hidden;
 }
 
-/* Interactive Glow Canvas & Physics Orbs */
+/* Dotted Matrix Background Canvas */
 .interactive-glow-canvas {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
-  will-change: transform;
+  contain: strict;
+  isolation: isolate;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
-.glow-orb {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  will-change: transform, opacity;
-  transform: translate3d(-50%, -50%, 0);
-}
-
-.glow-orb-cyan {
-  width: 640px;
-  height: 640px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.45) 0%, rgba(37, 99, 235, 0.22) 42%, rgba(56, 189, 248, 0) 70%);
-  filter: blur(120px);
-  -webkit-filter: blur(120px);
-}
-
-.glow-orb-violet {
-  width: 680px;
-  height: 680px;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, rgba(99, 102, 241, 0.24) 42%, rgba(168, 85, 247, 0) 70%);
-  filter: blur(125px);
-  -webkit-filter: blur(125px);
-}
-
-.glow-orb-ambient {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  filter: blur(140px);
-  -webkit-filter: blur(140px);
-  will-change: transform;
-}
-
-.glow-orb-ambient-1 {
-  width: 520px;
-  height: 520px;
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.22) 0%, rgba(16, 185, 129, 0) 70%);
-  bottom: 20%;
-  right: 12%;
-}
-
-.glow-orb-ambient-2 {
-  width: 580px;
-  height: 580px;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.28) 0%, rgba(99, 102, 241, 0) 70%);
-  top: 15%;
-  left: 10%;
-}
-
+/* Original Dotted Grid Background */
 .aurora-grid-overlay {
   position: absolute;
   inset: 0;
@@ -85,11 +42,23 @@
   mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, #000 65%, transparent 100%);
   -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, #000 65%, transparent 100%);
   opacity: 0.65;
+  pointer-events: none;
 }
 
 /* Native Section Scroll Anchor Margin */
 section[id] {
   scroll-margin-top: 80px;
+}
+
+/* Defer rendering of offscreen sections in Chromium/WebKit for faster paint */
+@supports (content-visibility: auto) {
+  #experience,
+  #architecture,
+  #stack,
+  #contact {
+    content-visibility: auto;
+    contain-intrinsic-size: 800px;
+  }
 }
 
 /* Subtle top progress bar */
@@ -113,13 +82,15 @@ section[id] {
   right: 0;
   height: 68px;
   background: rgba(8, 9, 14, 0.85);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.09);
   z-index: 1000;
   display: flex;
   align-items: center;
   width: 100%;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .frosted-header-inner {
@@ -251,6 +222,7 @@ section[id] {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   z-index: 1001;
+  touch-action: none;
 }
 
 .mobile-nav-drawer {
@@ -259,12 +231,14 @@ section[id] {
   left: 0;
   right: 0;
   width: 100%;
+  max-height: calc(100dvh - 62px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: rgba(10, 13, 22, 0.96);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: 0 24px 50px rgba(0, 0, 0, 0.9);
-  overflow: hidden;
   z-index: 1002;
   pointer-events: auto;
 }
@@ -380,9 +354,9 @@ section[id] {
   max-width: 700px;
 }
 
-/* Frosted Glass Card Primitive with Dynamic Ambient Glow Refraction */
+/* Frosted Glass Card Primitive */
 .glass-card {
-  background: radial-gradient(750px circle at var(--glow-x, 50%) var(--glow-y, 35%), rgba(255, 255, 255, 0.05) 0%, transparent 45%), rgba(15, 20, 32, 0.62);
+  background: radial-gradient(750px circle at 50% 35%, rgba(255, 255, 255, 0.05) 0%, transparent 45%), rgba(15, 20, 32, 0.62);
   backdrop-filter: blur(28px) saturate(160%);
   -webkit-backdrop-filter: blur(28px) saturate(160%);
   border: 1px solid rgba(255, 255, 255, 0.09);
@@ -393,6 +367,8 @@ section[id] {
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .glass-card::before {
@@ -402,9 +378,8 @@ section[id] {
   left: 0;
   right: 0;
   height: 1.5px;
-  background: linear-gradient(90deg, transparent 10%, rgba(255, 255, 255, 0.35) var(--glow-x, 50%), transparent 90%);
+  background: linear-gradient(90deg, transparent 10%, rgba(255, 255, 255, 0.35) 50%, transparent 90%);
   pointer-events: none;
-  transition: background 0.15s ease;
 }
 
 .glass-card::after {
@@ -412,15 +387,16 @@ section[id] {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: radial-gradient(500px circle at var(--glow-x, 50%) var(--glow-y, 35%), rgba(56, 189, 248, 0.05), transparent 60%);
+  background: radial-gradient(500px circle at 50% 35%, rgba(56, 189, 248, 0.05), transparent 60%);
   pointer-events: none;
 }
 
 .glass-card:hover {
-  background: radial-gradient(800px circle at var(--glow-x, 50%) var(--glow-y, 35%), rgba(255, 255, 255, 0.08) 0%, transparent 50%), rgba(22, 28, 46, 0.78);
+  background: radial-gradient(800px circle at 50% 35%, rgba(255, 255, 255, 0.08) 0%, transparent 50%), rgba(22, 28, 46, 0.78);
   border-color: rgba(99, 102, 241, 0.45);
   box-shadow: 0 24px 55px -12px rgba(0, 0, 0, 0.8), 0 0 35px rgba(99, 102, 241, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
-  transform: translateY(-3px);
+  transform: translateY(-3px) translateZ(0);
+  -webkit-transform: translateY(-3px) translateZ(0);
 }
 
 /* Vibrant Metrics Strip */
@@ -433,8 +409,8 @@ section[id] {
 
 .stat-cell-frosted {
   background: rgba(15, 20, 32, 0.58);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 16px;
   padding: 1.6rem 1.3rem;
@@ -446,12 +422,15 @@ section[id] {
   overflow: hidden;
   transition: all 0.25s ease;
   box-sizing: border-box;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .stat-cell-frosted:hover {
   border-color: rgba(99, 102, 241, 0.4);
   background: rgba(22, 28, 46, 0.75);
-  transform: translateY(-2px);
+  transform: translateY(-2px) translateZ(0);
+  -webkit-transform: translateY(-2px) translateZ(0);
   box-shadow: 0 18px 45px -10px rgba(0, 0, 0, 0.75), 0 0 25px rgba(99, 102, 241, 0.15);
 }
 
@@ -518,15 +497,15 @@ section[id] {
   line-height: 1.45;
 }
 
-/* Frosted Segmented Control (Smooth Scrollable on Mobile) */
+/* Frosted Segmented Control */
 .segmented-control-frosted {
   display: flex;
   align-items: center;
   padding: 4px;
   border-radius: 12px;
   background: rgba(14, 18, 30, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   gap: 4px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
@@ -629,7 +608,14 @@ section[id] {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
   gap: 2rem;
-  align-items: start;
+  align-items: stretch;
+}
+
+.contact-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .contact-inputs-grid {
@@ -646,15 +632,17 @@ section[id] {
 }
 
 .case-study-modal-content {
-  background: rgba(15, 20, 32, 0.92);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
+  background: rgba(15, 20, 32, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 18px;
   max-width: 860px;
   width: 100%;
   max-height: 90vh;
+  max-height: 90dvh;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 2.2rem;
   position: relative;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(99, 102, 241, 0.2);
@@ -667,7 +655,7 @@ section[id] {
 }
 
 /* ========================================================
-   Responsive Media Queries for Mobile & Tablet Devices
+   Mobile & Tablet Optimizations (Eliminates Stutter on Brave & Safari)
    ======================================================== */
 
 @media (max-width: 900px) {
@@ -711,9 +699,18 @@ section[id] {
     box-sizing: border-box;
   }
 
+  /* Optimize glass cards for mobile GPUs: lighter blur + richer background */
   .glass-card {
     padding: 1.25rem;
     border-radius: 14px;
+    background: rgba(14, 18, 30, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .glass-card:hover {
+    transform: none;
+    -webkit-transform: none;
   }
 
   .section-heading {
@@ -732,10 +729,23 @@ section[id] {
 
   .stat-cell-frosted {
     padding: 1.15rem 1rem;
+    background: rgba(14, 18, 30, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .stat-cell-frosted:hover {
+    transform: none;
+    -webkit-transform: none;
   }
 
   .stat-value {
     font-size: 1.8rem;
+  }
+
+  .segmented-control-frosted {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   .architecture-grid,
@@ -748,6 +758,8 @@ section[id] {
   .case-study-modal-content {
     padding: 1.4rem;
     border-radius: 14px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 
   .frosted-footer {

@@ -1,8 +1,15 @@
+import 'react-app-polyfill/stable';
+import 'intersection-observer';
+import smoothscroll from 'smoothscroll-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import './fonts/coolvetica.otf';
+
+// Initialize cross-browser smooth scroll polyfill (Safari & older WebKit)
+if (typeof window !== 'undefined') {
+  smoothscroll.polyfill();
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -10,4 +17,3 @@ root.render(
     <App />
   </React.StrictMode>
 );
-
