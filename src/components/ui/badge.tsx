@@ -21,7 +21,12 @@ export const Badge: React.FC<BadgeProps> = ({
   return (
     <span
       className={`frosted-badge ${colorClass} ${className}`}
-      style={style}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '8px',
+        ...style,
+      }}
       {...props}
     >
       {children}

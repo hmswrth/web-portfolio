@@ -351,10 +351,30 @@ const ContactComponent: React.FC = () => {
           <Card className="contact-card">
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-              <Badge color="blue">Professional Telemetry</Badge>
-              <Badge color="emerald">
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10b981', display: 'inline-block', marginRight: 5 }} />
-                <span>Active Production</span>
+              <Badge
+                color="blue"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '5px 12px',
+                  fontSize: '0.78rem',
+                  lineHeight: 1,
+                }}
+              >
+                <span
+                  aria-hidden="true"
+                  style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    backgroundColor: '#38bdf8',
+                    boxShadow: '0 0 8px #38bdf8',
+                    display: 'inline-block',
+                    flexShrink: 0,
+                  }}
+                />
+                <span style={{ fontWeight: 600 }}>Professional Telemetry</span>
               </Badge>
             </div>
             <h3 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: '0.6rem' }}>

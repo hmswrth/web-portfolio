@@ -45,7 +45,7 @@ export interface IntroComponentProps {
 const IntroComponent: React.FC<IntroComponentProps> = ({ onNavigate }) => {
   return (
     <section id="intro" style={{ paddingTop: '1rem' }}>
-      {/* Telemetry Status Line - Updated to Specialist SWE */}
+      {/* Telemetry Status Line - Specialist SWE */}
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
@@ -61,12 +61,16 @@ const IntroComponent: React.FC<IntroComponentProps> = ({ onNavigate }) => {
         <Badge
           color="blue"
           style={{
-            gap: '8px',
-            padding: '5px 12px',
-            fontSize: '0.78rem',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '9px',
+            padding: '6px 14px',
+            fontSize: '0.8rem',
+            lineHeight: 1,
           }}
         >
           <span
+            aria-hidden="true"
             style={{
               width: '7px',
               height: '7px',
@@ -74,29 +78,10 @@ const IntroComponent: React.FC<IntroComponentProps> = ({ onNavigate }) => {
               backgroundColor: '#38bdf8',
               boxShadow: '0 0 10px #38bdf8',
               display: 'inline-block',
+              flexShrink: 0,
             }}
           />
           <span style={{ fontWeight: 600 }}>Specialist Software Engineer · Nasdaq</span>
-        </Badge>
-
-        <Badge
-          color="emerald"
-          style={{
-            gap: '6px',
-            padding: '5px 12px',
-            fontSize: '0.78rem',
-          }}
-        >
-          <span
-            style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              backgroundColor: '#10b981',
-              display: 'inline-block',
-            }}
-          />
-          <span>Active Systems: Nasdaq Fund Network (NFN)</span>
         </Badge>
       </motion.div>
 
