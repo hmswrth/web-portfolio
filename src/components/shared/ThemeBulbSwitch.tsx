@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 
-// Subtle, realistic mechanical pull-switch click sound via Web Audio API
+// Realistic mechanical ratchet switch click sound via Web Audio API
 const playSwitchClick = () => {
   if (typeof window === 'undefined') return;
   try {
@@ -10,45 +10,44 @@ const playSwitchClick = () => {
     const ctx = new AudioCtx();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
-    
-    // Crisp dual-click transient (simulating ratchet / spring switch trip)
+
     osc.type = 'triangle';
     osc.frequency.setValueAtTime(1600, ctx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(320, ctx.currentTime + 0.035);
-    
+
     gain.gain.setValueAtTime(0.15, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.035);
-    
+
     osc.connect(gain);
     gain.connect(ctx.destination);
-    
+
     osc.start();
     osc.stop(ctx.currentTime + 0.035);
   } catch {
-    // Audio may be blocked before first user gesture
+    // Audio context may be restricted before user gesture
   }
 };
 
 const REST_X = 16;
-const REST_Y = 44;
+const REST_Y = 58; // Lengthened pull cord with authentic physics (no lagging ball)
 const ANCHOR_X = 16;
 const ANCHOR_Y = 32.5;
-const PULL_THRESHOLD = 11; // px downward pull to trip switch
+const PULL_THRESHOLD = 12; // px downward pull to trip switch
 
 const ThemeBulbSwitch: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Bead physics position state
-  const [beadPos, setBeadPos] = useState<{ x: number; y: number }>({ x: REST_X, y: REST_Y });
+  // Rope end physics position state
+  const [ropeEnd, setRopeEnd] = useState<{ x: number; y: number }>({ x: REST_X, y: REST_Y });
 
-  // Physics simulation state refs (to avoid unnecessary re-renders during RAF)
+  // Physics simulation state refs
   const posRef = useRef<{ x: number; y: number }>({ x: REST_X, y: REST_Y });
   const velRef = useRef<{ vx: number; vy: number }>({ vx: 0, vy: 0 });
   const animFrameRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number | null>(null);
 
-  // Dragging interaction state refs
+  // Interaction tracking refs
   const isDraggingRef = useRef<boolean>(false);
   const dragStartRef = useRef<{ clientX: number; clientY: number }>({ clientX: 0, clientY: 0 });
   const hasTrippedRef = useRef<boolean>(false);
@@ -66,7 +65,6 @@ const ThemeBulbSwitch: React.FC = () => {
       y: Math.round(rect.top + 20),
     };
 
-    // Mobile haptic vibration if supported
     if (typeof window !== 'undefined' && 'vibrate' in navigator) {
       try {
         navigator.vibrate(25);
@@ -79,7 +77,7 @@ const ThemeBulbSwitch: React.FC = () => {
     toggleTheme(originCoords);
   }, [toggleTheme]);
 
-  // Physics animation loop: damped harmonic spring on Y + pendulum swing on X
+  // Physics animation loop: vertical Hooke's Law spring + lateral pendulum sway
   const startPhysicsSimulation = useCallback((initialVx = 0, initialVy = 0) => {
     if (animFrameRef.current) {
       cancelAnimationFrame(animFrameRef.current);
@@ -95,24 +93,23 @@ const ThemeBulbSwitch: React.FC = () => {
         return;
       }
 
-      // Delta time capped to avoid instability on frame drops
       const dt = Math.min((now - lastTimeRef.current) / 1000, 0.032);
       lastTimeRef.current = now;
 
       const { x, y } = posRef.current;
       const { vx, vy } = velRef.current;
 
-      // Vertical spring physics (Hooke's Law with damping)
-      const kY = 320; // spring stiffness
-      const dY = 14;  // spring damping
+      // Vertical spring physics
+      const kY = 320;
+      const dY = 14;
       const deltaY = y - REST_Y;
       const forceY = -kY * deltaY - dY * vy;
       const nextVy = vy + forceY * dt;
       const nextY = y + nextVy * dt;
 
-      // Lateral pendulum oscillation physics (sway restoring force with subtle damping)
-      const kX = 140; // pendulum gravity restoring force
-      const dX = 3.2; // air resistance damping (allows long natural swing)
+      // Lateral pendulum oscillation
+      const kX = 140;
+      const dX = 3.2;
       const deltaX = x - REST_X;
       const forceX = -kX * deltaX - dX * vx;
       const nextVx = vx + forceX * dt;
@@ -120,17 +117,15 @@ const ThemeBulbSwitch: React.FC = () => {
 
       posRef.current = { x: nextX, y: nextY };
       velRef.current = { vx: nextVx, vy: nextVy };
-      setBeadPos({ x: nextX, y: nextY });
+      setRopeEnd({ x: nextX, y: nextY });
 
-      // Check if settled to rest
       const totalEnergy = Math.abs(deltaY) + Math.abs(deltaX) + Math.abs(nextVy) * 0.05 + Math.abs(nextVx) * 0.05;
       if (totalEnergy > 0.04) {
         animFrameRef.current = requestAnimationFrame(animatePhysics);
       } else {
-        // Snap cleanly to rest
         posRef.current = { x: REST_X, y: REST_Y };
         velRef.current = { vx: 0, vy: 0 };
-        setBeadPos({ x: REST_X, y: REST_Y });
+        setRopeEnd({ x: REST_X, y: REST_Y });
         animFrameRef.current = null;
       }
     };
@@ -138,7 +133,7 @@ const ThemeBulbSwitch: React.FC = () => {
     animFrameRef.current = requestAnimationFrame(animatePhysics);
   }, []);
 
-  // Clean up animation on unmount
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (animFrameRef.current) {
@@ -147,28 +142,27 @@ const ThemeBulbSwitch: React.FC = () => {
     };
   }, []);
 
-  // Programmatic pull impulse (used on tap/click or keyboard activation)
+  // Programmatic pull animation on click or tap
   const triggerPullAnimation = useCallback(() => {
     if (animFrameRef.current) {
       cancelAnimationFrame(animFrameRef.current);
       animFrameRef.current = null;
     }
 
-    // Visual downward stretch
-    posRef.current = { x: REST_X + 1.8, y: REST_Y + 14.5 };
-    setBeadPos({ x: REST_X + 1.8, y: REST_Y + 14.5 });
+    // Direct downward stretch of rope
+    posRef.current = { x: REST_X + 1.5, y: REST_Y + 14 };
+    setRopeEnd({ x: REST_X + 1.5, y: REST_Y + 14 });
 
     setTimeout(() => {
       triggerToggle();
-      startPhysicsSimulation(-40, -170);
+      startPhysicsSimulation(-35, -170);
     }, 90);
   }, [startPhysicsSimulation, triggerToggle]);
 
-  // Pointer drag event handlers for authentic interactive pulling
+  // Pointer drag event handlers for authentic pulling without lagging ball
   const handlePointerDown = (e: React.PointerEvent) => {
-    // Only respond to primary click / touch
     if (e.button !== 0) return;
-    
+
     if (animFrameRef.current) {
       cancelAnimationFrame(animFrameRef.current);
       animFrameRef.current = null;
@@ -177,7 +171,7 @@ const ThemeBulbSwitch: React.FC = () => {
     try {
       (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     } catch {
-      // ignore if pointer capture fails
+      // ignore
     }
 
     isDraggingRef.current = true;
@@ -196,17 +190,13 @@ const ThemeBulbSwitch: React.FC = () => {
       hasMovedSignificantlyRef.current = true;
     }
 
-    // Elastic resistance downward (diminishing returns like an actual spring)
     const rawPull = Math.max(0, deltaY);
-    const elasticY = REST_Y + (rawPull * 20) / (20 + rawPull * 0.4);
-    
-    // Lateral sway response limited to natural rope radius
-    const elasticX = REST_X + Math.max(-8, Math.min(8, deltaX * 0.35));
+    const elasticY = REST_Y + (rawPull * 22) / (22 + rawPull * 0.4);
+    const elasticX = REST_X + Math.max(-9, Math.min(9, deltaX * 0.35));
 
     posRef.current = { x: elasticX, y: elasticY };
-    setBeadPos({ x: elasticX, y: elasticY });
+    setRopeEnd({ x: elasticX, y: elasticY });
 
-    // Detect switch trip point during drag
     if (!hasTrippedRef.current && elasticY - REST_Y >= PULL_THRESHOLD) {
       hasTrippedRef.current = true;
       triggerToggle();
@@ -229,12 +219,10 @@ const ThemeBulbSwitch: React.FC = () => {
     }, 250);
 
     if (hasMovedSignificantlyRef.current) {
-      // Released after user drag: release with spring snap + pendulum impulse
       const currentX = posRef.current.x;
       const lateralImpulse = (REST_X - currentX) * 16;
       startPhysicsSimulation(lateralImpulse, -170);
     } else {
-      // Simple tap/click without dragging: run smooth pull impulse
       triggerPullAnimation();
     }
   };
@@ -250,7 +238,6 @@ const ThemeBulbSwitch: React.FC = () => {
     triggerPullAnimation();
   };
 
-  // Keyboard accessibility
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -258,26 +245,10 @@ const ThemeBulbSwitch: React.FC = () => {
     }
   };
 
-  // Coordinates for flexible rope curve and intermediate chain beads
-  const { x: beadX, y: beadY } = beadPos;
-  const ctrlX = ANCHOR_X + (beadX - ANCHOR_X) * 0.45;
-  const ctrlY = ANCHOR_Y + (beadY - ANCHOR_Y) * 0.52;
-
-  // Tangent angle of the bead at the end of the rope
-  const angleRad = Math.atan2(beadY - ctrlY, beadX - ctrlX) - Math.PI / 2;
-  const angleDeg = (angleRad * 180) / Math.PI;
-
-  // Points along the quadratic curve for metallic chain beads
-  const getCurvePoint = (t: number) => {
-    const inv = 1 - t;
-    const px = inv * inv * ANCHOR_X + 2 * inv * t * ctrlX + t * t * beadX;
-    const py = inv * inv * ANCHOR_Y + 2 * inv * t * ctrlY + t * t * beadY;
-    return { px, py };
-  };
-
-  const chainBead1 = getCurvePoint(0.28);
-  const chainBead2 = getCurvePoint(0.56);
-  const chainBead3 = getCurvePoint(0.82);
+  // Flexible rope curve coordinates
+  const { x: ropeX, y: ropeY } = ropeEnd;
+  const ctrlX = ANCHOR_X + (ropeX - ANCHOR_X) * 0.42;
+  const ctrlY = ANCHOR_Y + (ropeY - ANCHOR_Y) * 0.52;
 
   return (
     <div
@@ -291,21 +262,20 @@ const ThemeBulbSwitch: React.FC = () => {
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
-      title={isLight ? 'Pull cord to switch to dark mode' : 'Pull cord to switch to light mode'}
+      title={isLight ? 'Pull rope to switch to dark mode' : 'Pull rope to switch to light mode'}
       aria-label={isLight ? 'Switch to dark theme' : 'Switch to light theme'}
       aria-pressed={isLight}
       style={{ touchAction: 'none' }}
     >
       <svg
         width="34"
-        height="56"
-        viewBox="0 0 32 60"
+        height="72"
+        viewBox="0 0 32 76"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="theme-bulb-svg"
       >
         <defs>
-          {/* Luminous warm amber radial gradient when bulb is lit */}
           <radialGradient
             id="bulbWarmGlow"
             cx="50%"
@@ -320,7 +290,6 @@ const ThemeBulbSwitch: React.FC = () => {
             <stop offset="100%" stopColor="#d97706" stopOpacity="1" />
           </radialGradient>
 
-          {/* Golden luminous bloom aura filter */}
           <filter id="bulbBloomFilter" x="-45%" y="-45%" width="190%" height="190%">
             <feGaussianBlur stdDeviation="3.2" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
@@ -352,7 +321,6 @@ const ThemeBulbSwitch: React.FC = () => {
           stroke={isLight ? '#64748b' : '#1e293b'}
           strokeWidth="0.75"
         />
-        {/* Socket Thread Ridges */}
         <line
           x1="13"
           y1="8.8"
@@ -396,7 +364,6 @@ const ThemeBulbSwitch: React.FC = () => {
         {/* Internal Tungsten Filament & Mount Wires */}
         {isLight ? (
           <>
-            {/* White-hot glowing active filament */}
             <path
               d="M13.5 23.5 L15 18 L17 18 L18.5 23.5"
               stroke="#ffffff"
@@ -408,7 +375,6 @@ const ThemeBulbSwitch: React.FC = () => {
           </>
         ) : (
           <>
-            {/* Dormant tungsten filament */}
             <path
               d="M13.5 23.5 L15 18.5 L17 18.5 L18.5 23.5"
               stroke="rgba(245, 158, 11, 0.45)"
@@ -416,7 +382,6 @@ const ThemeBulbSwitch: React.FC = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-            {/* Specular glass reflection streak */}
             <path
               d="M10.8 20.5 C10.8 19 11.6 17 13 16"
               stroke="rgba(255, 255, 255, 0.4)"
@@ -436,59 +401,25 @@ const ThemeBulbSwitch: React.FC = () => {
           fill={isLight ? '#b45309' : '#475569'}
         />
 
-        {/* Flexible physics rope curve connecting collar to bead */}
+        {/* Elegant, lengthened pull rope with physics curve */}
         <path
-          d={`M ${ANCHOR_X} ${ANCHOR_Y} Q ${ctrlX} ${ctrlY} ${beadX} ${beadY}`}
+          d={`M ${ANCHOR_X} ${ANCHOR_Y} Q ${ctrlX} ${ctrlY} ${ropeX} ${ropeY}`}
           stroke={isLight ? '#b45309' : '#94a3b8'}
-          strokeWidth="1.1"
+          strokeWidth="1.8"
           strokeLinecap="round"
           fill="none"
         />
 
-        {/* Metallic pull chain links along the curve */}
-        <circle
-          cx={chainBead1.px}
-          cy={chainBead1.py}
-          r="1.2"
-          fill={isLight ? '#d97706' : '#cbd5e1'}
+        {/* Clean knotted cord finish (clean pull-tip, zero lag, no ball) */}
+        <line
+          x1={ropeX - 1.5}
+          y1={ropeY - 0.5}
+          x2={ropeX + 1.5}
+          y2={ropeY - 0.5}
           stroke={isLight ? '#92400e' : '#64748b'}
-          strokeWidth="0.4"
+          strokeWidth="2.2"
+          strokeLinecap="round"
         />
-        <circle
-          cx={chainBead2.px}
-          cy={chainBead2.py}
-          r="1.2"
-          fill={isLight ? '#d97706' : '#cbd5e1'}
-          stroke={isLight ? '#92400e' : '#64748b'}
-          strokeWidth="0.4"
-        />
-        <circle
-          cx={chainBead3.px}
-          cy={chainBead3.py}
-          r="1.2"
-          fill={isLight ? '#d97706' : '#cbd5e1'}
-          stroke={isLight ? '#92400e' : '#64748b'}
-          strokeWidth="0.4"
-        />
-
-        {/* Pull Bead Handle with Physics Orientation and Specular Highlight */}
-        <g
-          transform={`translate(${beadX}, ${beadY}) rotate(${angleDeg})`}
-          className="theme-bulb-bead-group"
-          style={{ cursor: 'grab' }}
-        >
-          {/* Metallic Pull Bead sphere */}
-          <circle
-            cx="0"
-            cy="0"
-            r="3.3"
-            fill={isLight ? '#d97706' : '#cbd5e1'}
-            stroke={isLight ? '#92400e' : '#64748b'}
-            strokeWidth="0.8"
-          />
-          {/* Specular glint reflection */}
-          <circle cx="-0.8" cy="-0.8" r="1" fill="#ffffff" opacity="0.8" />
-        </g>
       </svg>
     </div>
   );

@@ -30,13 +30,13 @@
 
 [data-theme="light"] {
   --bg-app: #f4f6fb;
-  --bg-glass: rgba(255, 255, 255, 0.75);
-  --bg-glass-hover: rgba(255, 255, 255, 0.92);
-  --bg-input: rgba(255, 255, 255, 0.92);
+  --bg-glass: rgba(255, 255, 255, 0.55);
+  --bg-glass-hover: rgba(255, 255, 255, 0.72);
+  --bg-input: rgba(255, 255, 255, 0.65);
 
-  --border-glass: rgba(0, 0, 0, 0.08);
+  --border-glass: rgba(255, 255, 255, 0.75);
   --border-glass-hover: rgba(99, 102, 241, 0.45);
-  --border-glass-highlight: rgba(0, 0, 0, 0.12);
+  --border-glass-highlight: rgba(255, 255, 255, 0.95);
 
   --accent-indigo: #4f46e5;
   --accent-blue: #0284c7;
@@ -48,8 +48,8 @@
   --text-secondary: #475569;
   --text-muted: #64748b;
 
-  --shadow-glass: 0 12px 32px -8px rgba(0, 0, 0, 0.08), inset 0 1px 0 0 rgba(255, 255, 255, 0.95);
-  --shadow-glass-hover: 0 20px 40px -10px rgba(0, 0, 0, 0.12), 0 0 25px rgba(99, 102, 241, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.95);
+  --shadow-glass: 0 14px 35px -10px rgba(15, 23, 42, 0.08), 0 2px 8px -2px rgba(15, 23, 42, 0.04), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95);
+  --shadow-glass-hover: 0 20px 45px -10px rgba(15, 23, 42, 0.12), 0 0 25px rgba(99, 102, 241, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 1);
 }
 
 * {
@@ -151,6 +151,12 @@ button {
 /* ========================================================
    Circular View Transition day/night animation rules
    ======================================================== */
+html[data-theme-transition] *,
+html[data-theme-transition] *::before,
+html[data-theme-transition] *::after {
+  transition: none !important;
+}
+
 .theme-bulb-container {
   view-transition-name: theme-bulb-switch;
 }
@@ -166,11 +172,18 @@ button {
   mix-blend-mode: normal;
 }
 
+::view-transition-group(root),
+::view-transition-image-pair(root) {
+  animation: none !important;
+}
+
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
   display: block;
+  height: 100%;
+  overflow: clip;
 }
 
 [data-theme-transition="to-light"]::view-transition-old(root) {
