@@ -52,8 +52,8 @@ const ThemeTransitionOverlay: React.FC = () => {
           }}
           exit={{ opacity: 0 }}
           transition={{
-            duration: 0.72,
-            ease: isTurningOn ? [0.16, 1, 0.3, 1] : [0.22, 1, 0.36, 1],
+            duration: 0.8,
+            ease: [0.22, 1, 0.36, 1],
           }}
         />
 
@@ -81,8 +81,8 @@ const ThemeTransitionOverlay: React.FC = () => {
             opacity: [0.8, 1, 0],
           }}
           transition={{
-            duration: 0.75,
-            ease: [0.16, 1, 0.3, 1],
+            duration: 0.82,
+            ease: [0.22, 1, 0.36, 1],
           }}
         />
       </div>

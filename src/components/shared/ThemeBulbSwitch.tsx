@@ -112,9 +112,9 @@ const ThemeBulbSwitch: React.FC = () => {
         // Framer Motion spring for vertical snap-back (elastic recoil with energetic bounce)
         animControlsYRef.current = animate(startY, REST_Y, {
           type: 'spring',
-          stiffness: 175,
-          damping: 3.5,
-          mass: 0.78,
+          stiffness: 160,
+          damping: 3.2,
+          mass: 0.8,
           velocity: initialVy,
           onUpdate: (latest) => {
             posRef.current.y = latest;

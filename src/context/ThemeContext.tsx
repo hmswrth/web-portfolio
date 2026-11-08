@@ -140,8 +140,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
           }
 
           // In both directions (light-to-dark and dark-to-light), the target theme expands
-          // outward smoothly from the switch origin (x, y), revealing the text and background
-          // in real time while allowing the bulb string bounce to remain fully visible.
+          // outward with a fluidic, organic, and silky smooth easing curve across the screen.
           document.documentElement.animate(
             {
               clipPath: [
@@ -150,8 +149,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
               ],
             },
             {
-              duration: 420,
-              easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+              duration: 800,
+              easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
               fill: 'forwards',
               pseudoElement: '::view-transition-new(root)',
             }
@@ -190,7 +189,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
         setTimeout(() => {
           setTransitionState((prev) => ({ ...prev, active: false }));
-        }, 700);
+        }, 850);
       }
     },
     [theme]
