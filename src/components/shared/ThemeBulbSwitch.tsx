@@ -148,8 +148,10 @@ const ThemeBulbSwitch: React.FC = () => {
 
     // Switch theme and release rope with Framer Motion spring physics
     setTimeout(() => {
+      posRef.current = { x: REST_X, y: REST_Y };
+      setRopeEnd({ x: REST_X, y: REST_Y });
       triggerToggle();
-      startSpringAnimation(REST_X + 1.2, REST_Y + 16, -26, -210);
+      startSpringAnimation(REST_X + 1.2, REST_Y, -26, -210);
     }, 110);
   }, [startSpringAnimation, stopSprings, triggerToggle]);
 
@@ -222,8 +224,10 @@ const ThemeBulbSwitch: React.FC = () => {
 
     if (hasArmedRef.current) {
       // SWITCH THEME ONLY ON RELEASE!
+      posRef.current = { x: REST_X, y: REST_Y };
+      setRopeEnd({ x: REST_X, y: REST_Y });
       triggerToggle();
-      startSpringAnimation(curX, curY, lateralImpulse, -230);
+      startSpringAnimation(REST_X, REST_Y, lateralImpulse, -230);
     } else if (hasMovedSignificantlyRef.current) {
       // Pulled below threshold: snap back with spring without switching theme
       startSpringAnimation(curX, curY, lateralImpulse, -120);
